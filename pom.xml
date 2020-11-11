@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.sadtech.haiti</groupId>
+    <artifactId>haiti</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>haiti-context</module>
+        <module>haiti-core</module>
+        <module>haiti-database</module>
+    </modules>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
+        <sadtech.haiti.context.version>0.0.1-SNAPSHOT</sadtech.haiti.context.version>
+        <sadtech.haiti.core.version>0.0.1-SNAPSHOT</sadtech.haiti.core.version>
+        <sadtech.haiti.filter.api.version>0.0.1-SNAPSHOT</sadtech.haiti.filter.api.version>
+        <sadtech.haiti.filter.criteria.version>0.0.1-SNAPSHOT</sadtech.haiti.filter.criteria.version>
+
+        <spring.data.elasticsearch.version>4.1.0</spring.data.elasticsearch.version>
+        <spring.data.jpa.version>2.4.0</spring.data.jpa.version>
+        <spring.data.commons.version>2.4.0</spring.data.commons.version>
+
+        <elasticsearch.version>7.9.3</elasticsearch.version>
+        <lombok.version>1.18.16</lombok.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.sadtech.haiti</groupId>
+                <artifactId>haiti-context</artifactId>
+                <version>${sadtech.haiti.context.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.sadtech.haiti</groupId>
+                <artifactId>haiti-core</artifactId>
+                <version>${sadtech.haiti.core.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.sadtech.haiti.filter</groupId>
+                <artifactId>criteria-filter</artifactId>
+                <version>${sadtech.haiti.filter.criteria.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.sadtech.haiti.filter</groupId>
+                <artifactId>filter-api</artifactId>
+                <version>${sadtech.haiti.filter.api.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.elasticsearch</groupId>
+                <artifactId>elasticsearch</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.persistence</groupId>
+                <artifactId>javax.persistence-api</artifactId>
+                <version>2.2</version>
+            </dependency>
+
+            <!-- spring -->
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-elasticsearch</artifactId>
+                <version>${spring.data.elasticsearch.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-commons</artifactId>
+                <version>${spring.data.commons.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-jpa</artifactId>
+                <version>${spring.data.jpa.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <developers>
+        <developer>
+            <id>uPagge</id>
+            <name>Struchkov Mark</name>
+            <email>upagge@ya.ru</email>
+            <organization>SADTECH</organization>
+            <url>https://t.me/uPagge</url>
+        </developer>
+    </developers>
+    
+</project>
