@@ -6,11 +6,11 @@
     <parent>
         <groupId>org.sadtech.haiti</groupId>
         <artifactId>haiti</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1-RELEASE</version>
     </parent>
 
     <artifactId>haiti-core</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1-RELEASE</version>
 
     <dependencies>
         <dependency>
@@ -19,8 +19,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.sadtech.haiti.filter</groupId>
-            <artifactId>filter-api</artifactId>
+            <groupId>org.sadtech.haiti</groupId>
+            <artifactId>haiti-filter</artifactId>
         </dependency>
 
         <dependency>

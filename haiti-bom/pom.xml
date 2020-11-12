@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.sadtech.haiti</groupId>
+    <artifactId>haiti-bom</artifactId>
+    <version>0.0.1-RELEASE</version>
+    <packaging>pom</packaging>
+
+    <name>Haiti BOM</name>
+    <description>Fast development to keep time on the beach</description>
+    <url>https://github.com/haiti-projects/haiti-framework</url>
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>https://github.com/haiti-projects/haiti-framework/blob/master/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:https://github.com/haiti-projects/haiti-framework.git</connection>
+        <url>https://github.com/haiti-projects/haiti-framework</url>
+        <developerConnection>scm:git:https://github.com/haiti-projects/haiti-framework.git</developerConnection>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
+        <sadtech.haiti.context.version>0.0.1-RELEASE</sadtech.haiti.context.version>
+        <sadtech.haiti.core.version>0.0.1-RELEASE</sadtech.haiti.core.version>
+        <sadtech.haiti.filter.version>0.0.1-RELEASE</sadtech.haiti.filter.version>
+        <sadtech.haiti.filter.api.version>0.0.1-RELEASE</sadtech.haiti.filter.api.version>
+        <sadtech.haiti.filter.criteria.version>0.0.1-RELEASE</sadtech.haiti.filter.criteria.version>
+        <sadtech.haiti.database.version>0.0.1-RELEASE</sadtech.haiti.database.version>
+
+        <spring.data.elasticsearch.version>4.1.0</spring.data.elasticsearch.version>
+        <spring.data.jpa.version>2.4.0</spring.data.jpa.version>
+        <spring.data.commons.version>2.4.0</spring.data.commons.version>
+
+        <elasticsearch.version>7.9.3</elasticsearch.version>
+        <lombok.version>1.18.16</lombok.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.sadtech.haiti</groupId>
+                <artifactId>haiti-context</artifactId>
+                <version>${sadtech.haiti.context.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.sadtech.haiti</groupId>
+                <artifactId>haiti-core</artifactId>
+                <version>${sadtech.haiti.core.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.sadtech.haiti</groupId>
+                <artifactId>haiti-filter</artifactId>
+                <version>${sadtech.haiti.filter.api.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.elasticsearch</groupId>
+                <artifactId>elasticsearch</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.persistence</groupId>
+                <artifactId>javax.persistence-api</artifactId>
+                <version>2.2</version>
+            </dependency>
+
+            <!-- spring -->
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-elasticsearch</artifactId>
+                <version>${spring.data.elasticsearch.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-commons</artifactId>
+                <version>${spring.data.commons.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-jpa</artifactId>
+                <version>${spring.data.jpa.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <developers>
+        <developer>
+            <id>uPagge</id>
+            <name>Struchkov Mark</name>
+            <email>upagge@ya.ru</email>
+            <organization>SADTECH</organization>
+            <url>https://upagge.sadtech.org</url>
+        </developer>
+    </developers>
+
+
+</project>
