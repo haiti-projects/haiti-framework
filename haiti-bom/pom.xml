@@ -10,28 +10,13 @@
     <packaging>pom</packaging>
 
     <name>Haiti BOM</name>
-    <description>Fast development to keep time on the beach</description>
+    <description>Current versions of the framework dependencies</description>
     <url>https://github.com/haiti-projects/haiti-framework</url>
-    <licenses>
-        <license>
-            <name>Apache License 2.0</name>
-            <url>https://github.com/haiti-projects/haiti-framework/blob/master/LICENSE</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
 
-    <scm>
-        <connection>scm:git:https://github.com/haiti-projects/haiti-framework.git</connection>
-        <url>https://github.com/haiti-projects/haiti-framework</url>
-        <developerConnection>scm:git:https://github.com/haiti-projects/haiti-framework.git</developerConnection>
-    </scm>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
+    <organization>
+        <name>SADTECH</name>
+        <url>https://sadtech.org</url>
+    </organization>
 
     <properties>
         <java.version>1.8</java.version>
@@ -71,6 +56,12 @@
                 <groupId>org.sadtech.haiti</groupId>
                 <artifactId>haiti-filter</artifactId>
                 <version>${sadtech.haiti.filter.api.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.sadtech.haiti</groupId>
+                <artifactId>haiti-filter-criteria</artifactId>
+                <version>0.0.1-RELEASE</version>
             </dependency>
 
             <dependency>
@@ -134,9 +125,13 @@
             <name>Struchkov Mark</name>
             <email>upagge@ya.ru</email>
             <organization>SADTECH</organization>
-            <url>https://upagge.sadtech.org</url>
+            <organizationUrl>https://sadtech.org</organizationUrl>
+            <url>https://uPagge.sadtech.org</url>
+            <roles>
+                <role>Project lead</role>
+            </roles>
+            <timezone>+3</timezone>
         </developer>
     </developers>
-
 
 </project>

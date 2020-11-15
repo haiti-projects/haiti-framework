@@ -12,6 +12,15 @@
     <artifactId>haiti-core</artifactId>
     <version>0.0.1-RELEASE</version>
 
+    <name>Haiti Core</name>
+    <description>Implementation of the main classes of the framework</description>
+    <url>https://github.com/haiti-projects/haiti-framework</url>
+
+    <organization>
+        <name>SADTECH</name>
+        <url>https://sadtech.org</url>
+    </organization>
+
     <dependencies>
         <dependency>
             <groupId>org.sadtech.haiti</groupId>
@@ -28,5 +37,20 @@
             <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
+
+    <developers>
+        <developer>
+            <id>uPagge</id>
+            <name>Struchkov Mark</name>
+            <email>upagge@ya.ru</email>
+            <organization>SADTECH</organization>
+            <organizationUrl>https://sadtech.org</organizationUrl>
+            <url>https://uPagge.sadtech.org</url>
+            <roles>
+                <role>Project lead</role>
+            </roles>
+            <timezone>+3</timezone>
+        </developer>
+    </developers>
 
 </project>

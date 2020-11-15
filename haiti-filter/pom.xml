@@ -12,6 +12,15 @@
     <artifactId>haiti-filter</artifactId>
     <version>0.0.1-RELEASE</version>
 
+    <name>Haiti Filter</name>
+    <description>Fast and convenient filtering requests to data warehouses.</description>
+    <url>https://github.com/haiti-projects/haiti-framework</url>
+
+    <organization>
+        <name>SADTECH</name>
+        <url>https://sadtech.org</url>
+    </organization>
+
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -30,7 +39,12 @@
             <name>Struchkov Mark</name>
             <email>upagge@ya.ru</email>
             <organization>SADTECH</organization>
-            <url>https://t.me/uPagge</url>
+            <organizationUrl>https://sadtech.org</organizationUrl>
+            <url>https://uPagge.sadtech.org</url>
+            <roles>
+                <role>Project lead</role>
+            </roles>
+            <timezone>+3</timezone>
         </developer>
     </developers>
     
