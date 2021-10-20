@@ -4,22 +4,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.sadtech.haiti</groupId>
+        <groupId>dev.struchkov.haiti</groupId>
         <artifactId>haiti</artifactId>
-        <version>0.0.1-RELEASE</version>
+        <version>0.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>haiti-context</artifactId>
-    <version>0.0.1-RELEASE</version>
+    <version>0.0.1-SNAPSHOT</version>
 
     <name>Haiti Context</name>
     <description>Basic framework classes</description>
     <url>https://github.com/haiti-projects/haiti-framework</url>
-
-    <organization>
-        <name>SADTECH</name>
-        <url>https://sadtech.org</url>
-    </organization>
 
     <dependencies>
         <dependency>
@@ -32,12 +27,12 @@
         <developer>
             <id>uPagge</id>
             <name>Struchkov Mark</name>
-            <email>upagge@ya.ru</email>
-            <organization>SADTECH</organization>
-            <organizationUrl>https://sadtech.org</organizationUrl>
-            <url>https://uPagge.sadtech.org</url>
+            <email>mark@struchkov.dev</email>
+            <organization>Struchkov Inc.</organization>
+            <organizationUrl>https://struchkov.dev</organizationUrl>
+            <url>https://mark.struchkov.dev</url>
             <roles>
-                <role>Project lead</role>
+                <role>Project Lead</role>
             </roles>
             <timezone>+3</timezone>
         </developer>

@@ -4,64 +4,110 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.sadtech.haiti</groupId>
+    <groupId>dev.struchkov.haiti</groupId>
     <artifactId>haiti-bom</artifactId>
-    <version>0.0.1-RELEASE</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Haiti BOM</name>
     <description>Current versions of the framework dependencies</description>
     <url>https://github.com/haiti-projects/haiti-framework</url>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+            <comments>
+                Copyright 2010 the original author or authors.
+
+                Licensed under the Apache License, Version 2.0 (the "License");
+                you may not use this file except in compliance with the License.
+                You may obtain a copy of the License at
+
+                https://www.apache.org/licenses/LICENSE-2.0
+
+                Unless required by applicable law or agreed to in writing, software
+                distributed under the License is distributed on an "AS IS" BASIS,
+                WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+                implied.
+                See the License for the specific language governing permissions and
+                limitations under the License.
+            </comments>
+        </license>
+    </licenses>
 
     <organization>
-        <name>SADTECH</name>
-        <url>https://sadtech.org</url>
+        <name>Struchkov Inc.</name>
+        <url>https://mark.struchkov.dev</url>
     </organization>
 
-    <properties>
-        <java.version>1.8</java.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+    <scm>
+        <connection>scm:git:https://github.com/haiti-projects/haiti-framework.git</connection>
+        <url>https://github.com/haiti-projects/haiti-framework</url>
+        <developerConnection>scm:git:https://github.com/haiti-projects/haiti-framework.git</developerConnection>
+    </scm>
 
-        <sadtech.haiti.context.version>0.0.1-RELEASE</sadtech.haiti.context.version>
-        <sadtech.haiti.core.version>0.0.1-RELEASE</sadtech.haiti.core.version>
-        <sadtech.haiti.filter.version>0.0.1-RELEASE</sadtech.haiti.filter.version>
-        <sadtech.haiti.filter.api.version>0.0.1-RELEASE</sadtech.haiti.filter.api.version>
-        <sadtech.haiti.filter.criteria.version>0.0.1-RELEASE</sadtech.haiti.filter.criteria.version>
-        <sadtech.haiti.database.version>0.0.1-RELEASE</sadtech.haiti.database.version>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/haiti-projects/haiti-framework/issues</url>
+    </issueManagement>
+
+    <properties>
+        <java.version>16</java.version>
+        <maven.compiler.source>16</maven.compiler.source>
+        <maven.compiler.target>16</maven.compiler.target>
+
+        <haiti.context.version>0.0.1-SNAPSHOT</haiti.context.version>
+        <haiti.core.version>0.0.1-SNAPSHOT</haiti.core.version>
+        <haiti.filter.api.version>0.0.1-SNAPSHOT</haiti.filter.api.version>
+        <haiti.filter.criteria.version>0.0.1-SNAPSHOT</haiti.filter.criteria.version>
+        <haiti.database.version>0.0.1-RELEASE</haiti.database.version>
+        <haiti.utils.version>0.0.1-SNAPSHOT</haiti.utils.version>
 
         <spring.data.elasticsearch.version>4.1.0</spring.data.elasticsearch.version>
         <spring.data.jpa.version>2.4.0</spring.data.jpa.version>
         <spring.data.commons.version>2.4.0</spring.data.commons.version>
 
         <elasticsearch.version>7.9.3</elasticsearch.version>
-        <lombok.version>1.18.16</lombok.version>
+        <lombok.version>1.18.22</lombok.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.sadtech.haiti</groupId>
+                <groupId>dev.struchkov.haiti</groupId>
                 <artifactId>haiti-context</artifactId>
-                <version>${sadtech.haiti.context.version}</version>
+                <version>${haiti.context.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>org.sadtech.haiti</groupId>
+                <groupId>dev.struchkov.haiti</groupId>
                 <artifactId>haiti-core</artifactId>
-                <version>${sadtech.haiti.core.version}</version>
+                <version>${haiti.core.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>org.sadtech.haiti</groupId>
+                <groupId>dev.struchkov.haiti</groupId>
                 <artifactId>haiti-filter</artifactId>
-                <version>${sadtech.haiti.filter.api.version}</version>
+                <version>${haiti.filter.api.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>org.sadtech.haiti</groupId>
+                <groupId>dev.struchkov.haiti.filter</groupId>
                 <artifactId>haiti-filter-criteria</artifactId>
-                <version>0.0.1-RELEASE</version>
+                <version>${haiti.filter.criteria.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>dev.struchkov.haiti</groupId>
+                <artifactId>haiti-utils</artifactId>
+                <version>${haiti.utils.version}</version>
             </dependency>
 
             <dependency>
@@ -105,6 +151,67 @@
         </dependencies>
     </dependencyManagement>
 
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.7</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>
@@ -123,12 +230,12 @@
         <developer>
             <id>uPagge</id>
             <name>Struchkov Mark</name>
-            <email>upagge@ya.ru</email>
-            <organization>SADTECH</organization>
-            <organizationUrl>https://sadtech.org</organizationUrl>
-            <url>https://uPagge.sadtech.org</url>
+            <email>mark@struchkov.dev</email>
+            <organization>Struchkov Inc.</organization>
+            <organizationUrl>https://struchkov.dev</organizationUrl>
+            <url>https://mark.struchkov.dev</url>
             <roles>
-                <role>Project lead</role>
+                <role>Project Lead</role>
             </roles>
             <timezone>+3</timezone>
         </developer>
