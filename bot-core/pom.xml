@@ -3,33 +3,30 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>dev.struchkov.godfather</groupId>
+        <artifactId>godfather-bot</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
 
-    <groupId>dev.struchkov.godfather</groupId>
-    <artifactId>godfather-bot</artifactId>
+    <artifactId>bot-core</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <modules>
-        <module>bot-context</module>
-        <module>bot-core</module>
-    </modules>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
-    <name>GodFather Bot</name>
-    <description>
-        Набор классов для реализации абстрактных проектов для социальных сетей и мессенджеров, без привязки к конкретным
-        сервисам.
-    </description>
-    <url>https://github.com/Godfather-Bots/godfather</url>
+    <name>Bot Core</name>
+    <description>Реализация основной логики для создания ботов без привязки к конкретным социальным сетям.</description>
+    <url>https://github.com/uPagge/social-bot</url>
     <licenses>
         <license>
             <name>BSD 3-Clause "New" or "Revised" License</name>
-            <url>https://github.com/Godfather-Bots/godfather/blob/master/LICENSE</url>
+            <url>https://github.com/uPagge/social-bot/blob/master/LICENSE</url>
         </license>
     </licenses>
 
     <scm>
-        <connection>scm:git:https://github.com/Godfather-Bots/godfather.git</connection>
-        <url>https://github.com/Godfather-Bots/godfathere</url>
-        <developerConnection>scm:git:https://github.com/Godfather-Bots/godfather.git</developerConnection>
+        <connection>scm:git:https://github.com/uPagge/social-bot.git</connection>
+        <url>https://github.com/uPagge/social-bot</url>
+        <developerConnection>scm:git:https://github.com/uPagge/social-bot.git</developerConnection>
     </scm>
 
     <distributionManagement>
@@ -39,73 +36,22 @@
         </snapshotRepository>
     </distributionManagement>
 
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+    <dependencies>
+        <dependency>
+            <groupId>dev.struchkov.godfather</groupId>
+            <artifactId>bot-context</artifactId>
+        </dependency>
 
-        <godfather.core.ver>0.0.1-SNAPSHOT</godfather.core.ver>
-        <autoresponder.ver>1.9.4-RELEASE</autoresponder.ver>
+        <dependency>
+            <groupId>org.sadtech.autoresponder</groupId>
+            <artifactId>autoresponder</artifactId>
+        </dependency>
 
-        <gson.ver>2.8.9</gson.ver>
-        <mail.ver>1.6.2</mail.ver>
-        <lombok.ver>1.18.22</lombok.ver>
-        <spring.data.jpa.ver>2.3.0.RELEASE</spring.data.jpa.ver>
-        <javax.persistence.api.ver>2.2</javax.persistence.api.ver>
-        <validation.api.ver>2.0.1.Final</validation.api.ver>
-        <commons.io.ver>2.11.0</commons.io.ver>
-    </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.google.code.gson</groupId>
-                <artifactId>gson</artifactId>
-                <version>${gson.ver}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.mail</groupId>
-                <artifactId>javax.mail-api</artifactId>
-                <version>${mail.ver}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>${lombok.ver}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-jpa</artifactId>
-                <version>${spring.data.jpa.ver}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.persistence</groupId>
-                <artifactId>javax.persistence-api</artifactId>
-                <version>${javax.persistence.api.ver}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.validation</groupId>
-                <artifactId>validation-api</artifactId>
-                <version>${validation.api.ver}</version>
-            </dependency>
-            <dependency>
-                <groupId>dev.struchkov.godfather</groupId>
-                <artifactId>bot-context</artifactId>
-                <version>${godfather.core.ver}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.sadtech.autoresponder</groupId>
-                <artifactId>autoresponder</artifactId>
-                <version>${autoresponder.ver}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>${commons.io.ver}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+    </dependencies>
 
     <profiles>
         <profile>
@@ -199,9 +145,9 @@
     <developers>
         <developer>
             <id>uPagge</id>
-            <organization>SADTECH</organization>
             <name>Struchkov Mark</name>
             <email>upagge@mail.ru</email>
+            <organization>SADTECH</organization>
         </developer>
     </developers>
 
