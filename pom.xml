@@ -38,6 +38,7 @@
         <javax.persistence.api.ver>2.2</javax.persistence.api.ver>
         <validation.api.ver>2.0.1.Final</validation.api.ver>
         <commons.io.ver>2.11.0</commons.io.ver>
+        <xstream.ver>1.4.15</xstream.ver>
 
         <plugin.nexus.staging.ver>1.6.8</plugin.nexus.staging.ver>
         <plugin.maven.source.ver>3.2.1</plugin.maven.source.ver>
@@ -129,9 +130,16 @@
                     <extensions>true</extensions>
                     <configuration>
                         <serverId>ossrh</serverId>
-                        <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                        <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
                         <autoReleaseAfterClose>true</autoReleaseAfterClose>
                     </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.thoughtworks.xstream</groupId>
+                            <artifactId>xstream</artifactId>
+                            <version>${xstream.ver}</version>
+                        </dependency>
+                    </dependencies>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -170,6 +178,12 @@
                             <goals>
                                 <goal>sign</goal>
                             </goals>
+                            <configuration>
+                                <gpgArguments>
+                                    <arg>--pinentry-mode</arg>
+                                    <arg>loopback</arg>
+                                </gpgArguments>
+                            </configuration>
                         </execution>
                     </executions>
                 </plugin>
