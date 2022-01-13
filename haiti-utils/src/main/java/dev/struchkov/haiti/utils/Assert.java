@@ -1,7 +1,11 @@
 package dev.struchkov.haiti.utils;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.experimental.UtilityClass;
 
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
@@ -9,7 +13,7 @@ import java.util.function.Supplier;
  *
  * @author upagge 06.09.2020
  */
-@UtilityClass
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Assert {
 
     /**
@@ -20,6 +24,12 @@ public final class Assert {
      */
     public static void isNull(Object object, Supplier<? extends RuntimeException> exception) {
         if (object != null) {
+            throw exception.get();
+        }
+    }
+
+    public static void isAnyNotNull(Supplier<? extends RuntimeException> exception, Object... objects) {
+        if (Arrays.stream(objects).allMatch(Objects::isNull)) {
             throw exception.get();
         }
     }

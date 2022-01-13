@@ -1,4 +1,4 @@
-package dev.struchkov.haiti.core.page;
+package dev.struchkov.haiti.context.page.impl;
 
 import dev.struchkov.haiti.context.page.Sheet;
 import lombok.AllArgsConstructor;

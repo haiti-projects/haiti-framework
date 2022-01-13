@@ -6,35 +6,49 @@
     <parent>
         <groupId>dev.struchkov.haiti</groupId>
         <artifactId>haiti</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.2</version>
     </parent>
 
     <artifactId>haiti-context</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${haiti.context.ver}</version>
 
     <name>Haiti Context</name>
     <description>Basic framework classes</description>
-    <url>https://github.com/haiti-projects/haiti-framework</url>
+
+    <properties>
+        <skip.deploy>false</skip.deploy>
+    </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>dev.struchkov.haiti</groupId>
+            <artifactId>haiti-exception</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <configuration>
+                    <skipNexusStagingDeployMojo>${skip.deploy}</skipNexusStagingDeployMojo>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <developers>
         <developer>
             <id>uPagge</id>
             <name>Struchkov Mark</name>
             <email>mark@struchkov.dev</email>
-            <organization>Struchkov Inc.</organization>
-            <organizationUrl>https://struchkov.dev</organizationUrl>
             <url>https://mark.struchkov.dev</url>
-            <roles>
-                <role>Project Lead</role>
-            </roles>
-            <timezone>+3</timezone>
         </developer>
     </developers>
 

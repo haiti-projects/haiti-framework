@@ -2,39 +2,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>dev.struchkov.haiti</groupId>
         <artifactId>haiti</artifactId>
+        <groupId>dev.struchkov.haiti</groupId>
         <version>0.0.2</version>
     </parent>
+    <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>haiti-core</artifactId>
-    <version>${haiti.core.ver}</version>
+    <artifactId>haiti-exception</artifactId>
+    <version>${haiti.exception.ver}</version>
 
-    <name>Haiti Core</name>
-    <description>Implementation of the main classes of the framework</description>
+    <name>Haiti Exception</name>
+    <description>General exceptions for the haiti project</description>
 
     <properties>
         <skip.deploy>false</skip.deploy>
     </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>dev.struchkov.haiti</groupId>
-            <artifactId>haiti-context</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>dev.struchkov.haiti</groupId>
-            <artifactId>haiti-filter</artifactId>
-        </dependency>
-    </dependencies>
 
     <build>
         <plugins>

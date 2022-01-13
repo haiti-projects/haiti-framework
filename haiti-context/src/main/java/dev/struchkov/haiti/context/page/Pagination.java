@@ -1,15 +1,13 @@
 package dev.struchkov.haiti.context.page;
 
-import dev.struchkov.haiti.context.enums.TypeSort;
+import java.util.Set;
 
 public interface Pagination {
 
-    int getPage();
+    Integer getPage();
 
-    int getSize();
+    Integer getSize();
 
-    TypeSort getTypeSort();
-
-    String getFieldSort();
+    Set<? extends Sort>  getSorts();
 
 }

@@ -6,15 +6,19 @@
     <parent>
         <groupId>dev.struchkov.haiti</groupId>
         <artifactId>haiti</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.2</version>
     </parent>
 
     <artifactId>haiti-filter</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${haiti.filter.api.ver}</version>
+    <packaging>jar</packaging>
 
     <name>Haiti Filter</name>
     <description>Fast and convenient filtering requests to data warehouses.</description>
-    <url>https://github.com/haiti-projects/haiti-framework</url>
+
+    <properties>
+        <skip.deploy>false</skip.deploy>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -28,19 +32,25 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <configuration>
+                    <skipNexusStagingDeployMojo>${skip.deploy}</skipNexusStagingDeployMojo>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <developers>
         <developer>
             <id>uPagge</id>
             <name>Struchkov Mark</name>
             <email>mark@struchkov.dev</email>
-            <organization>Struchkov Inc.</organization>
-            <organizationUrl>https://struchkov.dev</organizationUrl>
             <url>https://mark.struchkov.dev</url>
-            <roles>
-                <role>Project Lead</role>
-            </roles>
-            <timezone>+3</timezone>
         </developer>
     </developers>
-    
+
 </project>

@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -134,6 +135,10 @@ public class ObjectUtils {
         return (method.getName().startsWith("set"))
                 && (method.getName().length() == (fieldName.length() + 3))
                 && method.getName().toLowerCase().endsWith(fieldName.toLowerCase());
+    }
+
+    public static <T> List<T> toList(T... t) {
+        return Arrays.stream(t).collect(Collectors.toList());
     }
 
     public static <T> Collection<T> toCollect(T... t) {

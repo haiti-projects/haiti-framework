@@ -1,5 +1,7 @@
 package dev.struchkov.haiti.context.domain;
 
+import lombok.NonNull;
+
 /**
  * // TODO: 14.01.2021 Добавить описание.
  *
@@ -8,5 +10,7 @@ package dev.struchkov.haiti.context.domain;
 public interface BasicEntity<K> {
 
     K getId();
+
+    void setId(@NonNull K id);
 
 }
