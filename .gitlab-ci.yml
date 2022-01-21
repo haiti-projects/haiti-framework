@@ -10,8 +10,6 @@ build:
   stage: build
   only:
     - /^release-.*$/
-  except:
-    - branches
   script:
     - 'mvn --settings $MAVEN_SETTINGS -U -P ossrh -P release clean deploy'
   artifacts:
