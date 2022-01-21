@@ -11,7 +11,7 @@ build:
   only:
     - /^release-.*$/
   script:
-    - 'mvn --settings $MAVEN_SETTINGS -U -P ossrh -P release clean deploy'
+    - 'mvn --settings $MAVEN_SETTINGS -U -P ossrh,release clean deploy'
   artifacts:
     paths:
       - backend/target/*.jar
