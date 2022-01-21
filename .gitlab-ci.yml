@@ -1,0 +1,19 @@
+image: 3.8.4-openjdk-11-slim
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=./.m2/repository"
+
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  only:
+    - /^release-.*$/
+  except:
+    - branches
+  script:
+    - 'mvn --settings $MAVEN_SETTINGS -U -P ossrh -P release clean deploy'
+  artifacts:
+    paths:
+      - backend/target/*.jar
