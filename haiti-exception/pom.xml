@@ -5,7 +5,7 @@
     <parent>
         <artifactId>haiti</artifactId>
         <groupId>dev.struchkov.haiti</groupId>
-        <version>0.0.2</version>
+        <version>0.0.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -14,9 +14,15 @@
 
     <name>Haiti Exception</name>
     <description>General exceptions for the haiti project</description>
+    <url>https://github.com/haiti-projects/haiti-framework</url>
 
     <properties>
         <skip.deploy>false</skip.deploy>
+        <java.version>11</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <build>
@@ -30,14 +36,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <developers>
-        <developer>
-            <id>uPagge</id>
-            <name>Struchkov Mark</name>
-            <email>mark@struchkov.dev</email>
-            <url>https://mark.struchkov.dev</url>
-        </developer>
-    </developers>
 
 </project>

@@ -6,8 +6,22 @@
 
     <groupId>dev.struchkov.haiti</groupId>
     <artifactId>haiti</artifactId>
-    <version>0.0.2</version>
+    <version>${haiti.ver}</version>
     <packaging>pom</packaging>
+
+    <name>Haiti Framework</name>
+    <description>Fast development to keep time on the beach</description>
+    <url>https://github.com/haiti-projects/haiti-framework</url>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/haiti-projects/haiti-framework/issues</url>
+    </issueManagement>
 
     <modules>
         <module>haiti-context</module>
@@ -18,19 +32,22 @@
         <module>haiti-exception</module>
     </modules>
 
-    <name>Haiti Framework</name>
-    <description>Fast development to keep time on the beach</description>
-    <url>https://github.com/haiti-projects/haiti-framework</url>
-
     <properties>
-        <haiti.bom.ver>0.0.2</haiti.bom.ver>
-        <haiti.exception.ver>0.0.2</haiti.exception.ver>
-        <haiti.context.ver>0.0.2</haiti.context.ver>
-        <haiti.core.ver>0.0.2</haiti.core.ver>
-        <haiti.filter.api.ver>0.0.2</haiti.filter.api.ver>
-        <haiti.filter.criteria.ver>0.0.2</haiti.filter.criteria.ver>
-        <haiti.database.ver>0.0.2</haiti.database.ver>
-        <haiti.utils.ver>0.0.2</haiti.utils.ver>
+        <java.version>11</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <haiti.ver>0.0.3</haiti.ver>
+        <haiti.bom.ver>0.0.3</haiti.bom.ver>
+        <haiti.exception.ver>0.0.3</haiti.exception.ver>
+        <haiti.context.ver>0.0.3</haiti.context.ver>
+        <haiti.core.ver>0.0.3</haiti.core.ver>
+        <haiti.filter.api.ver>0.0.3</haiti.filter.api.ver>
+        <haiti.filter.criteria.ver>0.0.3</haiti.filter.criteria.ver>
+        <haiti.database.ver>0.0.3</haiti.database.ver>
+        <haiti.utils.ver>0.0.3</haiti.utils.ver>
 
         <plugin.nexus.staging.ver>1.6.8</plugin.nexus.staging.ver>
         <plugin.maven.source.ver>3.2.1</plugin.maven.source.ver>
@@ -38,30 +55,12 @@
         <plugin.maven.gpg.ver>3.0.1</plugin.maven.gpg.ver>
     </properties>
 
-    <scm>
-        <connection>scm:git:https://github.com/haiti-projects/haiti-framework.git</connection>
-        <url>https://github.com/haiti-projects/haiti-framework</url>
-        <developerConnection>scm:git:https://github.com/haiti-projects/haiti-framework.git</developerConnection>
-    </scm>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
-
-    <issueManagement>
-        <system>GitHub</system>
-        <url>https://github.com/haiti-projects/haiti-framework/issues</url>
-    </issueManagement>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>dev.struchkov.haiti</groupId>
                 <artifactId>haiti-bom</artifactId>
-                <version>0.0.2</version>
+                <version>0.0.3</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -169,42 +168,26 @@
         </profile>
     </profiles>
 
+    <scm>
+        <connection>scm:git:https://github.com/haiti-projects/haiti-framework.git</connection>
+        <url>https://github.com/haiti-projects/haiti-framework</url>
+        <developerConnection>scm:git:https://github.com/haiti-projects/haiti-framework.git</developerConnection>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <developers>
         <developer>
             <id>uPagge</id>
             <name>Struchkov Mark</name>
             <email>mark@struchkov.dev</email>
-            <organization>Struchkov Inc.</organization>
-            <organizationUrl>https://struchkov.dev</organizationUrl>
             <url>https://mark.struchkov.dev</url>
-            <roles>
-                <role>Project Lead</role>
-            </roles>
-            <timezone>+3</timezone>
         </developer>
     </developers>
-
-    <licenses>
-        <license>
-            <name>Apache License, Version 2.0</name>
-            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
-            <comments>
-                Copyright 2010 the original author or authors.
-
-                Licensed under the Apache License, Version 2.0 (the "License");
-                you may not use this file except in compliance with the License.
-                You may obtain a copy of the License at
-
-                https://www.apache.org/licenses/LICENSE-2.0
-
-                Unless required by applicable law or agreed to in writing, software
-                distributed under the License is distributed on an "AS IS" BASIS,
-                WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-                implied.
-                See the License for the specific language governing permissions and
-                limitations under the License.
-            </comments>
-        </license>
-    </licenses>
 
 </project>

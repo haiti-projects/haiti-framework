@@ -6,38 +6,51 @@
 
     <groupId>dev.struchkov.haiti</groupId>
     <artifactId>haiti-bom</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <packaging>pom</packaging>
 
     <name>Haiti BOM</name>
     <description>Current versions of the framework dependencies</description>
     <url>https://github.com/haiti-projects/haiti-framework</url>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/haiti-projects/haiti-framework/issues</url>
+    </issueManagement>
 
     <properties>
-        <skip.deploy>true</skip.deploy>
+        <skip.deploy>false</skip.deploy>
+
         <java.version>11</java.version>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <haiti.exception.ver>0.0.2</haiti.exception.ver>
-        <haiti.context.ver>0.0.2</haiti.context.ver>
-        <haiti.core.ver>0.0.2</haiti.core.ver>
-        <haiti.filter.api.ver>0.0.2</haiti.filter.api.ver>
-        <haiti.filter.criteria.ver>0.0.2</haiti.filter.criteria.ver>
-        <haiti.database.ver>0.0.2</haiti.database.ver>
-        <haiti.utils.ver>0.0.2</haiti.utils.ver>
+        <haiti.exception.ver>0.0.3</haiti.exception.ver>
+        <haiti.context.ver>0.0.3</haiti.context.ver>
+        <haiti.core.ver>0.0.3</haiti.core.ver>
+        <haiti.filter.api.ver>0.0.3</haiti.filter.api.ver>
+        <haiti.filter.criteria.ver>0.0.3</haiti.filter.criteria.ver>
+        <haiti.database.ver>0.0.3</haiti.database.ver>
+        <haiti.utils.ver>0.0.3</haiti.utils.ver>
 
-        <spring.data.elasticsearch.ver>4.1.0</spring.data.elasticsearch.ver>
-        <spring.data.jpa.ver>2.4.0</spring.data.jpa.ver>
-        <spring.data.commons.ver>2.4.0</spring.data.commons.ver>
+        <spring.data.elasticsearch.ver>4.3.1</spring.data.elasticsearch.ver>
+        <spring.data.jpa.ver>2.6.1</spring.data.jpa.ver>
+        <spring.data.commons.ver>2.6.1</spring.data.commons.ver>
 
         <javax.persisttence.api.ver>2.2</javax.persisttence.api.ver>
-        <elasticsearch.ver>7.9.3</elasticsearch.ver>
+        <elasticsearch.ver>7.16.3</elasticsearch.ver>
         <lombok.ver>1.18.22</lombok.ver>
-        <slf4j.ver>1.7.32</slf4j.ver>
+        <slf4j.ver>1.7.33</slf4j.ver>
 
         <plugin.nexus.staging.ver>1.6.8</plugin.nexus.staging.ver>
-        <plugin.maven.compiler.ver>3.8.0</plugin.maven.compiler.ver>
+        <plugin.maven.compiler.ver>3.9.0</plugin.maven.compiler.ver>
         <plugin.maven.source.ver>3.2.1</plugin.maven.source.ver>
         <plugin.maven.javadoc.ver>3.3.1</plugin.maven.javadoc.ver>
         <plugin.maven.gpg.ver>3.0.1</plugin.maven.gpg.ver>
@@ -50,37 +63,31 @@
                 <artifactId>haiti-exception</artifactId>
                 <version>${haiti.exception.ver}</version>
             </dependency>
-
             <dependency>
                 <groupId>dev.struchkov.haiti</groupId>
                 <artifactId>haiti-context</artifactId>
                 <version>${haiti.exception.ver}</version>
             </dependency>
-
             <dependency>
                 <groupId>dev.struchkov.haiti</groupId>
                 <artifactId>haiti-context</artifactId>
                 <version>${haiti.context.ver}</version>
             </dependency>
-
             <dependency>
                 <groupId>dev.struchkov.haiti</groupId>
                 <artifactId>haiti-core</artifactId>
                 <version>${haiti.core.ver}</version>
             </dependency>
-
             <dependency>
                 <groupId>dev.struchkov.haiti</groupId>
                 <artifactId>haiti-filter</artifactId>
                 <version>${haiti.filter.api.ver}</version>
             </dependency>
-
             <dependency>
                 <groupId>dev.struchkov.haiti.filter</groupId>
                 <artifactId>haiti-filter-criteria</artifactId>
                 <version>${haiti.filter.criteria.ver}</version>
             </dependency>
-
             <dependency>
                 <groupId>dev.struchkov.haiti</groupId>
                 <artifactId>haiti-utils</artifactId>
@@ -133,15 +140,54 @@
         </dependencies>
     </dependencyManagement>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${plugin.maven.compiler.ver}</version>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                </configuration>
+            </plugin>
+        </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <version>${plugin.nexus.staging.ver}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>${plugin.maven.source.ver}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${plugin.maven.javadoc.ver}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>${plugin.maven.gpg.ver}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
     <profiles>
         <profile>
             <id>release</id>
             <build>
+
                 <plugins>
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>${plugin.nexus.staging.ver}</version>
                         <extensions>true</extensions>
                         <configuration>
                             <serverId>ossrh</serverId>
@@ -153,7 +199,6 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>${plugin.maven.source.ver}</version>
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
@@ -166,7 +211,6 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>${plugin.maven.javadoc.ver}</version>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
@@ -179,7 +223,6 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>${plugin.maven.gpg.ver}</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -194,20 +237,6 @@
             </build>
         </profile>
     </profiles>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${plugin.maven.compiler.ver}</version>
-                <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
     <scm>
         <connection>scm:git:https://github.com/haiti-projects/haiti-framework.git</connection>
@@ -230,28 +259,5 @@
             <url>https://mark.struchkov.dev</url>
         </developer>
     </developers>
-
-    <licenses>
-        <license>
-            <name>Apache License, Version 2.0</name>
-            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
-            <comments>
-                Copyright 2010 the original author or authors.
-
-                Licensed under the Apache License, Version 2.0 (the "License");
-                you may not use this file except in compliance with the License.
-                You may obtain a copy of the License at
-
-                https://www.apache.org/licenses/LICENSE-2.0
-
-                Unless required by applicable law or agreed to in writing, software
-                distributed under the License is distributed on an "AS IS" BASIS,
-                WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-                implied.
-                See the License for the specific language governing permissions and
-                limitations under the License.
-            </comments>
-        </license>
-    </licenses>
 
 </project>

@@ -6,17 +6,24 @@
     <parent>
         <groupId>dev.struchkov.haiti</groupId>
         <artifactId>haiti</artifactId>
-        <version>0.0.2</version>
+        <version>0.0.3</version>
     </parent>
 
     <artifactId>haiti-context</artifactId>
     <version>${haiti.context.ver}</version>
 
     <name>Haiti Context</name>
-    <description>Basic framework classes</description>
+    <description>Basic framework general classes</description>
+    <url>https://github.com/haiti-projects/haiti-framework</url>
 
     <properties>
         <skip.deploy>false</skip.deploy>
+
+        <java.version>11</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <dependencies>
@@ -42,14 +49,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <developers>
-        <developer>
-            <id>uPagge</id>
-            <name>Struchkov Mark</name>
-            <email>mark@struchkov.dev</email>
-            <url>https://mark.struchkov.dev</url>
-        </developer>
-    </developers>
 
 </project>
