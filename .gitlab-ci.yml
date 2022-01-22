@@ -9,6 +9,9 @@ deploy:
   stage: deploy
   only:
     - /^release-.*$/
+
+  before_script:
+    - gpg --import $GPG_PRIVATE_KEY
   script:
     - 'mvn --settings $MAVEN_SETTINGS -U -P ossrh,release clean deploy'
   artifacts:
