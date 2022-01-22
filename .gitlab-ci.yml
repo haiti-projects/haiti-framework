@@ -11,6 +11,7 @@ deploy:
     - /^release-.*$/
 
   before_script:
+    - export GPG_TTY=$(tty)
     - gpg --import $GPG_PRIVATE_KEY
   script:
     - 'mvn --settings $MAVEN_SETTINGS -U -P ossrh,release clean deploy'
