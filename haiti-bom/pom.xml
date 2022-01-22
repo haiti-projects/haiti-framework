@@ -52,7 +52,7 @@
         <plugin.maven.compiler.ver>3.9.0</plugin.maven.compiler.ver>
         <plugin.maven.source.ver>3.2.1</plugin.maven.source.ver>
         <plugin.maven.javadoc.ver>3.3.1</plugin.maven.javadoc.ver>
-        <plugin.maven.gpg.ver>1.6</plugin.maven.gpg.ver>
+        <plugin.maven.gpg.ver>3.0.1</plugin.maven.gpg.ver>
     </properties>
 
     <dependencyManagement>
@@ -159,6 +159,31 @@
     <profiles>
         <profile>
             <id>release</id>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>central</id>
+                    <name>Central Repository</name>
+                    <url>https://repo.maven.apache.org/maven2</url>
+                    <layout>default</layout>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <releases>
+                        <updatePolicy>never</updatePolicy>
+                    </releases>
+                </pluginRepository>
+            </pluginRepositories>
+            <repositories>
+                <repository>
+                    <id>central</id>
+                    <name>Central Repository</name>
+                    <url>https://repo.maven.apache.org/maven2</url>
+                    <layout>default</layout>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
             <build>
                 <plugins>
                     <plugin>
