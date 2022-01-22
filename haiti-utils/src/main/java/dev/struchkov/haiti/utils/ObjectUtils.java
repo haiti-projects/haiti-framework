@@ -1,8 +1,6 @@
 package dev.struchkov.haiti.utils;
 
 import dev.struchkov.haiti.context.exception.ConvertException;
-import lombok.NonNull;
-import lombok.experimental.UtilityClass;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -14,13 +12,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static dev.struchkov.haiti.utils.Exceptions.utilityClass;
+
 /**
- * // TODO: 07.03.2021 Добавить описание.
+ * Утилитарный класс для работы с классами и объектами.
  *
  * @author upagge 07.03.2021
  */
-@UtilityClass
 public class ObjectUtils {
+
+    private ObjectUtils() {
+        utilityClass();
+    }
 
     /**
      * <p>Позволяет получить значение вложенного в объект поля по названию поля.</p>
@@ -33,7 +36,8 @@ public class ObjectUtils {
      * @param object    Объект
      * @return Значение поля из объекта
      */
-    public static Object getFieldValue(@NonNull Object object, @NonNull String fieldName) {
+    public static Object getFieldValue(Object object, String fieldName) {
+        Assert.isNotNull(object, fieldName);
         int firstNameIndex = fieldName.indexOf(".");
         String firstName;
         if (firstNameIndex != -1) {
@@ -58,7 +62,8 @@ public class ObjectUtils {
         throw new ConvertException("Метод у объекта не найден");
     }
 
-    public static void setFieldValue(@NonNull Object object, @NonNull String fieldName, Object fieldValue) {
+    public static void setFieldValue(Object object, String fieldName, Object fieldValue) {
+        Assert.isNotNull(object, fieldName);
         int firstNameIndex = fieldName.indexOf(".");
         if (firstNameIndex != -1) {
             final String[] split = fieldName.split("\\.");
@@ -118,7 +123,8 @@ public class ObjectUtils {
      * @param method    Метод
      * @return true если метод является геттером для fieldName, false в противном случае
      */
-    public static boolean isGetMethod(@NonNull String fieldName, Method method) {
+    public static boolean isGetMethod(String fieldName, Method method) {
+        Assert.isNotNull(fieldName);
         return (method.getName().startsWith("get"))
                 && (method.getName().length() == (fieldName.length() + 3))
                 && method.getName().toLowerCase().endsWith(fieldName.toLowerCase());
@@ -131,7 +137,8 @@ public class ObjectUtils {
      * @param method    Метод
      * @return true если метод является сеттером для fieldName, false в противном случае
      */
-    public static boolean isSetMethod(@NonNull String fieldName, Method method) {
+    public static boolean isSetMethod(String fieldName, Method method) {
+        Assert.isNotNull(fieldName);
         return (method.getName().startsWith("set"))
                 && (method.getName().length() == (fieldName.length() + 3))
                 && method.getName().toLowerCase().endsWith(fieldName.toLowerCase());

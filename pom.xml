@@ -6,7 +6,7 @@
 
     <groupId>dev.struchkov.haiti</groupId>
     <artifactId>haiti</artifactId>
-    <version>${haiti.ver}</version>
+    <version>0.0.3</version>
     <packaging>pom</packaging>
 
     <name>Haiti Framework</name>
@@ -24,12 +24,12 @@
     </issueManagement>
 
     <modules>
+        <module>haiti-bom</module>
+        <module>haiti-exception</module>
+        <module>haiti-utils</module>
         <module>haiti-context</module>
         <module>haiti-core</module>
         <module>haiti-filter</module>
-        <module>haiti-bom</module>
-        <module>haiti-utils</module>
-        <module>haiti-exception</module>
     </modules>
 
     <properties>
@@ -39,7 +39,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <haiti.ver>0.0.3</haiti.ver>
         <haiti.bom.ver>0.0.3</haiti.bom.ver>
         <haiti.exception.ver>0.0.3</haiti.exception.ver>
         <haiti.context.ver>0.0.3</haiti.context.ver>
@@ -49,6 +48,7 @@
         <haiti.database.ver>0.0.3</haiti.database.ver>
         <haiti.utils.ver>0.0.3</haiti.utils.ver>
 
+        <plugin.maven.compiler.ver>3.9.0</plugin.maven.compiler.ver>
         <plugin.nexus.staging.ver>1.6.8</plugin.nexus.staging.ver>
         <plugin.maven.source.ver>3.2.1</plugin.maven.source.ver>
         <plugin.maven.javadoc.ver>3.3.1</plugin.maven.javadoc.ver>
@@ -120,11 +120,14 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.9.0</version>
                     <configuration>
-                        <gpgArguments>
-                            <gpgArgument>--pinentry-mode</gpgArgument>
-                            <gpgArgument>loopback</gpgArgument>
-                        </gpgArguments>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
                     </configuration>
                 </plugin>
             </plugins>
@@ -134,10 +137,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -1,16 +1,14 @@
 package dev.struchkov.haiti.context.domain;
 
-import lombok.NonNull;
-
 /**
- * // TODO: 14.01.2021 Добавить описание.
+ * Базовая класс для сущностей.
  *
  * @author upagge 14.01.2021
  */
-public interface BasicEntity<K> {
+public interface BasicEntity<Key> {
 
-    K getId();
+    Key getId();
 
-    void setId(@NonNull K id);
+    void setId(Key id);
 
 }

@@ -1,17 +1,15 @@
 package dev.struchkov.haiti.context.repository.simple;
 
-import lombok.NonNull;
-
 import java.util.Optional;
 
 /**
  * Контракт для реализации объекта, который будет взаимодействовать с хранилищем данных.
  *
- * @param <T> Класс сущности
- * @param <K> Класс идентификатора
+ * @param <Entity> Класс сущности
+ * @param <Key> Класс идентификатора
  * @author upagge
  */
-public interface CrudOperation<T, K> {
+public interface CrudOperation<Entity, Key> {
 
     /**
      * Сохраняет сущность в базу данных. Не проверяет на наличие в хранилище.
@@ -20,12 +18,12 @@ public interface CrudOperation<T, K> {
      * @param entity Сущность для сохранения
      * @return Сохраненная сущность
      */
-    T save(@NonNull T entity);
+    Entity save(Entity entity);
 
-    Optional<T> findById(@NonNull K primaryKey);
+    Optional<Entity> findById(Key id);
 
-    boolean existsById(@NonNull K primaryKey);
+    boolean existsById(Key id);
 
-    void deleteById(@NonNull K primaryKey);
+    void deleteById(Key id);
 
 }

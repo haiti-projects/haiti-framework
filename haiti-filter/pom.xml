@@ -28,11 +28,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>dev.struchkov.haiti</groupId>
             <artifactId>haiti-context</artifactId>
         </dependency>

@@ -46,7 +46,6 @@
 
         <javax.persisttence.api.ver>2.2</javax.persisttence.api.ver>
         <elasticsearch.ver>7.16.3</elasticsearch.ver>
-        <lombok.ver>1.18.22</lombok.ver>
         <slf4j.ver>1.7.33</slf4j.ver>
 
         <plugin.nexus.staging.ver>1.6.8</plugin.nexus.staging.ver>
@@ -95,12 +94,6 @@
             </dependency>
 
             <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>${lombok.ver}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.elasticsearch</groupId>
                 <artifactId>elasticsearch</artifactId>
                 <version>${elasticsearch.ver}</version>
@@ -145,11 +138,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${plugin.maven.compiler.ver}</version>
-                <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                </configuration>
             </plugin>
         </plugins>
 
@@ -174,6 +162,15 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
                     <version>${plugin.maven.gpg.ver}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${plugin.maven.compiler.ver}</version>
+                    <configuration>
+                        <source>11</source>
+                        <target>11</target>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

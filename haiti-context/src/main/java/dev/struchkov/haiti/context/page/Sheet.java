@@ -3,7 +3,7 @@ package dev.struchkov.haiti.context.page;
 import java.util.List;
 import java.util.function.Function;
 
-public interface Sheet<T> {
+public interface Sheet<Entity> {
 
     int getNumber();
 
@@ -13,10 +13,10 @@ public interface Sheet<T> {
 
     int getTotalPage();
 
-    List<T> getContent();
+    List<Entity> getContent();
 
     boolean hasContent();
 
-    <U> Sheet<U> map(Function<? super T, ? extends U> converter);
+    <NewEntity> Sheet<NewEntity> map(Function<? super Entity, ? extends NewEntity> converter);
 
 }

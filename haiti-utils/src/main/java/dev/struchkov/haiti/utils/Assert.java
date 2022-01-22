@@ -1,20 +1,21 @@
 package dev.struchkov.haiti.utils;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import lombok.experimental.UtilityClass;
-
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+import static dev.struchkov.haiti.utils.Exceptions.utilityClass;
+
 /**
- * // TODO: 06.09.2020 Добавить описание.
+ * Утилитарный класс для различных проверок.
  *
  * @author upagge 06.09.2020
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Assert {
+
+    public Assert() {
+        utilityClass();
+    }
 
     /**
      * Проверка на null значение с возвращением исключения, если объект не null.
@@ -47,6 +48,30 @@ public final class Assert {
     }
 
     /**
+     * Проверка на null значение с возвращением исключения, если объект null.
+     *
+     * @param object Проверяемый объект
+     */
+    public static void isNotNull(Object object) {
+        if (object == null) {
+            throw new NullPointerException("Object cannot be null");
+        }
+    }
+
+    /**
+     * Проверка на null значение с возвращением исключения, если объект null.
+     *
+     * @param objects Проверяемый объект
+     */
+    public static void isNotNull(Object... objects) {
+        for (Object o : objects) {
+            if (o == null) {
+                throw new NullPointerException("Object cannot be null");
+            }
+        }
+    }
+
+    /**
      * Проверка на true значение с возвращением исключения, если flag не true.
      *
      * @param flag      Проверяемое значение
@@ -70,8 +95,12 @@ public final class Assert {
         }
     }
 
-    @UtilityClass
+
     public static final class Utils {
+
+        public Utils() {
+            utilityClass();
+        }
 
         public static Supplier<NullPointerException> nullPointer(String fieldName) {
             return () -> new NullPointerException(fieldName + " is marked non-null but is null");

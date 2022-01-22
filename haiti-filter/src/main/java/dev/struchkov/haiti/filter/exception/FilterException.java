@@ -3,7 +3,7 @@ package dev.struchkov.haiti.filter.exception;
 import dev.struchkov.haiti.context.exception.BasicException;
 
 /**
- * // TODO: 09.11.2020 Добавить описание.
+ * Исключения связанные с работой фильтров.
  *
  * @author upagge 09.11.2020
  */

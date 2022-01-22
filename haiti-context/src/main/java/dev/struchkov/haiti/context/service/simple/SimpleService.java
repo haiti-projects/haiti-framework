@@ -1,26 +1,24 @@
 package dev.struchkov.haiti.context.service.simple;
 
-import lombok.NonNull;
-
 import java.util.Optional;
 
 /**
  * Базовый контракт для сервисов.
  *
- * @param <T> Сущность сервиса.
+ * @param <Entity> Сущность сервиса.
  */
-public interface SimpleService<T, K> {
+public interface SimpleService<Entity, Key> {
 
-    T create(@NonNull T entity);
+    Entity create(Entity entity);
 
-    T update(@NonNull T entity);
+    Entity update(Entity entity);
 
-    Optional<T> getById(@NonNull K primaryKey);
+    Optional<Entity> getById(Key id);
 
-    T getByIdOrThrow(@NonNull K primaryKey);
+    Entity getByIdOrThrow(Key id);
 
-    boolean existsById(@NonNull K primaryKey);
+    boolean existsById(Key id);
 
-    void deleteById(@NonNull K primaryKey);
+    void deleteById(Key id);
 
 }

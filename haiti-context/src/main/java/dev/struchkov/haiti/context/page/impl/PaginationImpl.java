@@ -2,11 +2,9 @@ package dev.struchkov.haiti.context.page.impl;
 
 import dev.struchkov.haiti.context.page.Pagination;
 import dev.struchkov.haiti.context.page.Sort;
-import lombok.Getter;
 
 import java.util.Set;
 
-@Getter
 public class PaginationImpl implements Pagination {
 
     private final Integer page;
@@ -32,4 +30,18 @@ public class PaginationImpl implements Pagination {
         return new PaginationImpl(page, size, sorts);
     }
 
+    @Override
+    public Integer getPage() {
+        return page;
+    }
+
+    @Override
+    public Integer getSize() {
+        return size;
+    }
+
+    @Override
+    public Set<? extends Sort> getSorts() {
+        return sorts;
+    }
 }

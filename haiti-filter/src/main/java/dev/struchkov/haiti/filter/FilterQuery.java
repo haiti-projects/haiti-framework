@@ -1,7 +1,5 @@
 package dev.struchkov.haiti.filter;
 
-import lombok.NonNull;
-
 import java.util.Set;
 
 public interface FilterQuery {
@@ -13,11 +11,11 @@ public interface FilterQuery {
      * @param from  Начало интервала
      * @param to    Конец интервала
      */
-    <Y extends Comparable<? super Y>> FilterQuery between(@NonNull String field, Y from, Y to);
+    <Y extends Comparable<? super Y>> FilterQuery between(String field, Y from, Y to);
 
-    <Y extends Comparable<? super Y>> FilterQuery greaterThan(@NonNull String field, Y value);
+    <Y extends Comparable<? super Y>> FilterQuery greaterThan(String field, Y value);
 
-    <Y extends Comparable<? super Y>> FilterQuery lessThan(@NonNull String field, Y value);
+    <Y extends Comparable<? super Y>> FilterQuery lessThan(String field, Y value);
 
     /**
      * Добавляет в запрос проверку по значению поля
@@ -25,7 +23,7 @@ public interface FilterQuery {
      * @param field Название поля
      * @param value Значение поля для проверки
      */
-    FilterQuery matchPhrase(@NonNull String field, Object value);
+    FilterQuery matchPhrase(String field, Object value);
 
     /**
      * Добавляет в запрос проверку по нескольким значениям одного поля
@@ -33,7 +31,7 @@ public interface FilterQuery {
      * @param field Название поля
      * @param value Значения поля
      */
-    <U> FilterQuery matchPhrase(@NonNull String field, Set<U> value);
+    <U> FilterQuery matchPhrase(String field, Set<U> value);
 
     /**
      * Добавляет в запрос проверку на NULL значение поля
@@ -48,7 +46,7 @@ public interface FilterQuery {
      * @param field Названия поля
      * @param value Часть искомого значения
      */
-    FilterQuery like(@NonNull String field, String value, boolean ignoreCase);
+    FilterQuery like(String field, String value, boolean ignoreCase);
 
     /**
      * Добавляет в запрос поиск по флагу, который конвертируется в диапазон
@@ -56,7 +54,7 @@ public interface FilterQuery {
      * @param flag  Значение флага
      * @param field Поле для проверки
      */
-    FilterQuery checkBoolInt(@NonNull String field, Boolean flag);
+    FilterQuery checkBoolInt(String field, Boolean flag);
 
     <Q> Q build();
 

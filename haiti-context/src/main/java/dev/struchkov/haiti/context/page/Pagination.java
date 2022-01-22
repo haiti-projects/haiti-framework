@@ -8,6 +8,6 @@ public interface Pagination {
 
     Integer getSize();
 
-    Set<? extends Sort>  getSorts();
+    Set<? extends Sort> getSorts();
 
 }

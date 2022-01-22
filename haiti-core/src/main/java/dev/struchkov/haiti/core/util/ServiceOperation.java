@@ -7,7 +7,6 @@ import dev.struchkov.haiti.context.page.Sheet;
 import dev.struchkov.haiti.context.repository.simple.CrudOperation;
 import dev.struchkov.haiti.context.repository.simple.MultipleOperation;
 import dev.struchkov.haiti.context.repository.simple.PagingOperation;
-import lombok.experimental.UtilityClass;
 
 import java.util.Collection;
 import java.util.List;
@@ -15,27 +14,32 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@UtilityClass
+import static dev.struchkov.haiti.utils.Exceptions.utilityClass;
+
 public final class ServiceOperation {
 
-    public static <T extends BasicEntity<K>, K> void deleteAllById(MultipleOperation<T, K> repository, Collection<K> primaryKeys) {
-        repository.deleteAllById(primaryKeys);
+    private ServiceOperation() {
+        utilityClass();
     }
 
-    public static <T> Sheet<T> getAll(PagingOperation<T> repository, Pagination pagination) {
+    public static <Entity extends BasicEntity<Key>, Key> void deleteAllById(MultipleOperation<Entity, Key> repository, Collection<Key> ids) {
+        repository.deleteAllById(ids);
+    }
+
+    public static <Entity> Sheet<Entity> getAll(PagingOperation<Entity> repository, Pagination pagination) {
         return repository.findAll(pagination);
     }
 
-    public static <T, K> Optional<T> getById(CrudOperation<T, K> repository, K primaryKey) {
-        return repository.findById(primaryKey);
+    public static <Entity, Key> Optional<Entity> getById(CrudOperation<Entity, Key> repository, Key id) {
+        return repository.findById(id);
     }
 
-    public static <T, K> boolean existsById(CrudOperation<T, K> repository, K primaryKey) {
-        return repository.existsById(primaryKey);
+    public static <Entity, Key> boolean existsById(CrudOperation<Entity, Key> repository, Key id) {
+        return repository.existsById(id);
     }
 
-    public static <T, K> void deleteById(CrudOperation<T, K> repository, K primaryKey) {
-        repository.deleteById(primaryKey);
+    public static <Entity, Key> void deleteById(CrudOperation<Entity, Key> repository, Key id) {
+        repository.deleteById(id);
     }
 
     public static <K, T extends BasicEntity<K>> ExistsContainer<T, K> existsContainerById(MultipleOperation<T, K> multipleOperation, Collection<K> ids) {
@@ -52,4 +56,5 @@ public final class ServiceOperation {
             return ExistsContainer.notAllFind(existsEntity, noExistsId);
         }
     }
+
 }

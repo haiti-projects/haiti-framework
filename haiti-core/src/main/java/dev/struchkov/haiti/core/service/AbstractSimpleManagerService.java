@@ -8,61 +8,72 @@ import dev.struchkov.haiti.context.page.Sheet;
 import dev.struchkov.haiti.context.repository.SimpleManagerRepository;
 import dev.struchkov.haiti.context.service.SimpleManagerService;
 import dev.struchkov.haiti.core.util.ServiceOperation;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import dev.struchkov.haiti.utils.Assert;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
-public abstract class AbstractSimpleManagerService<T extends BasicEntity<K>, K> implements SimpleManagerService<T, K> {
+public abstract class AbstractSimpleManagerService<Entity extends BasicEntity<Key>, Key> implements SimpleManagerService<Entity, Key> {
 
-    protected final SimpleManagerRepository<T, K> repository;
+    protected final SimpleManagerRepository<Entity, Key> repository;
 
-    @Override
-    public void deleteAllById(@NonNull Collection<K> primaryKeys) {
-        ServiceOperation.deleteAllById(repository, primaryKeys);
+    protected AbstractSimpleManagerService(SimpleManagerRepository<Entity, Key> repository) {
+        this.repository = repository;
     }
 
     @Override
-    public Sheet<T> getAll(@NonNull Pagination pagination) {
+    public void deleteAllById(Collection<Key> ids) {
+        Assert.isNotNull(ids);
+        ServiceOperation.deleteAllById(repository, ids);
+    }
+
+    @Override
+    public Sheet<Entity> getAll(Pagination pagination) {
+        Assert.isNotNull(pagination);
         return ServiceOperation.getAll(repository, pagination);
     }
 
     @Override
-    public Optional<T> getById(@NonNull K primaryKey) {
-        return ServiceOperation.getById(repository, primaryKey);
+    public Optional<Entity> getById(Key id) {
+        Assert.isNotNull(id);
+        return ServiceOperation.getById(repository, id);
     }
 
     @Override
-    public T getByIdOrThrow(@NonNull K primaryKey) {
-        return getById(primaryKey).orElseThrow(NotFoundException.supplier("Объект не найден. Идентификатор: ", primaryKey));
+    public Entity getByIdOrThrow(Key id) {
+        Assert.isNotNull(id);
+        return getById(id).orElseThrow(NotFoundException.supplier("Объект не найден. Идентификатор: ", id));
     }
 
     @Override
-    public boolean existsById(@NonNull K primaryKey) {
-        return ServiceOperation.existsById(repository, primaryKey);
+    public boolean existsById(Key id) {
+        Assert.isNotNull(id);
+        return ServiceOperation.existsById(repository, id);
     }
 
     @Override
-    public void deleteById(@NonNull K primaryKey) {
-        ServiceOperation.deleteById(repository, primaryKey);
+    public void deleteById(Key id) {
+        Assert.isNotNull(id);
+        ServiceOperation.deleteById(repository, id);
     }
 
     @Override
-    public List<T> createAll(@NonNull Collection<T> entities) {
+    public List<Entity> createAll(Collection<Entity> entities) {
+        Assert.isNotNull(entities);
         return entities.stream().map(this::create).collect(Collectors.toList());
     }
 
     @Override
-    public List<T> updateAll(@NonNull Collection<T> entities) {
+    public List<Entity> updateAll(Collection<Entity> entities) {
+        Assert.isNotNull(entities);
         return entities.stream().map(this::update).collect(Collectors.toList());
     }
 
     @Override
-    public ExistsContainer<T, K> existsById(@NonNull Collection<K> ids) {
+    public ExistsContainer<Entity, Key> existsById(Collection<Key> ids) {
+        Assert.isNotNull(ids);
         return ServiceOperation.existsContainerById(repository, ids);
     }
 
