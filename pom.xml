@@ -6,7 +6,7 @@
 
     <groupId>dev.struchkov.haiti</groupId>
     <artifactId>haiti</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <packaging>pom</packaging>
 
     <name>Haiti Framework</name>
@@ -39,14 +39,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <haiti.bom.ver>0.0.3</haiti.bom.ver>
-        <haiti.exception.ver>0.0.3</haiti.exception.ver>
-        <haiti.context.ver>0.0.3</haiti.context.ver>
-        <haiti.core.ver>0.0.3</haiti.core.ver>
-        <haiti.filter.api.ver>0.0.3</haiti.filter.api.ver>
-        <haiti.filter.criteria.ver>0.0.3</haiti.filter.criteria.ver>
-        <haiti.database.ver>0.0.3</haiti.database.ver>
-        <haiti.utils.ver>0.0.3</haiti.utils.ver>
+        <haiti.bom.ver>0.0.4</haiti.bom.ver>
+        <haiti.exception.ver>0.0.4</haiti.exception.ver>
+        <haiti.context.ver>0.0.4</haiti.context.ver>
+        <haiti.core.ver>0.0.4</haiti.core.ver>
+        <haiti.filter.api.ver>0.0.4</haiti.filter.api.ver>
+        <haiti.filter.criteria.ver>0.0.4</haiti.filter.criteria.ver>
+        <haiti.database.ver>0.0.4</haiti.database.ver>
+        <haiti.utils.ver>0.0.4</haiti.utils.ver>
 
         <plugin.maven.compiler.ver>3.9.0</plugin.maven.compiler.ver>
         <plugin.nexus.staging.ver>1.6.8</plugin.nexus.staging.ver>
@@ -60,7 +60,7 @@
             <dependency>
                 <groupId>dev.struchkov.haiti</groupId>
                 <artifactId>haiti-bom</artifactId>
-                <version>0.0.3</version>
+                <version>0.0.4</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -124,7 +124,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.9.0</version>
+                    <version>${plugin.maven.compiler.ver}</version>
                     <configuration>
                         <source>${java.version}</source>
                         <target>${java.version}</target>
