@@ -44,6 +44,7 @@
         <commons.io.ver>2.11.0</commons.io.ver>
         <xstream.ver>1.4.15</xstream.ver>
 
+        <plugin.maven.compiler.ver>3.9.0</plugin.maven.compiler.ver>
         <plugin.nexus.staging.ver>1.6.8</plugin.nexus.staging.ver>
         <plugin.maven.source.ver>3.2.1</plugin.maven.source.ver>
         <plugin.maven.javadoc.ver>3.3.1</plugin.maven.javadoc.ver>
