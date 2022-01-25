@@ -1,9 +1,11 @@
 package dev.struchkov.godfather.core.domain.unit;
 
 import dev.struchkov.godfather.context.domain.BoxAnswer;
+import dev.struchkov.godfather.context.domain.content.Message;
 import dev.struchkov.godfather.context.service.sender.Sending;
 import dev.struchkov.godfather.context.utils.Description;
-import dev.struchkov.godfather.core.service.usercode.Insert;
+import dev.struchkov.godfather.context.service.usercode.Insert;
+import dev.struchkov.godfather.context.service.usercode.ProcessingData;
 import dev.struchkov.godfather.core.utils.TypeUnit;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -20,10 +22,10 @@ import java.util.regex.Pattern;
  */
 @Getter
 @EqualsAndHashCode(callSuper = true)
-public class AnswerText extends MainUnit {
+public class AnswerText<M extends Message> extends MainUnit {
 
     @Description("Объект, который необходимо отправить пользователю")
-    private final BoxAnswer boxAnswer;
+    private final ProcessingData<M> boxAnswer;
 
     @Description("Информация, которую необходимо вставить вместо маркеров в строку ответа")
     private final Insert insert;
@@ -39,7 +41,7 @@ public class AnswerText extends MainUnit {
                        Integer priority,
                        @Singular Set<MainUnit> nextUnits,
                        UnitActiveType activeType,
-                       BoxAnswer boxAnswer,
+                       ProcessingData<M> boxAnswer,
                        Insert insert,
                        Sending sending) {
         super(keyWords, phrase, pattern, matchThreshold, priority, nextUnits, activeType, TypeUnit.TEXT);
@@ -49,7 +51,7 @@ public class AnswerText extends MainUnit {
     }
 
     public static AnswerText of(String message) {
-        return AnswerText.builder().boxAnswer(BoxAnswer.of(message)).build();
+        return builder().boxAnswer(BoxAnswer.processing(message)).build();
     }
 
 }

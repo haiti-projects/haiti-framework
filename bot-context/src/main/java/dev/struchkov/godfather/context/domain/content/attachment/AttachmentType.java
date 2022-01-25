@@ -8,6 +8,7 @@ package dev.struchkov.godfather.context.domain.content.attachment;
 public enum AttachmentType {
 
     AUDIO_MESSAGE,
-    GEO
+    GEO,
+    LINK
 
 }

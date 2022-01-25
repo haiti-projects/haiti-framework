@@ -1,4 +1,4 @@
-package dev.struchkov.godfather.core.service.usercode;
+package dev.struchkov.godfather.context.service.usercode;
 
 import dev.struchkov.godfather.context.domain.BoxAnswer;
 import dev.struchkov.godfather.context.domain.content.Message;

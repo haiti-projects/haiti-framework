@@ -56,7 +56,7 @@ public class AnswerAccountAction implements ActionUnit<AnswerAccount, Mail> {
                 .keyBoard(KeyBoards.singelton(buttonAccount))
                 .build();
 
-        return AnswerText.builder().boxAnswer(boxAnswer).build();
+        return AnswerText.builder().boxAnswer(message -> boxAnswer).build();
     }
 
     private void settingCheckTimer(AnswerAccount answerAccount, Mail mail, Integer accountId) {

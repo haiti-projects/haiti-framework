@@ -2,7 +2,7 @@ package dev.struchkov.godfather.core.domain;
 
 import dev.struchkov.godfather.context.utils.Description;
 import dev.struchkov.godfather.core.domain.unit.MainUnit;
-import dev.struchkov.godfather.core.service.usercode.CheckData;
+import dev.struchkov.godfather.context.service.usercode.CheckData;
 import lombok.Builder;
 import lombok.Data;
 

@@ -6,12 +6,13 @@
 
     <groupId>dev.struchkov.godfather</groupId>
     <artifactId>godfather-bot</artifactId>
-    <version>0.0.1-RELEASE</version>
+    <version>0.0.2</version>
+    <packaging>pom</packaging>
+
     <modules>
         <module>bot-context</module>
         <module>bot-core</module>
     </modules>
-    <packaging>pom</packaging>
 
     <name>GodFather Bot</name>
     <description>Абстрактная бииблиотека для помощи в реализации библиотек ботов для конкретных социальных сетей</description>
@@ -24,17 +25,20 @@
     </licenses>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <java.version>17</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <godfather.context.ver>0.0.1-RELEASE</godfather.context.ver>
-        <godfather.core.ver>0.0.1-RELEASE</godfather.core.ver>
+        <godfather.context.ver>0.0.2</godfather.context.ver>
+        <godfather.core.ver>0.0.2</godfather.core.ver>
         <autoresponder.ver>1.9.4-RELEASE</autoresponder.ver>
 
         <gson.ver>2.8.9</gson.ver>
         <mail.ver>1.6.2</mail.ver>
         <lombok.ver>1.18.22</lombok.ver>
-        <spring.data.jpa.ver>2.3.0.RELEASE</spring.data.jpa.ver>
+        <spring.data.jpa.ver>2.6.1</spring.data.jpa.ver>
         <javax.persistence.api.ver>2.2</javax.persistence.api.ver>
         <validation.api.ver>2.0.1.Final</validation.api.ver>
         <commons.io.ver>2.11.0</commons.io.ver>
@@ -98,32 +102,6 @@
         </dependencies>
     </dependencyManagement>
 
-    <profiles>
-        <profile>
-            <id>release</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
     <build>
         <pluginManagement>
             <plugins>
@@ -137,13 +115,6 @@
                         <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
                         <autoReleaseAfterClose>true</autoReleaseAfterClose>
                     </configuration>
-                    <dependencies>
-                        <dependency>
-                            <groupId>com.thoughtworks.xstream</groupId>
-                            <artifactId>xstream</artifactId>
-                            <version>${xstream.ver}</version>
-                        </dependency>
-                    </dependencies>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -184,11 +155,14 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${plugin.maven.compiler.ver}</version>
                     <configuration>
-                        <gpgArguments>
-                            <gpgArgument>--pinentry-mode</gpgArgument>
-                            <gpgArgument>loopback</gpgArgument>
-                        </gpgArguments>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
                     </configuration>
                 </plugin>
             </plugins>
@@ -198,13 +172,35 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>17</source>
-                    <target>17</target>
-                </configuration>
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <scm>
         <connection>scm:git:https://github.com/Godfather-Bots/godfather.git</connection>

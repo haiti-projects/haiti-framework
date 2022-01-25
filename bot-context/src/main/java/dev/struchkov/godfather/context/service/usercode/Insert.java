@@ -1,4 +1,4 @@
-package dev.struchkov.godfather.core.service.usercode;
+package dev.struchkov.godfather.context.service.usercode;
 
 import java.util.List;
 

@@ -134,10 +134,10 @@ public class GeneralAutoResponder<T extends Message> extends TimerTask {
         if (actionUnitMap.containsKey(unitAnswer.getType())) {
             ActionUnit actionUnit = actionUnitMap.get(unitAnswer.getType());
             MainUnit mainUnit = actionUnit.action(unitAnswer, event);
-            if (!unitAnswer.equals(mainUnit)) return getAction(event, mainUnit);
-            return mainUnit;
+            return !unitAnswer.equals(mainUnit) ? getAction(event, mainUnit) : mainUnit;
+        } else {
+            throw new NotFoundException("ActionUnit для типа " + unitAnswer.getType() + " не зарегистрирован");
         }
-        throw new NotFoundException("ActionUnit для типа " + unitAnswer.getType() + " не зарегистрирован");
     }
 
     @Override

@@ -4,7 +4,7 @@ import dev.struchkov.godfather.context.domain.content.Message;
 import dev.struchkov.godfather.context.utils.MessageUtils;
 import dev.struchkov.godfather.core.GeneralAutoResponder;
 import dev.struchkov.godfather.core.domain.Timer;
-import dev.struchkov.godfather.core.service.usercode.CheckData;
+import dev.struchkov.godfather.context.service.usercode.CheckData;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.Clock;

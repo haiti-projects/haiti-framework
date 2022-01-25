@@ -6,7 +6,7 @@
     <parent>
         <groupId>dev.struchkov.godfather</groupId>
         <artifactId>godfather-bot</artifactId>
-        <version>0.0.1-RELEASE</version>
+        <version>0.0.2</version>
     </parent>
 
     <artifactId>bot-core</artifactId>
@@ -15,13 +15,10 @@
 
     <name>Bot Core</name>
     <description>Реализация основной логики для создания ботов без привязки к конкретным социальным сетям.</description>
-    <url>https://github.com/Godfather-Bots/godfather</url>
-    <licenses>
-        <license>
-            <name>BSD 3-Clause "New" or "Revised" License</name>
-            <url>https://github.com/Godfather-Bots/godfather/blob/master/LICENSE</url>
-        </license>
-    </licenses>
+
+    <properties>
+        <skip.deploy>false</skip.deploy>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -45,34 +42,15 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
                 <configuration>
-                    <source>17</source>
-                    <target>17</target>
+                    <skipNexusStagingDeployMojo>${skip.deploy}</skipNexusStagingDeployMojo>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
-    <scm>
-        <connection>scm:git:https://github.com/Godfather-Bots/godfather.git</connection>
-        <url>https://github.com/Godfather-Bots/godfathere</url>
-        <developerConnection>scm:git:https://github.com/Godfather-Bots/godfather.git</developerConnection>
-    </scm>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
-
-    <developers>
-        <developer>
-            <id>uPagge</id>
-            <name>Struchkov Mark</name>
-            <email>upagge@mail.ru</email>
-            <organization>SADTECH</organization>
-        </developer>
-    </developers>
 
 </project>

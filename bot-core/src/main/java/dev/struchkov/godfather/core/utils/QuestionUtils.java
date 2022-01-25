@@ -65,7 +65,7 @@ public class QuestionUtils {
                     .keyBoard(KeyBoards.verticalDuoMenuString(collectAnswer)).build();
 
             AnswerText.AnswerTextBuilder answerTextBuilder = AnswerText.builder()
-                    .boxAnswer(boxAnswer);
+                    .boxAnswer(message -> boxAnswer);
 
             for (QuestionAnswer questionAnswer : question.getQuestionAnswers()) {
                 AnswerSave.AnswerSaveBuilder answerSaveBuilder = AnswerSave.<QuestionResult>builder()

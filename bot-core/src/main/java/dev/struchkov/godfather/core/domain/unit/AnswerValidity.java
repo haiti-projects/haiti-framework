@@ -3,7 +3,7 @@ package dev.struchkov.godfather.core.domain.unit;
 import dev.struchkov.godfather.context.utils.Description;
 import dev.struchkov.godfather.core.service.save.LocalPreservable;
 import dev.struchkov.godfather.core.service.save.Preservable;
-import dev.struchkov.godfather.core.service.usercode.ClarificationQuestion;
+import dev.struchkov.godfather.core.service.ClarificationQuestion;
 import dev.struchkov.godfather.core.utils.TypeUnit;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

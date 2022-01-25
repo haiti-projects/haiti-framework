@@ -1,7 +1,9 @@
 package dev.struchkov.godfather.context.domain;
 
+import dev.struchkov.godfather.context.domain.content.Message;
 import dev.struchkov.godfather.context.domain.content.attachment.GeoCoordinate;
 import dev.struchkov.godfather.context.domain.keyboard.KeyBoard;
+import dev.struchkov.godfather.context.service.usercode.ProcessingData;
 import dev.struchkov.godfather.context.utils.Description;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -35,6 +37,10 @@ public class BoxAnswer {
 
     public static BoxAnswer of(String message) {
         return BoxAnswer.builder().message(message).build();
+    }
+
+    public static <T extends Message> ProcessingData<T> processing(String messageText) {
+        return (message) -> builder().message(messageText).build();
     }
 
 }

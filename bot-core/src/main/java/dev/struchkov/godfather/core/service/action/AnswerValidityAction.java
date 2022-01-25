@@ -43,7 +43,7 @@ public class AnswerValidityAction implements ActionUnit<AnswerValidity, Message>
                         .clearKeyWords().keyWords(WORDS_YES_NO)
                         .build();
                 return AnswerText.builder()
-                        .boxAnswer(clarification.getQuestion())
+                        .boxAnswer(mes -> clarification.getQuestion())
                         .nextUnit(newValidity)
                         .build();
             }
