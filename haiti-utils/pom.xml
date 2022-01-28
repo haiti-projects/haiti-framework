@@ -6,7 +6,7 @@
     <parent>
         <groupId>dev.struchkov.haiti</groupId>
         <artifactId>haiti</artifactId>
-        <version>0.0.4</version>
+        <version>1.0.0</version>
     </parent>
 
     <name>Haiti Utils</name>
