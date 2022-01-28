@@ -1,7 +1,5 @@
 package dev.struchkov.haiti.utils;
 
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.function.Supplier;
 
 import static dev.struchkov.haiti.utils.Exceptions.utilityClass;
@@ -13,7 +11,7 @@ import static dev.struchkov.haiti.utils.Exceptions.utilityClass;
  */
 public final class Assert {
 
-    public Assert() {
+    private Assert() {
         utilityClass();
     }
 
@@ -29,9 +27,17 @@ public final class Assert {
         }
     }
 
+    /**
+     * Проверяет множество объектов на null. Если хотябы один объект null, то будет выброшено исключение
+     *
+     * @param exception исключение, которое необходимо выбросить
+     * @param objects   проверяемое множество объектов
+     */
     public static void isAnyNotNull(Supplier<? extends RuntimeException> exception, Object... objects) {
-        if (Arrays.stream(objects).allMatch(Objects::isNull)) {
-            throw exception.get();
+        for (Object object : objects) {
+            if (object == null) {
+                throw exception.get();
+            }
         }
     }
 
