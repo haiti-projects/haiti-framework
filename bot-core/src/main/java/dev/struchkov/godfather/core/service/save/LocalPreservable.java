@@ -28,7 +28,7 @@ public class LocalPreservable<S> implements Preservable<S> {
 
     @Override
     public Map<String, S> getAllSaveElement(Long personId) {
-        return null;
+        return saveMap.get(personId);
     }
 
 

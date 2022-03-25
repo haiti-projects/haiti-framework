@@ -33,5 +33,4 @@ public interface Preservable<S> {
 
     Map<String, S> getAllSaveElement(Long personId);
 
-
 }
