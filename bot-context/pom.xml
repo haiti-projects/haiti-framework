@@ -10,8 +10,6 @@
     </parent>
 
     <artifactId>bot-context</artifactId>
-    <version>${godfather.context.ver}</version>
-    <packaging>jar</packaging>
 
     <name>Bot Context</name>
     <description>Доменные сущности, интерфейсы, для библиотеки Godfather</description>
@@ -44,21 +42,5 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <configuration>
-                    <skipNexusStagingDeployMojo>${skip.deploy}</skipNexusStagingDeployMojo>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

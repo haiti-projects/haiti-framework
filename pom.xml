@@ -15,7 +15,8 @@
     </modules>
 
     <name>GodFather Bot</name>
-    <description>Абстрактная бииблиотека для помощи в реализации библиотек ботов для конкретных социальных сетей</description>
+    <description>Абстрактная бииблиотека для помощи в реализации библиотек ботов для конкретных социальных сетей
+    </description>
     <url>https://github.com/Godfather-Bots/godfather</url>
     <licenses>
         <license>
@@ -103,6 +104,7 @@
                     <groupId>org.sonatype.plugins</groupId>
                     <artifactId>nexus-staging-maven-plugin</artifactId>
                     <version>${plugin.nexus.staging.ver}</version>
+                    <extensions>true</extensions>
                     <configuration>
                         <serverId>ossrh</serverId>
                         <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>

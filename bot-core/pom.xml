@@ -10,8 +10,6 @@
     </parent>
 
     <artifactId>bot-core</artifactId>
-    <version>${godfather.core.ver}</version>
-    <packaging>jar</packaging>
 
     <name>Bot Core</name>
     <description>Реализация основной логики для создания ботов без привязки к конкретным социальным сетям.</description>
@@ -31,21 +29,5 @@
             <artifactId>autoresponder</artifactId>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <configuration>
-                    <skipNexusStagingDeployMojo>${skip.deploy}</skipNexusStagingDeployMojo>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
