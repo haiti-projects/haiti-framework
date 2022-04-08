@@ -35,19 +35,17 @@
         <godfather.core.ver>0.0.3-SNAPSHOT</godfather.core.ver>
         <autoresponder.ver>1.9.4-RELEASE</autoresponder.ver>
 
-        <gson.ver>2.8.9</gson.ver>
+        <gson.ver>2.9.0</gson.ver>
         <mail.ver>1.6.2</mail.ver>
         <lombok.ver>1.18.22</lombok.ver>
-        <spring.data.jpa.ver>2.6.1</spring.data.jpa.ver>
         <javax.persistence.api.ver>2.2</javax.persistence.api.ver>
         <validation.api.ver>2.0.1.Final</validation.api.ver>
-        <commons.io.ver>2.11.0</commons.io.ver>
-        <xstream.ver>1.4.15</xstream.ver>
+        <slf4j.api.ver>1.7.36</slf4j.api.ver>
 
         <plugin.maven.compiler.ver>3.9.0</plugin.maven.compiler.ver>
-        <plugin.nexus.staging.ver>1.6.8</plugin.nexus.staging.ver>
+        <plugin.nexus.staging.ver>1.6.12</plugin.nexus.staging.ver>
         <plugin.maven.source.ver>3.2.1</plugin.maven.source.ver>
-        <plugin.maven.javadoc.ver>3.3.1</plugin.maven.javadoc.ver>
+        <plugin.maven.javadoc.ver>3.3.2</plugin.maven.javadoc.ver>
         <plugin.maven.gpg.ver>3.0.1</plugin.maven.gpg.ver>
     </properties>
 
@@ -67,11 +65,6 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.ver}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-jpa</artifactId>
-                <version>${spring.data.jpa.ver}</version>
             </dependency>
             <dependency>
                 <groupId>javax.persistence</groupId>
@@ -96,9 +89,9 @@
             </dependency>
 
             <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>${commons.io.ver}</version>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.api.ver}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -110,19 +103,20 @@
                     <groupId>org.sonatype.plugins</groupId>
                     <artifactId>nexus-staging-maven-plugin</artifactId>
                     <version>${plugin.nexus.staging.ver}</version>
-                    <extensions>true</extensions>
                     <configuration>
                         <serverId>ossrh</serverId>
                         <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
                         <autoReleaseAfterClose>true</autoReleaseAfterClose>
                     </configuration>
-                    <dependencies>
-                        <dependency>
-                            <groupId>com.thoughtworks.xstream</groupId>
-                            <artifactId>xstream</artifactId>
-                            <version>${xstream.ver}</version>
-                        </dependency>
-                    </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${plugin.maven.compiler.ver}</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -164,15 +158,6 @@
                         </execution>
                     </executions>
                 </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${plugin.maven.compiler.ver}</version>
-                    <configuration>
-                        <source>${java.version}</source>
-                        <target>${java.version}</target>
-                    </configuration>
-                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -180,6 +165,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
@@ -226,9 +219,9 @@
     <developers>
         <developer>
             <id>uPagge</id>
-            <organization>SADTECH</organization>
             <name>Struchkov Mark</name>
             <email>mark@struchkov.dev</email>
+            <url>https://struchkov.dev</url>
         </developer>
     </developers>
 

@@ -1,6 +1,5 @@
 package dev.struchkov.godfather.core.domain.unit;
 
-import dev.struchkov.godfather.context.utils.Description;
 import dev.struchkov.godfather.core.domain.AccountAutoCheck;
 import dev.struchkov.godfather.core.utils.TypeUnit;
 import lombok.Builder;
@@ -20,13 +19,19 @@ import java.util.regex.Pattern;
 @EqualsAndHashCode(callSuper = true)
 public class AnswerAccount extends MainUnit {
 
-    @Description("Сумма к оплате")
+    /**
+     * Сумма к оплате.
+     */
     private final Integer totalSum;
 
-    @Description("Время жизни счета")
+    /**
+     * Время жизни счета.
+     */
     private final Integer timeHours;
 
-    @Description("Настройки для автоматической проверки оплаты")
+    /**
+     * Настройки для автоматической проверки оплаты.
+     */
     private final AccountAutoCheck autoCheck;
 
     @Builder

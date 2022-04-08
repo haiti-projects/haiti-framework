@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import dev.struchkov.godfather.context.utils.Description;
 
 /**
  * Абстрактная сущность кнопки для клавиатуры.
@@ -18,10 +17,14 @@ import dev.struchkov.godfather.context.utils.Description;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class KeyBoardButton {
 
-    @Description("Скрытое сообщение, отправляемое по нажатию")
+    /**
+     * Скрытое сообщение, отправляемое по нажатию.
+     */
     protected String payload;
 
-    @Description("Тип кнопки")
+    /**
+     * Тип кнопки.
+     */
     protected ButtonType type;
 
 }

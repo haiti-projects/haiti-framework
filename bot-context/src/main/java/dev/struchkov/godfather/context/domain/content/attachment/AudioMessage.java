@@ -4,7 +4,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import dev.struchkov.godfather.context.utils.Description;
 
 import java.net.URL;
 
@@ -20,7 +19,9 @@ import java.net.URL;
 @Setter
 public class AudioMessage extends Attachment {
 
-    @Description("Ссылка на аудиозапись в формате odd")
+    /**
+     * Ссылка на аудиозапись в формате odd.
+     */
     private URL linkOdd;
 
     public AudioMessage() {

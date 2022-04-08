@@ -1,9 +1,9 @@
 package dev.struchkov.godfather.context.domain.content;
 
 import dev.struchkov.godfather.context.domain.content.attachment.Attachment;
-import dev.struchkov.godfather.context.utils.Description;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.Column;
@@ -18,21 +18,38 @@ import java.util.List;
  *
  * @author upagge [08/07/2019]
  */
-@Data
 @Entity
+@Getter
+@Setter
 @Table(name = "mail")
-@EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 public class Mail extends Message {
 
+    /**
+     * Имя отправителя.
+     */
+    @Column(name = "first_name")
+    private String firstName;
+
+    /**
+     * Фамилия отправителя.
+     */
+    @Column(name = "last_name")
+    private String lastName;
+
+    /**
+     * Вложения к сообщению.
+     */
     @OneToMany(fetch = FetchType.EAGER)
     @Column(name = "attachment")
-    @Description("Вложения к сообщению")
     private List<Attachment> attachments;
 
+    /**
+     * Пересланные сообщения.
+     */
     @OneToMany
     @Column(name = "forward_mail")
-    @Description("Пересланные сообщения")
     private List<Mail> forwardMail;
 
     public Mail() {

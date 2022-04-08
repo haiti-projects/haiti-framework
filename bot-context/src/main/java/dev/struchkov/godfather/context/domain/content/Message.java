@@ -1,9 +1,10 @@
 package dev.struchkov.godfather.context.domain.content;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import dev.struchkov.godfather.context.domain.BasicEntity;
-import dev.struchkov.godfather.context.utils.Description;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.EnumType;
@@ -18,37 +19,45 @@ import java.time.LocalDateTime;
  * @author upagge [08/07/2019]
  */
 
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
 @MappedSuperclass
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public abstract class Message extends BasicEntity {
 
+    /**
+     * Тип сообщения.
+     */
     @Column(name = "type")
     @Enumerated(value = EnumType.STRING)
-    @Description("Тип сообщения")
     protected ContentType type;
 
+    /**
+     * Дата создания.
+     */
     @NotNull
     @Column(name = "create_date")
-    @Description("Дата создания")
     private LocalDateTime createDate;
 
+    /**
+     * Дата добавления в базу.
+     */
     @Column(name = "add_date")
-    @Description("Дата добавления в базу")
     private LocalDateTime addDate;
 
+    /**
+     * Идентификатор пользователя, отправившего сообщение.
+     */
     @NotNull
     @Column(name = "person_id")
-    @Description("Идентификатор пользователя, отправившего сообщение")
     private Long personId;
 
+    /**
+     * Текстовое сообщение.
+     */
     @Column(name = "text")
-    @Description("Текстовое сообщение")
     private String text;
-
-    public Message() {
-
-    }
 
     public Message(Message source) {
         this.personId = source.getPersonId();

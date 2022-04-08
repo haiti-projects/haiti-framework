@@ -1,7 +1,6 @@
 package dev.struchkov.godfather.core.domain.question;
 
 import dev.struchkov.godfather.context.domain.BoxAnswer;
-import dev.struchkov.godfather.context.utils.Description;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,11 +18,15 @@ import java.util.List;
 @Builder
 public class Question {
 
-    @Description("Вопрос")
+    /**
+     * Вопрос.
+     */
     private BoxAnswer boxAnswer;
 
+    /**
+     * Список предполагаемых ответов.
+     */
     @Singular
-    @Description("Список предполагаемых ответов")
     private List<QuestionAnswer> questionAnswers;
 
 }

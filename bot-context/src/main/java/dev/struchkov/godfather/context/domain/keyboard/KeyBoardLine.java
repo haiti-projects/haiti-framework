@@ -5,7 +5,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Singular;
 import lombok.ToString;
-import dev.struchkov.godfather.context.utils.Description;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +20,9 @@ import java.util.List;
 @EqualsAndHashCode
 public class KeyBoardLine {
 
-    @Description("Кнопки в строке")
+    /**
+     * Кнопки в строке.
+     */
     @Singular(value = "buttonKeyBoard")
     private List<KeyBoardButton> keyBoardButtons = new ArrayList<>();
 

@@ -1,12 +1,11 @@
 package dev.struchkov.godfather.context.domain.keyboard.button;
 
 import dev.struchkov.godfather.context.domain.keyboard.ButtonType;
+import dev.struchkov.godfather.context.domain.keyboard.KeyBoardButton;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import dev.struchkov.godfather.context.domain.keyboard.KeyBoardButton;
-import dev.struchkov.godfather.context.utils.Description;
 
 /**
  * Кнопка клавиатуры для оплаты счета.
@@ -18,13 +17,19 @@ import dev.struchkov.godfather.context.utils.Description;
 @EqualsAndHashCode(callSuper = true)
 public class KeyBoardButtonAccount extends KeyBoardButton {
 
-    @Description("Сумма к оплате")
+    /**
+     * Сумма к оплате.
+     */
     private Integer amount;
 
-    @Description("Идентификатор счета")
+    /**
+     * Идентификатор счета.
+     */
     private Integer accountId;
 
-    @Description("Описание")
+    /**
+     * Описание.
+     */
     private String description;
 
     @Builder

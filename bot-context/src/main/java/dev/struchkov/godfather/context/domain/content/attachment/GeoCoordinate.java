@@ -1,22 +1,27 @@
 package dev.struchkov.godfather.context.domain.content.attachment;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import dev.struchkov.godfather.context.utils.Description;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Сущность для хранения географических координат.
  *
  * @author upagge [08/07/2019]
  */
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 public class GeoCoordinate {
 
-    @Description("Широта")
+    /**
+     * Широта.
+     */
     private Float latitude;
 
-    @Description("Долгота")
+    /**
+     * Долгота.
+     */
     private Float longitude;
 
 }

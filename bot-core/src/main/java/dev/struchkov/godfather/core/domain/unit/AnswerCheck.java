@@ -1,7 +1,6 @@
 package dev.struchkov.godfather.core.domain.unit;
 
 import dev.struchkov.godfather.context.domain.content.Message;
-import dev.struchkov.godfather.context.utils.Description;
 import dev.struchkov.godfather.context.service.usercode.CheckData;
 import dev.struchkov.godfather.core.utils.TypeUnit;
 import lombok.Builder;
@@ -21,13 +20,19 @@ import java.util.regex.Pattern;
 @EqualsAndHashCode(callSuper = true)
 public class AnswerCheck extends MainUnit {
 
-    @Description("Unit для true")
+    /**
+     * Unit для true.
+     */
     private final MainUnit unitTrue;
 
-    @Description("Unit для false")
+    /**
+     * Unit для false.
+     */
     private final MainUnit unitFalse;
 
-    @Description("Условие проверки")
+    /**
+     * Условие проверки.
+     */
     private final CheckData<Message> check;
 
     @Builder

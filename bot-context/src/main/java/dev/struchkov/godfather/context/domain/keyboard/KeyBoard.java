@@ -5,7 +5,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Singular;
 import lombok.ToString;
-import dev.struchkov.godfather.context.utils.Description;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +20,15 @@ import java.util.List;
 @ToString
 public class KeyBoard {
 
-    @Description("Строки меню")
+    /**
+     * Строки меню.
+     */
     @Singular(value = "lineKeyBoard")
     private List<KeyBoardLine> keyBoardLines = new ArrayList<>();
 
-    @Description("Скрыть меню после ответа или нет")
+    /**
+     * Скрыть меню после ответа или нет.
+     */
     private boolean oneTime = true;
 
 }

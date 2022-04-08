@@ -1,7 +1,6 @@
 package dev.struchkov.godfather.core.domain.unit;
 
 import dev.struchkov.godfather.context.domain.content.Message;
-import dev.struchkov.godfather.context.utils.Description;
 import dev.struchkov.godfather.core.service.save.CheckSave;
 import dev.struchkov.godfather.core.service.save.Preservable;
 import dev.struchkov.godfather.core.service.save.data.PreservableData;
@@ -26,36 +25,48 @@ import java.util.regex.Pattern;
 @EqualsAndHashCode(callSuper = true)
 public class AnswerSave<D> extends MainUnit {
 
-    @Description("Объект отвечающий за сохранение - репозиторий")
+    /**
+     * Объект отвечающий за сохранение - репозиторий.
+     */
     private final Preservable<D> preservable;
 
-    @Description("Ключ для данных")
+    /**
+     * Ключ для данных.
+     */
     private final String key;
 
-    @Description("Отправка результатов")
+    /**
+     * Отправка результатов.
+     */
     private final Pusher<D> pusher;
 
-    @Description("Данные для скрытого сохранения")
+    /**
+     * Данные для скрытого сохранения.
+     */
     private final PreservableData<D, ? super Message> preservableData;
 
-    @Description("Скрытое сохранение")
+    /**
+     * Скрытое сохранение.
+     */
     private final boolean hidden;
 
     private final CheckSave<? super Message> checkSave;
 
     @Builder
-    private AnswerSave(@Singular Set<String> keyWords,
-                       String phrase,
-                       Pattern pattern,
-                       Integer matchThreshold,
-                       Integer priority,
-                       @Singular Set<MainUnit> nextUnits,
-                       Preservable<D> preservable,
-                       String key,
-                       Pusher<D> pusher,
-                       PreservableData<D, ? super Message> preservableData,
-                       CheckSave<? super Message> checkSave,
-                       boolean hidden) {
+    private AnswerSave(
+            @Singular Set<String> keyWords,
+            String phrase,
+            Pattern pattern,
+            Integer matchThreshold,
+            Integer priority,
+            @Singular Set<MainUnit> nextUnits,
+            Preservable<D> preservable,
+            String key,
+            Pusher<D> pusher,
+            PreservableData<D, ? super Message> preservableData,
+            CheckSave<? super Message> checkSave,
+            boolean hidden
+    ) {
         super(keyWords, phrase, pattern, matchThreshold, priority, nextUnits, (hidden) ? UnitActiveType.AFTER : UnitActiveType.DEFAULT, TypeUnit.SAVE);
         this.key = key;
         this.pusher = pusher;

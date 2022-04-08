@@ -1,23 +1,26 @@
 package dev.struchkov.godfather.context.domain.keyboard.button;
 
+import dev.struchkov.godfather.context.domain.keyboard.ButtonColor;
+import dev.struchkov.godfather.context.domain.keyboard.ButtonType;
+import dev.struchkov.godfather.context.domain.keyboard.KeyBoardButton;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import dev.struchkov.godfather.context.domain.keyboard.ButtonColor;
-import dev.struchkov.godfather.context.domain.keyboard.ButtonType;
-import dev.struchkov.godfather.context.domain.keyboard.KeyBoardButton;
-import dev.struchkov.godfather.context.utils.Description;
 
 @Getter
 @ToString
 @EqualsAndHashCode(callSuper = true)
 public class KeyBoardButtonText extends KeyBoardButton {
 
-    @Description("Надпись на кнопке")
+    /**
+     * Надпись на кнопке
+     */
     private String label;
 
-    @Description("Цвет кнопки")
+    /**
+     * Цвет кнопки.
+     */
     private ButtonColor color;
 
     @Builder

@@ -1,10 +1,10 @@
 package dev.struchkov.godfather.context.domain.money;
 
-import dev.struchkov.godfather.context.utils.Description;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,39 +20,49 @@ import javax.validation.constraints.NotNull;
  *
  * @author upagge [08/07/2019]
  */
+@Entity
 @Builder
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Table(name = "account")
 public class Account {
 
     @Id
     @GeneratedValue
-    @Description("Идентификатор счета")
     private Integer id;
 
+    /**
+     * Сумма к оплате.
+     */
     @NotNull
     @Column(name = "totalSum")
-    @Description("Сумма к оплате")
     private Integer totalSum;
 
+    /**
+     * Идентификатор пользователя, которому выставлен счет.
+     */
     @Column(name = "belongs_person_id")
-    @Description("Идентификатор пользователя, которому выставлен счет")
     private Long belongsPersonId;
 
+    /**
+     * Идентификатор пользователя, который оплатил счет.
+     */
     @Column(name = "extinguished_person_id")
-    @Description("Идентификатор пользователя, который оплатил счет")
     private Integer extinguishedPersonId;
 
+    /**
+     * Описание платежа.
+     */
     @Column(name = "description")
-    @Description("Описание платежа")
     private String description;
 
+    /**
+     * Статус оплаты счета.
+     */
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    @Description("Статус оплаты счета")
     private AccountStatus accountStatus;
 
 }

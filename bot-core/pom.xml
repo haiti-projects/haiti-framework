@@ -30,11 +30,6 @@
             <groupId>org.sadtech.autoresponder</groupId>
             <artifactId>autoresponder</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-        </dependency>
     </dependencies>
 
     <build>

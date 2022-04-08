@@ -1,9 +1,8 @@
 package dev.struchkov.godfather.core.domain.unit;
 
-import dev.struchkov.godfather.context.utils.Description;
+import dev.struchkov.godfather.core.service.ClarificationQuestion;
 import dev.struchkov.godfather.core.service.save.LocalPreservable;
 import dev.struchkov.godfather.core.service.save.Preservable;
-import dev.struchkov.godfather.core.service.ClarificationQuestion;
 import dev.struchkov.godfather.core.utils.TypeUnit;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -24,13 +23,19 @@ import java.util.regex.Pattern;
 @EqualsAndHashCode(callSuper = true)
 public class AnswerValidity extends MainUnit {
 
-    @Description("Unit обрабатывается, если пользователь подтверждает данные")
+    /**
+     * Unit обрабатывается, если пользователь подтверждает данные.
+     */
     private final MainUnit unitYes;
 
-    @Description("Unit обрабатывается, если пользователь отклоняет данные")
+    /**
+     * Unit обрабатывается, если пользователь отклоняет данные.
+     */
     private final MainUnit unitNo;
 
-    @Description("Unit обрабатывается, если данные не найдены")
+    /**
+     * Unit обрабатывается, если данные не найдены.
+     */
     private final MainUnit unitNull;
 
     private final Preservable<String> tempSave = new LocalPreservable<>();
@@ -38,17 +43,18 @@ public class AnswerValidity extends MainUnit {
     private final ClarificationQuestion clarificationQuestion;
 
     @Builder(toBuilder = true)
-    private AnswerValidity(@Singular Set<String> keyWords,
-                           String phrase,
-                           Pattern pattern,
-                           Integer matchThreshold,
-                           Integer priority,
-                           @Singular Set<MainUnit> nextUnits,
-                           UnitActiveType activeType,
-                           MainUnit unitYes,
-                           MainUnit unitNo,
-                           MainUnit unitNull,
-                           ClarificationQuestion clarificationQuestion) {
+    private AnswerValidity(
+            @Singular Set<String> keyWords,
+            String phrase,
+            Pattern pattern,
+            Integer matchThreshold,
+            Integer priority,
+            @Singular Set<MainUnit> nextUnits,
+            MainUnit unitYes,
+            MainUnit unitNo,
+            MainUnit unitNull,
+            ClarificationQuestion clarificationQuestion
+    ) {
         super(keyWords, phrase, pattern, matchThreshold, priority, nextUnits, UnitActiveType.DEFAULT, TypeUnit.VALIDITY);
         this.unitYes = unitYes;
         this.unitNo = unitNo;

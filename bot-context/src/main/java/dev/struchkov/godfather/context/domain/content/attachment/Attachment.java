@@ -1,7 +1,6 @@
 package dev.struchkov.godfather.context.domain.content.attachment;
 
 import lombok.EqualsAndHashCode;
-import dev.struchkov.godfather.context.utils.Description;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,9 +22,11 @@ public abstract class Attachment {
     @GeneratedValue
     private Integer id;
 
+    /**
+     * Тип сущности.
+     */
     @Column(name = "type")
     @Enumerated(value = EnumType.STRING)
-    @Description("Тип сущности")
     protected AttachmentType type;
 
     public AttachmentType getType() {

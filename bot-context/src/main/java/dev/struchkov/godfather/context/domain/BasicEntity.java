@@ -1,6 +1,7 @@
 package dev.struchkov.godfather.context.domain;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.GeneratedValue;
@@ -12,7 +13,8 @@ import javax.persistence.MappedSuperclass;
  *
  * @author upagge [28/07/2019]
  */
-@Data
+@Getter
+@Setter
 @ToString
 @MappedSuperclass
 public class BasicEntity {

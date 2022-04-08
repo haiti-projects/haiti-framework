@@ -1,6 +1,5 @@
 package dev.struchkov.godfather.context.domain.content;
 
-import dev.struchkov.godfather.context.utils.Description;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +14,9 @@ import lombok.Setter;
 @EqualsAndHashCode(callSuper = true)
 public abstract class Comment extends Message {
 
-    @Description("Идентификатор контента, к которому ставлено сообщение")
+    /**
+     * Идентификатор контента, к которому ставлено сообщение.
+     */
     private Long contentId;
 
 }

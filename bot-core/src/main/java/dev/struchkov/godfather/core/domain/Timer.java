@@ -1,10 +1,10 @@
 package dev.struchkov.godfather.core.domain;
 
-import dev.struchkov.godfather.context.utils.Description;
-import dev.struchkov.godfather.core.domain.unit.MainUnit;
 import dev.struchkov.godfather.context.service.usercode.CheckData;
+import dev.struchkov.godfather.core.domain.unit.MainUnit;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -13,32 +13,49 @@ import java.time.LocalDateTime;
  *
  * @author upagge [11/07/2019]
  */
+@Getter
+@Setter
 @Builder
-@Data
 public class Timer {
 
-    @Description("Идентификатор таймера")
+    /**
+     * Идентификатор таймера.
+     */
     private Integer id;
 
-    @Description("Unit, обработка которого откладывается")
+    /**
+     * Unit, обработка которого откладывается.
+     */
     private MainUnit unitAnswer;
 
-    @Description("Unit, который будет обработан после удаления таймера")
+    /**
+     * Unit, который будет обработан после удаления таймера.
+     */
     private MainUnit unitDeath;
 
-    @Description("Идентификатор пользователя")
+    /**
+     * Идентификатор пользователя.
+     */
     private Long personId;
 
-    @Description("Время активации таймера")
+    /**
+     * Время активации таймера.
+     */
     private LocalDateTime timeActive;
 
-    @Description("Время смерти таймера")
+    /**
+     * Время смерти таймера.
+     */
     private LocalDateTime timeDeath;
 
-    @Description("Интервал срабатывания таймера")
+    /**
+     * Интервал срабатывания таймера.
+     */
     private Integer periodSec;
 
-    @Description("Условие срабатывания таймера")
+    /**
+     * Условие срабатывания таймера.
+     */
     private CheckData checkLoop;
 
 }

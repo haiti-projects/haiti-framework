@@ -3,7 +3,6 @@ package dev.struchkov.godfather.context.domain.content.attachment;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import dev.struchkov.godfather.context.utils.Description;
 
 /**
  * Вложение типа "Карта".
@@ -11,17 +10,23 @@ import dev.struchkov.godfather.context.utils.Description;
  * @author upagge [08/07/2019]
  */
 @Getter
-@EqualsAndHashCode(callSuper = true)
 @ToString
+@EqualsAndHashCode(callSuper = true)
 public class Geo extends Attachment {
 
-    @Description("Географические координаты")
+    /**
+     * Географические координаты.
+     */
     private GeoCoordinate geoCoordinate;
 
-    @Description("Название страны")
+    /**
+     * Название страны.
+     */
     private String country;
 
-    @Description("Название города")
+    /**
+     * Название города.
+     */
     private String city;
 
     private Geo() {

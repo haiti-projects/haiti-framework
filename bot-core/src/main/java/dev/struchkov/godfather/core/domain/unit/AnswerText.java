@@ -3,7 +3,6 @@ package dev.struchkov.godfather.core.domain.unit;
 import dev.struchkov.godfather.context.domain.BoxAnswer;
 import dev.struchkov.godfather.context.domain.content.Message;
 import dev.struchkov.godfather.context.service.sender.Sending;
-import dev.struchkov.godfather.context.utils.Description;
 import dev.struchkov.godfather.context.service.usercode.Insert;
 import dev.struchkov.godfather.context.service.usercode.ProcessingData;
 import dev.struchkov.godfather.core.utils.TypeUnit;
@@ -24,26 +23,34 @@ import java.util.regex.Pattern;
 @EqualsAndHashCode(callSuper = true)
 public class AnswerText<M extends Message> extends MainUnit {
 
-    @Description("Объект, который необходимо отправить пользователю")
+    /**
+     * Объект, который необходимо отправить пользователю.
+     */
     private final ProcessingData<M> boxAnswer;
 
-    @Description("Информация, которую необходимо вставить вместо маркеров в строку ответа")
+    /**
+     * Информация, которую необходимо вставить вместо маркеров в строку ответа.
+     */
     private final Insert insert;
 
-    @Description("Объект нестандартной отправки ответа")
+    /**
+     * Объект нестандартной отправки ответа.
+     */
     private final Sending sending;
 
     @Builder(toBuilder = true)
-    private AnswerText(@Singular Set<String> keyWords,
-                       String phrase,
-                       Pattern pattern,
-                       Integer matchThreshold,
-                       Integer priority,
-                       @Singular Set<MainUnit> nextUnits,
-                       UnitActiveType activeType,
-                       ProcessingData<M> boxAnswer,
-                       Insert insert,
-                       Sending sending) {
+    private AnswerText(
+            @Singular Set<String> keyWords,
+            String phrase,
+            Pattern pattern,
+            Integer matchThreshold,
+            Integer priority,
+            @Singular Set<MainUnit> nextUnits,
+            UnitActiveType activeType,
+            ProcessingData<M> boxAnswer,
+            Insert insert,
+            Sending sending
+    ) {
         super(keyWords, phrase, pattern, matchThreshold, priority, nextUnits, activeType, TypeUnit.TEXT);
         this.boxAnswer = boxAnswer;
         this.insert = insert;

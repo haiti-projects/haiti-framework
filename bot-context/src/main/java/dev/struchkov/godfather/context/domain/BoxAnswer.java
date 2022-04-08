@@ -4,7 +4,6 @@ import dev.struchkov.godfather.context.domain.content.Message;
 import dev.struchkov.godfather.context.domain.content.attachment.GeoCoordinate;
 import dev.struchkov.godfather.context.domain.keyboard.KeyBoard;
 import dev.struchkov.godfather.context.service.usercode.ProcessingData;
-import dev.struchkov.godfather.context.utils.Description;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -16,23 +15,31 @@ import lombok.ToString;
  *
  * @author upagge [08/07/2019]
  */
-@EqualsAndHashCode
-@ToString
 @Getter
+@ToString
+@EqualsAndHashCode
 @Builder(toBuilder = true)
 public class BoxAnswer {
 
+    /**
+     * Обычное текстовое сообщение.
+     */
     @Setter
-    @Description("Обычное текстовое сообщение")
     private String message;
 
-    @Description("Клавиатура - меню")
+    /**
+     * Клавиатура - меню.
+     */
     private KeyBoard keyBoard;
 
-    @Description("Географические координаты")
+    /**
+     * Географические координаты.
+     */
     private GeoCoordinate coordinates;
 
-    @Description("Идентификатор стикера")
+    /**
+     * Идентификатор стикера.
+     */
     private Integer stickerId;
 
     public static BoxAnswer of(String message) {
@@ -40,7 +47,7 @@ public class BoxAnswer {
     }
 
     public static <T extends Message> ProcessingData<T> processing(String messageText) {
-        return (message) -> builder().message(messageText).build();
+        return message -> builder().message(messageText).build();
     }
 
 }

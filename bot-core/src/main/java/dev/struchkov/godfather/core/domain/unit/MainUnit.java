@@ -1,6 +1,5 @@
 package dev.struchkov.godfather.core.domain.unit;
 
-import dev.struchkov.godfather.context.utils.Description;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,26 +20,32 @@ import java.util.regex.Pattern;
 @EqualsAndHashCode(callSuper = true)
 public abstract class MainUnit extends Unit<MainUnit> {
 
+    /**
+     * Тип Unit-а.
+     */
     @Getter
-    @Description("Тип Unit-а")
     protected final String type;
 
+    /**
+     * Режим срабатывания Unit-а.
+     */
     @Getter
     @Setter
-    @Description("Режим срабатывания Unit-а")
     protected UnitActiveType activeType;
 
     @Getter
     private String uuid = UUID.randomUUID().toString();
 
-    protected MainUnit(Set<String> keyWords,
-                       String phrase,
-                       Pattern pattern,
-                       Integer matchThreshold,
-                       Integer priority,
-                       Set<MainUnit> nextUnits,
-                       UnitActiveType activeType,
-                       String type) {
+    protected MainUnit(
+            Set<String> keyWords,
+            String phrase,
+            Pattern pattern,
+            Integer matchThreshold,
+            Integer priority,
+            Set<MainUnit> nextUnits,
+            UnitActiveType activeType,
+            String type
+    ) {
         super(keyWords, phrase, pattern, matchThreshold, priority, nextUnits);
         this.activeType = Optional.ofNullable(activeType).orElse(UnitActiveType.DEFAULT);
         this.type = type;

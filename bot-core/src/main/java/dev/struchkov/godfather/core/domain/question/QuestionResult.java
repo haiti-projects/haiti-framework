@@ -1,6 +1,5 @@
 package dev.struchkov.godfather.core.domain.question;
 
-import dev.struchkov.godfather.context.utils.Description;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,13 +14,19 @@ import lombok.Setter;
 @AllArgsConstructor
 public class QuestionResult {
 
-    @Description("Вопрос")
+    /**
+     * Вопрос.
+     */
     private String question;
 
-    @Description("Ответ")
+    /**
+     * Ответ.
+     */
     private String answer;
 
-    @Description("Количество баллов за ответ")
+    /**
+     * Количество баллов за ответ.
+     */
     private Integer points;
 
 }
