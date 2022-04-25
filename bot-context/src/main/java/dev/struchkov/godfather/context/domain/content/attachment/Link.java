@@ -7,9 +7,10 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = true)
 @ToString
+@EqualsAndHashCode(callSuper = true)
 public class Link extends Attachment {
+
     private String url;
 
     public Link() {

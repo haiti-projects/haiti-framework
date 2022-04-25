@@ -1,11 +1,11 @@
 package dev.struchkov.godfather.context.service.impl;
 
+import dev.struchkov.godfather.context.domain.content.Mail;
 import dev.struchkov.godfather.context.repository.ContentRepository;
+import dev.struchkov.godfather.context.service.MailService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import dev.struchkov.godfather.context.domain.content.Mail;
-import dev.struchkov.godfather.context.service.MailService;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -24,6 +24,7 @@ public class MailServiceImpl implements MailService {
     private boolean newMessage = false;
     private LocalDateTime oldDateTime = LocalDateTime.now(Clock.tickSeconds(ZoneId.systemDefault()));
 
+    //TODO [13.04.2022]: Подобная реализация с newMessage вызовет проблемы с несколькими инстансами.
     @Override
     public void add(Mail mail) {
         mailRepository.add(mail);
@@ -40,9 +41,9 @@ public class MailServiceImpl implements MailService {
     @Override
     public List<Mail> getLastEventByCreateDateTime(LocalDateTime timeFrom, LocalDateTime timeTo) {
         log.trace("Запрошены последние сообщения {} - {} ", timeFrom, timeTo);
-        List<Mail> mails = mailRepository.betweenByCreateDateTime(timeFrom, timeTo);
+        final List<Mail> mails = mailRepository.betweenByCreateDateTime(timeFrom, timeTo);
         if (mails != null && !mails.isEmpty()) {
-            return getReturnMails(mails);
+            return findLastMailEachUser(mails);
         } else {
             return Collections.emptyList();
         }
@@ -51,9 +52,9 @@ public class MailServiceImpl implements MailService {
     @Override
     public List<Mail> getLastEventByAddDateTime(LocalDateTime timeFrom, LocalDateTime timeTo) {
         log.trace("Запрошены последние сообщения {} - {} ", timeFrom, timeTo);
-        List<Mail> mails = mailRepository.betweenByAddDateTime(timeFrom, timeTo);
+        final List<Mail> mails = mailRepository.betweenByAddDateTime(timeFrom, timeTo);
         if (mails != null && !mails.isEmpty()) {
-            return getReturnMails(mails);
+            return findLastMailEachUser(mails);
         } else {
             return Collections.emptyList();
         }
@@ -61,14 +62,14 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public List<Mail> getNewMessage() {
-        LocalDateTime newData = LocalDateTime.now(Clock.tickSeconds(ZoneId.systemDefault())).plusNanos(999999999);
-        List<Mail> lastEventByAddDateTime = Collections.emptyList();
+        final LocalDateTime newData = LocalDateTime.now(Clock.tickSeconds(ZoneId.systemDefault())).plusNanos(999999999);
         if (newMessage) {
-            lastEventByAddDateTime = getLastEventByAddDateTime(oldDateTime, newData);
+            final List<Mail> lastEventByAddDateTime = getLastEventByAddDateTime(oldDateTime, newData);
             newMessage = false;
             oldDateTime = newData;
+            return lastEventByAddDateTime;
         }
-        return lastEventByAddDateTime;
+        return Collections.emptyList();
     }
 
     @Override
@@ -86,9 +87,12 @@ public class MailServiceImpl implements MailService {
         mailRepository.deleteAllByAddDateAfter(date);
     }
 
-    private List<Mail> getReturnMails(List<Mail> mails) {
-        Set<Long> people = new HashSet<>();
-        List<Mail> returnMails = new ArrayList<>();
+    /**
+     * Возвращает только последнее сообщение каждого пользователя переданного из списка.
+     */
+    private List<Mail> findLastMailEachUser(List<Mail> mails) {
+        final Set<Long> people = new HashSet<>();
+        final List<Mail> returnMails = new ArrayList<>();
         for (int i = mails.size() - 1; i >= 0; i--) {
             if (!people.contains(mails.get(i).getPersonId())) {
                 returnMails.add(mails.get(i));
