@@ -1,7 +1,6 @@
 package dev.struchkov.godfather.context.domain;
 
 import dev.struchkov.godfather.context.domain.content.Message;
-import dev.struchkov.godfather.context.domain.content.attachment.GeoCoordinate;
 import dev.struchkov.godfather.context.domain.keyboard.KeyBoard;
 import dev.struchkov.godfather.context.service.usercode.ProcessingData;
 import lombok.Builder;
@@ -32,15 +31,7 @@ public class BoxAnswer {
      */
     private KeyBoard keyBoard;
 
-    /**
-     * Географические координаты.
-     */
-    private GeoCoordinate coordinates;
-
-    /**
-     * Идентификатор стикера.
-     */
-    private Integer stickerId;
+    private boolean replace;
 
     public static BoxAnswer of(String message) {
         return BoxAnswer.builder().message(message).build();

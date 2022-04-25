@@ -3,14 +3,12 @@ package dev.struchkov.godfather.core;
 import dev.struchkov.godfather.context.domain.content.Message;
 import dev.struchkov.godfather.context.exception.ConfigAppException;
 import dev.struchkov.godfather.context.exception.NotFoundException;
-import dev.struchkov.godfather.context.service.AccountService;
 import dev.struchkov.godfather.context.service.MessageService;
 import dev.struchkov.godfather.context.service.Modifiable;
 import dev.struchkov.godfather.context.service.sender.Sending;
 import dev.struchkov.godfather.core.domain.unit.MainUnit;
 import dev.struchkov.godfather.core.domain.unit.UnitActiveType;
 import dev.struchkov.godfather.core.service.action.ActionUnit;
-import dev.struchkov.godfather.core.service.action.AnswerAccountAction;
 import dev.struchkov.godfather.core.service.action.AnswerCheckAction;
 import dev.struchkov.godfather.core.service.action.AnswerProcessingAction;
 import dev.struchkov.godfather.core.service.action.AnswerSaveAction;
@@ -81,10 +79,6 @@ public class GeneralAutoResponder<T extends Message> extends TimerTask {
 
     public void initTimerAction(TimerService timerService) {
         actionUnitMap.put(TypeUnit.TIMER, new AnswerTimerAction(timerService, this));
-    }
-
-    public void initAccountAction(AccountService accountService, TimerService timerService) {
-        actionUnitMap.put(TypeUnit.ACCOUNT, new AnswerAccountAction(accountService, timerService));
     }
 
     public void setDefaultUnit(MainUnit mainUnit) {

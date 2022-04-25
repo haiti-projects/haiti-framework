@@ -1,20 +1,21 @@
 package dev.struchkov.godfather.context.utils;
 
-import dev.struchkov.godfather.context.domain.keyboard.ButtonColor;
-import dev.struchkov.godfather.context.domain.keyboard.KeyBoard;
-import dev.struchkov.godfather.context.domain.keyboard.KeyBoardButton;
-import dev.struchkov.godfather.context.domain.keyboard.KeyBoardLine;
-import dev.struchkov.godfather.context.domain.keyboard.button.KeyBoardButtonText;
+import dev.struchkov.godfather.context.domain.keyboard.button.SimpleButton;
+import dev.struchkov.godfather.context.domain.keyboard.simple.SimpleKeyBoard;
+import dev.struchkov.godfather.context.domain.keyboard.simple.SimpleKeyBoardLine;
 
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * Используется для быстрого создания клавиаутр {@link KeyBoard}.
+ * Используется для быстрого создания клавиаутр {@link SimpleKeyBoard}.
  *
  * @author upagge [08/07/2019]
  */
 public class KeyBoards {
+
+    public static final SimpleButton YES_BUTTON = SimpleButton.of("Да", "{\"button\": \"yes\"}");
+    public static final SimpleButton NO_BUTTON = SimpleButton.of("Нет", "{\"button\": \"no\"}");
 
     private KeyBoards() {
         throw new IllegalStateException();
@@ -23,37 +24,36 @@ public class KeyBoards {
     /**
      * Возвращает клавиатуру формата 1х2, с кнопками "Да | Нет"
      *
-     * @return {@link KeyBoard}
+     * @return {@link SimpleKeyBoard}
      */
-    public static KeyBoard keyBoardYesNo() {
-        KeyBoardButton yesButton = KeyBoardButtonText.builder().color(ButtonColor.POSITIVE).label("Да").payload("{\"button\": \"yes\"}").build();
-        KeyBoardButton noButton = KeyBoardButtonText.builder().color(ButtonColor.NEGATIVE).label("Нет").payload("{\"button\": \"no\"}").build();
-        KeyBoardLine keyBoardLine = KeyBoardLine.builder().buttonKeyBoard(yesButton).buttonKeyBoard(noButton).build();
-        return KeyBoard.builder().lineKeyBoard(keyBoardLine).oneTime(true).build();
+    public static SimpleKeyBoard keyBoardYesNo() {
+        return SimpleKeyBoard.simpleBuilder().line(
+                SimpleKeyBoardLine.simpleBuilder().button(YES_BUTTON).button(NO_BUTTON).simpleBuild()
+        ).simpleBuild();
     }
 
     /**
      * Возвращает клавиатуру формата 1хN, где N - это количество элементов в переданном списке
      *
      * @param labelButtons Список названий для кнопок
-     * @return {@link KeyBoard}
+     * @return {@link SimpleKeyBoard}
      */
-    public static KeyBoard verticalMenuString(List<String> labelButtons) {
-        KeyBoard.KeyBoardBuilder keyBoard = KeyBoard.builder().oneTime(true);
+    public static SimpleKeyBoard verticalMenuString(List<String> labelButtons) {
+        final SimpleKeyBoard.SimpleKeyBoardBuilder keyBoard = SimpleKeyBoard.simpleBuilder();
         for (String labelButton : labelButtons) {
-            KeyBoardButton keyBoardButton = KeyBoardButtonText.builder().label(labelButton).payload("{\"button\": \"" + labelButton + "\"}").build();
-            keyBoard.lineKeyBoard(KeyBoardLine.builder().buttonKeyBoard(keyBoardButton).build());
+            final SimpleButton simpleButton = SimpleButton.of(labelButton, "{\"button\": \"" + labelButton + "\"}");
+            keyBoard.line(SimpleKeyBoardLine.simpleBuilder().button(simpleButton).simpleBuild());
         }
-        return keyBoard.build();
+        return keyBoard.simpleBuild();
     }
 
     /**
      * Возвращает клавиатуру формата 1хN, где N - это количество элементов в переданном списке
      *
      * @param labelButton Список названий для кнопок
-     * @return {@link KeyBoard}
+     * @return {@link SimpleKeyBoard}
      */
-    public static KeyBoard verticalMenuString(String... labelButton) {
+    public static SimpleKeyBoard verticalMenuString(String... labelButton) {
         return verticalMenuString(Arrays.asList(labelButton));
     }
 
@@ -61,9 +61,9 @@ public class KeyBoards {
      * Возвращает клавиатуру формата 2х(N/2), где N - это количество элементов в переданном списке
      *
      * @param labelButton Список названий для кнопок
-     * @return {@link KeyBoard}
+     * @return {@link SimpleKeyBoard}
      */
-    public static KeyBoard verticalDuoMenuString(String... labelButton) {
+    public static SimpleKeyBoard verticalDuoMenuString(String... labelButton) {
         return verticalDuoMenuString(Arrays.asList(labelButton));
     }
 
@@ -71,53 +71,53 @@ public class KeyBoards {
      * Возвращает клавиатуру формата 2х(N/2), где N - это количество элементов в переданном списке
      *
      * @param labelButton Список названий для кнопок
-     * @return {@link KeyBoard}
+     * @return {@link SimpleKeyBoard}
      */
-    public static KeyBoard verticalDuoMenuString(List<String> labelButton) {
-        KeyBoard.KeyBoardBuilder keyBoard = KeyBoard.builder().oneTime(true);
+    public static SimpleKeyBoard verticalDuoMenuString(List<String> labelButton) {
+        final SimpleKeyBoard.SimpleKeyBoardBuilder keyBoard = SimpleKeyBoard.simpleBuilder();
         boolean flag = true;
-        KeyBoardLine.KeyBoardLineBuilder keyBoardLine = KeyBoardLine.builder();
+        SimpleKeyBoardLine.SimpleKeyBoardLineBuilder keyBoardLine = SimpleKeyBoardLine.simpleBuilder();
         for (int i = 0; i <= labelButton.size() - 1; i++) {
             String label = labelButton.get(i);
+            keyBoardLine.button(SimpleButton.of(label));
             if (flag) {
-                keyBoardLine.buttonKeyBoard(KeyBoardButtonText.of(label));
                 if (i == labelButton.size() - 1) {
-                    keyBoard.lineKeyBoard(keyBoardLine.build());
+                    keyBoard.line(keyBoardLine.simpleBuild());
                 } else {
                     flag = false;
                 }
             } else {
-                keyBoardLine.buttonKeyBoard(KeyBoardButtonText.of(label));
-                keyBoard.lineKeyBoard(keyBoardLine.build());
-                keyBoardLine = KeyBoardLine.builder();
+                keyBoard.line(keyBoardLine.simpleBuild());
+                keyBoardLine = SimpleKeyBoardLine.simpleBuilder();
                 flag = true;
             }
         }
-        return keyBoard.build();
+        return keyBoard.simpleBuild();
     }
 
     /**
      * Возвращает клавиатуру формата 1xN сформированную из списка кнопок, где N - количество кнопок в списке
      *
-     * @param keyBoardButtons Список кнопок
-     * @return {@link KeyBoard}
+     * @param simpleButtons Список кнопок
+     * @return {@link SimpleKeyBoard}
      */
-    public static KeyBoard verticalMenuButton(List<KeyBoardButton> keyBoardButtons) {
-        KeyBoard.KeyBoardBuilder keyBoard = KeyBoard.builder().oneTime(true);
-        for (KeyBoardButton keyBoardButton : keyBoardButtons) {
-            keyBoard.lineKeyBoard(KeyBoardLine.builder().buttonKeyBoard(keyBoardButton).build());
+    public static SimpleKeyBoard verticalMenuButton(List<SimpleButton> simpleButtons) {
+        final SimpleKeyBoard.SimpleKeyBoardBuilder keyBoard = SimpleKeyBoard.simpleBuilder();
+        for (SimpleButton simpleButton : simpleButtons) {
+            keyBoard.line(SimpleKeyBoardLine.simpleBuilder().button(simpleButton).simpleBuild());
         }
-        return keyBoard.build();
+        return keyBoard.simpleBuild();
     }
 
     /**
      * Возвращает клавиатуру из одной кнопки
      *
-     * @param keyBoardButton Кнопка
-     * @return {@link KeyBoard}
+     * @param simpleButton Кнопка
+     * @return {@link SimpleKeyBoard}
      */
-    public static KeyBoard singelton(KeyBoardButton keyBoardButton) {
-        KeyBoardLine line = KeyBoardLine.builder().buttonKeyBoard(keyBoardButton).build();
-        return KeyBoard.builder().lineKeyBoard(line).build();
+    public static SimpleKeyBoard singleton(SimpleButton simpleButton) {
+        final SimpleKeyBoardLine line = SimpleKeyBoardLine.simpleBuilder().button(simpleButton).simpleBuild();
+        return SimpleKeyBoard.simpleBuilder().line(line).simpleBuild();
     }
+
 }
