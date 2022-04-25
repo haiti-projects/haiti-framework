@@ -6,7 +6,7 @@
 
     <groupId>dev.struchkov.godfather</groupId>
     <artifactId>godfather-bot</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -32,8 +32,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <godfather.context.ver>0.0.3</godfather.context.ver>
-        <godfather.core.ver>0.0.3</godfather.core.ver>
+        <godfather.context.ver>0.0.4-SNAPSHOT</godfather.context.ver>
+        <godfather.core.ver>0.0.4-SNAPSHOT</godfather.core.ver>
         <autoresponder.ver>1.9.4-RELEASE</autoresponder.ver>
 
         <gson.ver>2.9.0</gson.ver>
