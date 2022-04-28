@@ -6,7 +6,7 @@
 
     <groupId>dev.struchkov.haiti</groupId>
     <artifactId>haiti</artifactId>
-    <version>${revision}</version>
+    <version>1.0.2</version>
     <packaging>pom</packaging>
 
     <name>Haiti Framework</name>
@@ -39,16 +39,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <revision>1.0.1</revision>
+        <haiti.ver>1.0.2</haiti.ver>
 
-        <haiti.bom.ver>${revision}</haiti.bom.ver>
-        <haiti.exception.ver>${revision}</haiti.exception.ver>
-        <haiti.context.ver>${revision}</haiti.context.ver>
-        <haiti.core.ver>${revision}</haiti.core.ver>
-        <haiti.filter.api.ver>${revision}</haiti.filter.api.ver>
-        <haiti.filter.criteria.ver>${revision}</haiti.filter.criteria.ver>
-        <haiti.database.ver>${revision}</haiti.database.ver>
-        <haiti.utils.ver>${revision}</haiti.utils.ver>
+        <haiti.bom.ver>${haiti.ver}</haiti.bom.ver>
+        <haiti.exception.ver>${haiti.ver}</haiti.exception.ver>
+        <haiti.context.ver>${haiti.ver}</haiti.context.ver>
+        <haiti.core.ver>${haiti.ver}</haiti.core.ver>
+        <haiti.filter.api.ver>${haiti.ver}</haiti.filter.api.ver>
+        <haiti.filter.criteria.ver>${haiti.ver}</haiti.filter.criteria.ver>
+        <haiti.database.ver>${haiti.ver}</haiti.database.ver>
+        <haiti.utils.ver>${haiti.ver}</haiti.utils.ver>
 
         <plugin.maven.compiler.ver>3.9.0</plugin.maven.compiler.ver>
         <plugin.nexus.staging.ver>1.6.8</plugin.nexus.staging.ver>

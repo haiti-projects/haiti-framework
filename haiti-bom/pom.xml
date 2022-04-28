@@ -6,7 +6,7 @@
 
     <groupId>dev.struchkov.haiti</groupId>
     <artifactId>haiti-bom</artifactId>
-    <version>${revision}</version>
+    <version>1.0.2</version>
     <packaging>pom</packaging>
 
     <name>Haiti BOM</name>
@@ -30,13 +30,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <revision>1.0.1</revision>
+        <haiti.ver>1.0.2</haiti.ver>
 
-        <haiti.exception.ver>${revision}</haiti.exception.ver>
-        <haiti.context.ver>${revision}</haiti.context.ver>
-        <haiti.core.ver>${revision}</haiti.core.ver>
-        <haiti.filter.api.ver>${revision}</haiti.filter.api.ver>
-        <haiti.utils.ver>${revision}</haiti.utils.ver>
+        <haiti.exception.ver>${haiti.ver}</haiti.exception.ver>
+        <haiti.context.ver>${haiti.ver}</haiti.context.ver>
+        <haiti.core.ver>${haiti.ver}</haiti.core.ver>
+        <haiti.filter.api.ver>${haiti.ver}</haiti.filter.api.ver>
+        <haiti.utils.ver>${haiti.ver}</haiti.utils.ver>
 
         <haiti.database.ver>0.0.4</haiti.database.ver>
         <haiti.filter.criteria.ver>0.0.4</haiti.filter.criteria.ver>
