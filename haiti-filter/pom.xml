@@ -6,7 +6,7 @@
     <parent>
         <groupId>dev.struchkov.haiti</groupId>
         <artifactId>haiti</artifactId>
-        <version>1.0.0</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>haiti-filter</artifactId>
@@ -17,8 +17,6 @@
     <url>https://github.com/haiti-projects/haiti-framework</url>
 
     <properties>
-        <skip.deploy>false</skip.deploy>
-
         <java.version>11</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
@@ -32,17 +30,5 @@
             <artifactId>haiti-context</artifactId>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <configuration>
-                    <skipNexusStagingDeployMojo>${skip.deploy}</skipNexusStagingDeployMojo>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

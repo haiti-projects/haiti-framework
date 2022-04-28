@@ -3,7 +3,7 @@ package dev.struchkov.haiti.core.service;
 import dev.struchkov.haiti.context.repository.simple.CrudOperation;
 import dev.struchkov.haiti.context.service.simple.SimpleService;
 import dev.struchkov.haiti.core.util.ServiceOperation;
-import dev.struchkov.haiti.utils.Assert;
+import dev.struchkov.haiti.utils.Inspector;
 
 import java.util.Optional;
 
@@ -17,19 +17,19 @@ public abstract class AbstractSimpleService<Entity, Key> implements SimpleServic
 
     @Override
     public Optional<Entity> getById(Key id) {
-        Assert.isNotNull(id);
+        Inspector.isNotNull(id);
         return ServiceOperation.getById(crudOperation, id);
     }
 
     @Override
     public boolean existsById(Key id) {
-        Assert.isNotNull(id);
+        Inspector.isNotNull(id);
         return ServiceOperation.existsById(crudOperation, id);
     }
 
     @Override
     public void deleteById(Key id) {
-        Assert.isNotNull(id);
+        Inspector.isNotNull(id);
         ServiceOperation.deleteById(crudOperation, id);
     }
 

@@ -6,7 +6,7 @@
 
     <groupId>dev.struchkov.haiti</groupId>
     <artifactId>haiti</artifactId>
-    <version>1.0.0</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
 
     <name>Haiti Framework</name>
@@ -39,14 +39,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <haiti.bom.ver>1.0.0</haiti.bom.ver>
-        <haiti.exception.ver>1.0.0</haiti.exception.ver>
-        <haiti.context.ver>1.0.0</haiti.context.ver>
-        <haiti.core.ver>1.0.0</haiti.core.ver>
-        <haiti.filter.api.ver>1.0.0</haiti.filter.api.ver>
-        <haiti.filter.criteria.ver>1.0.0</haiti.filter.criteria.ver>
-        <haiti.database.ver>1.0.0</haiti.database.ver>
-        <haiti.utils.ver>1.0.0</haiti.utils.ver>
+        <revision>1.0.1</revision>
+
+        <haiti.bom.ver>${revision}</haiti.bom.ver>
+        <haiti.exception.ver>${revision}</haiti.exception.ver>
+        <haiti.context.ver>${revision}</haiti.context.ver>
+        <haiti.core.ver>${revision}</haiti.core.ver>
+        <haiti.filter.api.ver>${revision}</haiti.filter.api.ver>
+        <haiti.filter.criteria.ver>${revision}</haiti.filter.criteria.ver>
+        <haiti.database.ver>${revision}</haiti.database.ver>
+        <haiti.utils.ver>${revision}</haiti.utils.ver>
 
         <plugin.maven.compiler.ver>3.9.0</plugin.maven.compiler.ver>
         <plugin.nexus.staging.ver>1.6.8</plugin.nexus.staging.ver>
@@ -60,7 +62,7 @@
             <dependency>
                 <groupId>dev.struchkov.haiti</groupId>
                 <artifactId>haiti-bom</artifactId>
-                <version>1.0.0</version>
+                <version>${haiti.bom.ver}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -137,6 +139,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

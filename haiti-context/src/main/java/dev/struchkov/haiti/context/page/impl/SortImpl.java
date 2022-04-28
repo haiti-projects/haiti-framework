@@ -3,7 +3,7 @@ package dev.struchkov.haiti.context.page.impl;
 import dev.struchkov.haiti.context.enums.TypeSort;
 import dev.struchkov.haiti.context.page.Sort;
 
-import static dev.struchkov.haiti.utils.Assert.isNotNull;
+import static dev.struchkov.haiti.utils.Inspector.isNotNull;
 
 public class SortImpl implements Sort {
 

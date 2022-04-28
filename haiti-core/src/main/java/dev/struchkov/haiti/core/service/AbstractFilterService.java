@@ -5,7 +5,7 @@ import dev.struchkov.haiti.context.page.Sheet;
 import dev.struchkov.haiti.context.service.simple.FilterService;
 import dev.struchkov.haiti.filter.Filter;
 import dev.struchkov.haiti.filter.FilterOperation;
-import dev.struchkov.haiti.utils.Assert;
+import dev.struchkov.haiti.utils.Inspector;
 
 import java.util.Optional;
 
@@ -19,25 +19,25 @@ public abstract class AbstractFilterService<Entity, F> implements FilterService<
 
     @Override
     public Sheet<Entity> getAll(F filter, Pagination pagination) {
-        Assert.isNotNull(filter);
+        Inspector.isNotNull(filter);
         return filterOperation.findAll(createFilter(filter), pagination);
     }
 
     @Override
     public Optional<Entity> getFirst(F filter) {
-        Assert.isNotNull(filter);
+        Inspector.isNotNull(filter);
         return filterOperation.findFirst(createFilter(filter));
     }
 
     @Override
     public boolean exists(F filter) {
-        Assert.isNotNull(filter);
+        Inspector.isNotNull(filter);
         return filterOperation.exists(createFilter(filter));
     }
 
     @Override
     public long count(F filter) {
-        Assert.isNotNull(filter);
+        Inspector.isNotNull(filter);
         return filterOperation.count(createFilter(filter));
     }
 

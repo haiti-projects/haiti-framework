@@ -1,9 +1,9 @@
 package dev.struchkov.haiti.context.domain;
 
-import dev.struchkov.haiti.utils.Assert;
-
 import java.util.Collection;
 import java.util.Collections;
+
+import static dev.struchkov.haiti.utils.Inspector.isNotNull;
 
 /**
  * Контейнер для возврата результата сервисных методов exists.
@@ -23,12 +23,12 @@ public class ExistsContainer<Entity, Key> {
     }
 
     public static <T, K> ExistsContainer<T, K> allFind(Collection<T> container) {
-        Assert.isNotNull(container);
+        isNotNull(container);
         return new ExistsContainer<>(container, true, Collections.emptyList());
     }
 
     public static <T, K> ExistsContainer<T, K> notAllFind(Collection<T> container, Collection<K> idNoFound) {
-        Assert.isNotNull(container, idNoFound);
+        isNotNull(container, idNoFound);
         return new ExistsContainer<>(container, false, idNoFound);
     }
 
@@ -43,4 +43,5 @@ public class ExistsContainer<Entity, Key> {
     public Collection<Key> getIdNoFound() {
         return idNoFound;
     }
+
 }

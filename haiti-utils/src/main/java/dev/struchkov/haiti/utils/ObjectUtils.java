@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static dev.struchkov.haiti.utils.Exceptions.utilityClass;
+import static dev.struchkov.haiti.utils.Inspector.isNotNull;
 
 /**
  * Утилитарный класс для работы с классами и объектами.
@@ -37,8 +38,8 @@ public class ObjectUtils {
      * @return Значение поля из объекта
      */
     public static Object getFieldValue(Object object, String fieldName) {
-        Assert.isNotNull(object, fieldName);
-        int firstNameIndex = fieldName.indexOf(".");
+        isNotNull(object, fieldName);
+        final int firstNameIndex = fieldName.indexOf(".");
         String firstName;
         if (firstNameIndex != -1) {
             firstName = fieldName.substring(0, firstNameIndex);
@@ -63,8 +64,8 @@ public class ObjectUtils {
     }
 
     public static void setFieldValue(Object object, String fieldName, Object fieldValue) {
-        Assert.isNotNull(object, fieldName);
-        int firstNameIndex = fieldName.indexOf(".");
+        isNotNull(object, fieldName);
+        final int firstNameIndex = fieldName.indexOf(".");
         if (firstNameIndex != -1) {
             final String[] split = fieldName.split("\\.");
             final String fieldNameToObject = String.join(".", Arrays.copyOf(split, split.length - 1));
@@ -85,7 +86,7 @@ public class ObjectUtils {
                 }
             }
         }
-        Assert.isFalse(flag, () -> new ConvertException("Метод у объекта не найден"));
+        Inspector.isFalse(flag, () -> new ConvertException("Метод у объекта не найден"));
     }
 
     private static Object convertFieldValue(Object fieldValue, Class<?> parameterType) {
@@ -124,7 +125,7 @@ public class ObjectUtils {
      * @return true если метод является геттером для fieldName, false в противном случае
      */
     public static boolean isGetMethod(String fieldName, Method method) {
-        Assert.isNotNull(fieldName);
+        isNotNull(fieldName);
         return (method.getName().startsWith("get"))
                 && (method.getName().length() == (fieldName.length() + 3))
                 && method.getName().toLowerCase().endsWith(fieldName.toLowerCase());
@@ -138,7 +139,7 @@ public class ObjectUtils {
      * @return true если метод является сеттером для fieldName, false в противном случае
      */
     public static boolean isSetMethod(String fieldName, Method method) {
-        Assert.isNotNull(fieldName);
+        isNotNull(fieldName);
         return (method.getName().startsWith("set"))
                 && (method.getName().length() == (fieldName.length() + 3))
                 && method.getName().toLowerCase().endsWith(fieldName.toLowerCase());

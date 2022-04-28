@@ -6,7 +6,7 @@
 
     <groupId>dev.struchkov.haiti</groupId>
     <artifactId>haiti-bom</artifactId>
-    <version>1.0.0</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
 
     <name>Haiti BOM</name>
@@ -30,15 +30,19 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <haiti.exception.ver>1.0.0</haiti.exception.ver>
-        <haiti.context.ver>1.0.0</haiti.context.ver>
-        <haiti.core.ver>1.0.0</haiti.core.ver>
-        <haiti.filter.api.ver>1.0.0</haiti.filter.api.ver>
-        <haiti.utils.ver>1.0.0</haiti.utils.ver>
+        <revision>1.0.1</revision>
+
+        <haiti.exception.ver>${revision}</haiti.exception.ver>
+        <haiti.context.ver>${revision}</haiti.context.ver>
+        <haiti.core.ver>${revision}</haiti.core.ver>
+        <haiti.filter.api.ver>${revision}</haiti.filter.api.ver>
+        <haiti.utils.ver>${revision}</haiti.utils.ver>
 
         <haiti.database.ver>0.0.4</haiti.database.ver>
         <haiti.filter.criteria.ver>0.0.4</haiti.filter.criteria.ver>
+
         <haiti.utils.network.ver>0.0.4</haiti.utils.network.ver>
+        <haiti.utils.field.constants>0.0.1</haiti.utils.field.constants>
 
         <spring.data.elasticsearch.ver>4.3.1</spring.data.elasticsearch.ver>
         <spring.data.jpa.ver>2.6.1</spring.data.jpa.ver>
@@ -49,6 +53,7 @@
         <elasticsearch.ver>7.16.3</elasticsearch.ver>
         <slf4j.ver>1.7.33</slf4j.ver>
         <google.auto.service.ver>1.0.1</google.auto.service.ver>
+        <jetbrains.annotations.ver>23.0.0</jetbrains.annotations.ver>
 
         <plugin.nexus.staging.ver>1.6.8</plugin.nexus.staging.ver>
         <plugin.maven.compiler.ver>3.9.0</plugin.maven.compiler.ver>
@@ -151,6 +156,12 @@
                 <version>${google.auto.service.ver}</version>
                 <scope>provided</scope>
                 <optional>true</optional>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jetbrains</groupId>
+                <artifactId>annotations</artifactId>
+                <version>${jetbrains.annotations.ver}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -14,8 +14,12 @@ public class NotFoundException extends BasicException {
         super(message);
     }
 
-    public static Supplier<NotFoundException> supplier(String message, Object... objects) {
-        return () -> new NotFoundException(MessageFormat.format(message, objects));
+    public NotFoundException(String message, Object... args) {
+        super(MessageFormat.format(message, args));
+    }
+
+    public static Supplier<NotFoundException> notFoundException(String message, Object... args) {
+        return () -> new NotFoundException(message, args);
     }
 
 }
