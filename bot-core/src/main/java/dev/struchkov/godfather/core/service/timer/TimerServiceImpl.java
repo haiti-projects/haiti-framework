@@ -2,18 +2,22 @@ package dev.struchkov.godfather.core.service.timer;
 
 import dev.struchkov.godfather.core.domain.Timer;
 import dev.struchkov.godfather.core.repository.TimerRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
-@RequiredArgsConstructor
 public class TimerServiceImpl implements TimerService {
 
+    private static final Logger log = LoggerFactory.getLogger(TimerServiceImpl.class);
+
     private final TimerRepository timerRepository;
+
+    public TimerServiceImpl(TimerRepository timerRepository) {
+        this.timerRepository = timerRepository;
+    }
 
     public TimerRepository getTimerRepository() {
         return timerRepository;

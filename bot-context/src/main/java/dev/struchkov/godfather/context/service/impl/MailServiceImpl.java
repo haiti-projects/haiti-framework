@@ -3,9 +3,9 @@ package dev.struchkov.godfather.context.service.impl;
 import dev.struchkov.godfather.context.domain.content.Mail;
 import dev.struchkov.godfather.context.repository.ContentRepository;
 import dev.struchkov.godfather.context.service.MailService;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -16,13 +16,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Slf4j
-@RequiredArgsConstructor
 public class MailServiceImpl implements MailService {
+
+    private static final Logger log = LoggerFactory.getLogger(MailServiceImpl.class);
 
     private final ContentRepository<Mail> mailRepository;
     private boolean newMessage = false;
     private LocalDateTime oldDateTime = LocalDateTime.now(Clock.tickSeconds(ZoneId.systemDefault()));
+
+    public MailServiceImpl(ContentRepository<Mail> mailRepository) {
+        this.mailRepository = mailRepository;
+    }
 
     //TODO [13.04.2022]: Подобная реализация с newMessage вызовет проблемы с несколькими инстансами.
     @Override
@@ -73,17 +77,17 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public void deleteAllByAddDateBetween(@NonNull LocalDateTime dateFrom, @NonNull LocalDateTime dateTo) {
+    public void deleteAllByAddDateBetween(@NotNull LocalDateTime dateFrom, @NotNull LocalDateTime dateTo) {
         mailRepository.deleteAllByAddDateBetween(dateFrom, dateTo);
     }
 
     @Override
-    public void deleteAllByAddDateBefore(@NonNull LocalDateTime date) {
+    public void deleteAllByAddDateBefore(@NotNull LocalDateTime date) {
         mailRepository.deleteAllByAddDateBefore(date);
     }
 
     @Override
-    public void deleteAllByAddDateAfter(@NonNull LocalDateTime date) {
+    public void deleteAllByAddDateAfter(@NotNull LocalDateTime date) {
         mailRepository.deleteAllByAddDateAfter(date);
     }
 

@@ -1,13 +1,11 @@
 package dev.struchkov.godfather.context.domain.content.attachment;
 
-import lombok.EqualsAndHashCode;
+import dev.struchkov.godfather.context.domain.BasicEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
 /**
  * Абстрактная сущность, для всех вложений к сообщениям от пользователей.
@@ -15,12 +13,7 @@ import javax.persistence.Id;
  * @author upagge [08/07/2019]
  */
 @Entity
-@EqualsAndHashCode
-public abstract class Attachment {
-
-    @Id
-    @GeneratedValue
-    private Integer id;
+public abstract class Attachment extends BasicEntity {
 
     /**
      * Тип сущности.

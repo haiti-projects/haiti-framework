@@ -6,17 +6,13 @@
     <parent>
         <groupId>dev.struchkov.godfather</groupId>
         <artifactId>godfather-bot</artifactId>
-        <version>0.0.4-SNAPSHOT</version>
+        <version>0.0.4</version>
     </parent>
 
     <artifactId>bot-core</artifactId>
 
     <name>Bot Core</name>
     <description>Реализация основной логики для создания ботов без привязки к конкретным социальным сетям.</description>
-
-    <properties>
-        <skip.deploy>false</skip.deploy>
-    </properties>
 
     <dependencies>
         <dependency>
@@ -25,7 +21,7 @@
         </dependency>
 
         <dependency>
-            <groupId>org.sadtech.autoresponder</groupId>
+            <groupId>dev.struchkov</groupId>
             <artifactId>autoresponder</artifactId>
         </dependency>
     </dependencies>

@@ -39,7 +39,7 @@ public class AnswerValidityAction implements ActionUnit<AnswerValidity, Message>
                 return unit.getUnitNull();
             } else {
                 unit.getTempSave().save(personId, "temp", value);
-                AnswerValidity newValidity = unit.toBuilder()
+                AnswerValidity newValidity = unit.builder()
                         .clearKeyWords().keyWords(WORDS_YES_NO)
                         .build();
                 return AnswerText.builder()

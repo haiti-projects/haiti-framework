@@ -6,7 +6,7 @@
 
     <groupId>dev.struchkov.godfather</groupId>
     <artifactId>godfather-bot</artifactId>
-    <version>0.0.4-SNAPSHOT</version>
+    <version>0.0.4</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -32,41 +32,46 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <godfather.context.ver>0.0.4-SNAPSHOT</godfather.context.ver>
-        <godfather.core.ver>0.0.4-SNAPSHOT</godfather.core.ver>
-        <autoresponder.ver>1.9.4-RELEASE</autoresponder.ver>
+        <godfather.ver>0.0.4</godfather.ver>
 
-        <gson.ver>2.9.0</gson.ver>
-        <mail.ver>1.6.2</mail.ver>
-        <lombok.ver>1.18.22</lombok.ver>
+        <godfather.context.ver>${godfather.ver}</godfather.context.ver>
+        <godfather.core.ver>${godfather.ver}</godfather.core.ver>
+
+        <autoresponder.ver>2.0.0</autoresponder.ver>
+        <haiti.utils>1.0.2</haiti.utils>
+
         <javax.persistence.api.ver>2.2</javax.persistence.api.ver>
         <validation.api.ver>2.0.1.Final</validation.api.ver>
         <slf4j.api.ver>1.7.36</slf4j.api.ver>
+        <jetbrains.annotations.ver>23.0.0</jetbrains.annotations.ver>
 
-        <plugin.maven.compiler.ver>3.9.0</plugin.maven.compiler.ver>
-        <plugin.nexus.staging.ver>1.6.12</plugin.nexus.staging.ver>
+        <plugin.maven.compiler.ver>3.10.1</plugin.maven.compiler.ver>
+        <plugin.nexus.staging.ver>1.6.13</plugin.nexus.staging.ver>
         <plugin.maven.source.ver>3.2.1</plugin.maven.source.ver>
-        <plugin.maven.javadoc.ver>3.3.2</plugin.maven.javadoc.ver>
+        <plugin.maven.javadoc.ver>3.4.0</plugin.maven.javadoc.ver>
         <plugin.maven.gpg.ver>3.0.1</plugin.maven.gpg.ver>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.google.code.gson</groupId>
-                <artifactId>gson</artifactId>
-                <version>${gson.ver}</version>
+                <groupId>dev.struchkov.godfather</groupId>
+                <artifactId>bot-context</artifactId>
+                <version>${godfather.core.ver}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>dev.struchkov</groupId>
+                <artifactId>autoresponder</artifactId>
+                <version>${autoresponder.ver}</version>
             </dependency>
             <dependency>
-                <groupId>javax.mail</groupId>
-                <artifactId>javax.mail-api</artifactId>
-                <version>${mail.ver}</version>
+                <groupId>dev.struchkov.haiti</groupId>
+                <artifactId>haiti-utils</artifactId>
+                <version>${haiti.utils}</version>
             </dependency>
-            <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>${lombok.ver}</version>
-            </dependency>
+
             <dependency>
                 <groupId>javax.persistence</groupId>
                 <artifactId>javax.persistence-api</artifactId>
@@ -78,15 +83,9 @@
                 <version>${validation.api.ver}</version>
             </dependency>
             <dependency>
-                <groupId>dev.struchkov.godfather</groupId>
-                <artifactId>bot-context</artifactId>
-                <version>${godfather.core.ver}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.sadtech.autoresponder</groupId>
-                <artifactId>autoresponder</artifactId>
-                <version>${autoresponder.ver}</version>
+                <groupId>org.jetbrains</groupId>
+                <artifactId>annotations</artifactId>
+                <version>${jetbrains.annotations.ver}</version>
             </dependency>
 
             <dependency>
@@ -118,13 +117,6 @@
                     <configuration>
                         <source>${java.version}</source>
                         <target>${java.version}</target>
-                        <annotationProcessorPaths>
-                            <path>
-                                <groupId>org.projectlombok</groupId>
-                                <artifactId>lombok</artifactId>
-                                <version>${lombok.ver}</version>
-                            </path>
-                        </annotationProcessorPaths>
                     </configuration>
                 </plugin>
                 <plugin>

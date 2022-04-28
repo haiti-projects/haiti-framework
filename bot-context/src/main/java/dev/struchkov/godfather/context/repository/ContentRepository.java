@@ -1,7 +1,7 @@
 package dev.struchkov.godfather.context.repository;
 
-import lombok.NonNull;
 import dev.struchkov.godfather.context.domain.content.Message;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,7 +19,7 @@ public interface ContentRepository<T extends Message> {
      * @param content Объект сообщени
      * @return Идентификатор сообщения в хранилище
      */
-    T add(@NonNull T content);
+    T add(@NotNull T content);
 
     /**
      * Получить все сообщения за определенный временной диапазон
@@ -28,9 +28,9 @@ public interface ContentRepository<T extends Message> {
      * @param dateTo   Конец диапазона
      * @return Список сообщений
      */
-    List<T> betweenByCreateDateTime(@NonNull LocalDateTime dateFrom, @NonNull LocalDateTime dateTo);
+    List<T> betweenByCreateDateTime(@NotNull LocalDateTime dateFrom, @NotNull LocalDateTime dateTo);
 
-    List<T> betweenByAddDateTime(@NonNull LocalDateTime dateFrom, @NonNull LocalDateTime dateTo);
+    List<T> betweenByAddDateTime(@NotNull LocalDateTime dateFrom, @NotNull LocalDateTime dateTo);
 
     /**
      * Удаляет данные за указанный период
@@ -38,10 +38,10 @@ public interface ContentRepository<T extends Message> {
      * @param dateFrom Дата начала
      * @param dateTo   Дата окончания
      */
-    void deleteAllByAddDateBetween(@NonNull LocalDateTime dateFrom, @NonNull LocalDateTime dateTo);
+    void deleteAllByAddDateBetween(@NotNull LocalDateTime dateFrom, @NotNull LocalDateTime dateTo);
 
-    void deleteAllByAddDateBefore(@NonNull LocalDateTime date);
+    void deleteAllByAddDateBefore(@NotNull LocalDateTime date);
 
-    void deleteAllByAddDateAfter(@NonNull LocalDateTime date);
+    void deleteAllByAddDateAfter(@NotNull LocalDateTime date);
 
 }

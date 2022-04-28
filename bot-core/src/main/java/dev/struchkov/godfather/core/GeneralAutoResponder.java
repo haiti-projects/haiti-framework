@@ -1,8 +1,11 @@
 package dev.struchkov.godfather.core;
 
+import dev.struchkov.autoresponder.AutoResponder;
+import dev.struchkov.autoresponder.entity.UnitPointer;
+import dev.struchkov.autoresponder.repository.UnitPointerRepository;
+import dev.struchkov.autoresponder.service.UnitPointerServiceImpl;
 import dev.struchkov.godfather.context.domain.content.Message;
 import dev.struchkov.godfather.context.exception.ConfigAppException;
-import dev.struchkov.godfather.context.exception.NotFoundException;
 import dev.struchkov.godfather.context.service.MessageService;
 import dev.struchkov.godfather.context.service.Modifiable;
 import dev.struchkov.godfather.context.service.sender.Sending;
@@ -17,10 +20,7 @@ import dev.struchkov.godfather.core.service.action.AnswerTimerAction;
 import dev.struchkov.godfather.core.service.action.AnswerValidityAction;
 import dev.struchkov.godfather.core.service.timer.TimerService;
 import dev.struchkov.godfather.core.utils.TypeUnit;
-import org.sadtech.autoresponder.AutoResponder;
-import org.sadtech.autoresponder.entity.UnitPointer;
-import org.sadtech.autoresponder.repository.UnitPointerRepository;
-import org.sadtech.autoresponder.service.UnitPointerServiceImpl;
+import dev.struchkov.haiti.context.exception.NotFoundException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -130,7 +130,7 @@ public class GeneralAutoResponder<T extends Message> extends TimerTask {
             MainUnit mainUnit = actionUnit.action(unitAnswer, event);
             return !unitAnswer.equals(mainUnit) ? getAction(event, mainUnit) : mainUnit;
         } else {
-            throw new NotFoundException("ActionUnit для типа " + unitAnswer.getType() + " не зарегистрирован");
+            throw new NotFoundException("ActionUnit для типа {0} не зарегистрирован", unitAnswer.getType());
         }
     }
 

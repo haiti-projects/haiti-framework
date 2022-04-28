@@ -1,10 +1,6 @@
 package dev.struchkov.godfather.context.domain.content;
 
 import dev.struchkov.godfather.context.domain.content.attachment.Attachment;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,11 +15,7 @@ import java.util.List;
  * @author upagge [08/07/2019]
  */
 @Entity
-@Getter
-@Setter
 @Table(name = "mail")
-@ToString(callSuper = true)
-@EqualsAndHashCode(callSuper = true)
 public class Mail extends Message {
 
     /**
@@ -54,6 +46,38 @@ public class Mail extends Message {
 
     public Mail() {
         type = ContentType.MAIL;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public List<Attachment> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<Attachment> attachments) {
+        this.attachments = attachments;
+    }
+
+    public List<Mail> getForwardMail() {
+        return forwardMail;
+    }
+
+    public void setForwardMail(List<Mail> forwardMail) {
+        this.forwardMail = forwardMail;
     }
 
 }

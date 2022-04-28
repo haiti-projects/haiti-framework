@@ -47,7 +47,7 @@ public class AnswerTimerAction implements ActionUnit<AnswerTimer, Message> {
                         .ofNullable(answerTimer.getTimeDelaySec())
                         .orElseThrow(() -> new TimerSettingException("Не установлена временная задержка таймера")));
 
-        Timer.TimerBuilder timer = Timer.builder()
+        Timer.Builder timer = Timer.builder()
                 .personId(message.getPersonId())
                 .unitAnswer(answerTimer.getUnitAnswer())
                 .timeActive(timeActive)

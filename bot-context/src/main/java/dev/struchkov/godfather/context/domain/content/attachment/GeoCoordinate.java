@@ -1,17 +1,10 @@
 package dev.struchkov.godfather.context.domain.content.attachment;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
 /**
  * Сущность для хранения географических координат.
  *
  * @author upagge [08/07/2019]
  */
-@Getter
-@Setter
-@AllArgsConstructor
 public class GeoCoordinate {
 
     /**
@@ -23,5 +16,26 @@ public class GeoCoordinate {
      * Долгота.
      */
     private Float longitude;
+
+    public GeoCoordinate(Float latitude, Float longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public Float getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Float latitude) {
+        this.latitude = latitude;
+    }
+
+    public Float getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Float longitude) {
+        this.longitude = longitude;
+    }
 
 }

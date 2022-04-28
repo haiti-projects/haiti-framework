@@ -7,8 +7,6 @@ import dev.struchkov.godfather.context.utils.InsertWords;
 import dev.struchkov.godfather.context.utils.Sender;
 import dev.struchkov.godfather.core.domain.unit.AnswerText;
 import dev.struchkov.godfather.core.domain.unit.MainUnit;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -17,22 +15,20 @@ import java.util.List;
  *
  * @author upagge [11/07/2019]
  */
-@AllArgsConstructor
-@NoArgsConstructor
-public class AnswerTextAction implements ActionUnit<AnswerText, Message> {
+public class AnswerTextAction implements ActionUnit<AnswerText<Message>, Message> {
 
-    private Sending sending;
+    private final Sending sending;
+
+    public AnswerTextAction(Sending sending) {
+        this.sending = sending;
+    }
 
     @Override
-    public MainUnit action(AnswerText answerText, Message message) {
-        BoxAnswer boxAnswer = answerText.getBoxAnswer().processing(message);
-        if (answerText.getInsert() != null) {
-            List<String> words = answerText.getInsert().insert(message.getPersonId());
-            String newMessage = InsertWords.insert(boxAnswer.getMessage(), words);
-            boxAnswer.setMessage(newMessage);
-        }
+    public MainUnit action(AnswerText<Message> answerText, Message message) {
+        final BoxAnswer boxAnswer = answerText.getBoxAnswer().processing(message);
+        replaceMarkers(answerText, message, boxAnswer);
 
-        Sending answerTextSending = answerText.getSending();
+        final Sending answerTextSending = answerText.getSending();
         if (answerTextSending != null) {
             Sender.sends(message, boxAnswer, answerTextSending);
         } else {
@@ -40,6 +36,14 @@ public class AnswerTextAction implements ActionUnit<AnswerText, Message> {
         }
 
         return answerText;
+    }
+
+    private void replaceMarkers(AnswerText<Message> answerText, Message message, BoxAnswer boxAnswer) {
+        if (answerText.getInsert() != null) {
+            final List<String> words = answerText.getInsert().insert(message.getPersonId());
+            final String newMessage = InsertWords.insert(boxAnswer.getMessage(), words);
+            boxAnswer.setMessage(newMessage);
+        }
     }
 
 

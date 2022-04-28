@@ -1,7 +1,7 @@
 package dev.struchkov.godfather.context.service;
 
-import lombok.NonNull;
 import dev.struchkov.godfather.context.domain.content.Message;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Интерфес для изменения запроса пользователя перед тем, как он попадет в подсистему обработки.
@@ -12,6 +12,6 @@ import dev.struchkov.godfather.context.domain.content.Message;
 @FunctionalInterface
 public interface Modifiable<T extends Message> {
 
-    void change(@NonNull T content);
+    void change(@NotNull T content);
 
 }

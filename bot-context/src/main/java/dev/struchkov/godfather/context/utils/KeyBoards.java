@@ -27,9 +27,9 @@ public class KeyBoards {
      * @return {@link SimpleKeyBoard}
      */
     public static SimpleKeyBoard keyBoardYesNo() {
-        return SimpleKeyBoard.simpleBuilder().line(
-                SimpleKeyBoardLine.simpleBuilder().button(YES_BUTTON).button(NO_BUTTON).simpleBuild()
-        ).simpleBuild();
+        return SimpleKeyBoard.build().line(
+                SimpleKeyBoardLine.builder().button(YES_BUTTON).button(NO_BUTTON).build()
+        ).build();
     }
 
     /**
@@ -39,12 +39,12 @@ public class KeyBoards {
      * @return {@link SimpleKeyBoard}
      */
     public static SimpleKeyBoard verticalMenuString(List<String> labelButtons) {
-        final SimpleKeyBoard.SimpleKeyBoardBuilder keyBoard = SimpleKeyBoard.simpleBuilder();
+        final SimpleKeyBoard.Builder keyBoard = SimpleKeyBoard.build();
         for (String labelButton : labelButtons) {
             final SimpleButton simpleButton = SimpleButton.of(labelButton, "{\"button\": \"" + labelButton + "\"}");
-            keyBoard.line(SimpleKeyBoardLine.simpleBuilder().button(simpleButton).simpleBuild());
+            keyBoard.line(SimpleKeyBoardLine.builder().button(simpleButton).build());
         }
-        return keyBoard.simpleBuild();
+        return keyBoard.build();
     }
 
     /**
@@ -74,25 +74,25 @@ public class KeyBoards {
      * @return {@link SimpleKeyBoard}
      */
     public static SimpleKeyBoard verticalDuoMenuString(List<String> labelButton) {
-        final SimpleKeyBoard.SimpleKeyBoardBuilder keyBoard = SimpleKeyBoard.simpleBuilder();
+        final SimpleKeyBoard.Builder keyBoard = SimpleKeyBoard.build();
         boolean flag = true;
-        SimpleKeyBoardLine.SimpleKeyBoardLineBuilder keyBoardLine = SimpleKeyBoardLine.simpleBuilder();
+        SimpleKeyBoardLine.Builder keyBoardLine = SimpleKeyBoardLine.builder();
         for (int i = 0; i <= labelButton.size() - 1; i++) {
             String label = labelButton.get(i);
             keyBoardLine.button(SimpleButton.of(label));
             if (flag) {
                 if (i == labelButton.size() - 1) {
-                    keyBoard.line(keyBoardLine.simpleBuild());
+                    keyBoard.line(keyBoardLine.build());
                 } else {
                     flag = false;
                 }
             } else {
-                keyBoard.line(keyBoardLine.simpleBuild());
-                keyBoardLine = SimpleKeyBoardLine.simpleBuilder();
+                keyBoard.line(keyBoardLine.build());
+                keyBoardLine = SimpleKeyBoardLine.builder();
                 flag = true;
             }
         }
-        return keyBoard.simpleBuild();
+        return keyBoard.build();
     }
 
     /**
@@ -102,22 +102,11 @@ public class KeyBoards {
      * @return {@link SimpleKeyBoard}
      */
     public static SimpleKeyBoard verticalMenuButton(List<SimpleButton> simpleButtons) {
-        final SimpleKeyBoard.SimpleKeyBoardBuilder keyBoard = SimpleKeyBoard.simpleBuilder();
+        final SimpleKeyBoard.Builder keyBoard = SimpleKeyBoard.build();
         for (SimpleButton simpleButton : simpleButtons) {
-            keyBoard.line(SimpleKeyBoardLine.simpleBuilder().button(simpleButton).simpleBuild());
+            keyBoard.line(SimpleKeyBoardLine.builder().button(simpleButton).build());
         }
-        return keyBoard.simpleBuild();
-    }
-
-    /**
-     * Возвращает клавиатуру из одной кнопки
-     *
-     * @param simpleButton Кнопка
-     * @return {@link SimpleKeyBoard}
-     */
-    public static SimpleKeyBoard singleton(SimpleButton simpleButton) {
-        final SimpleKeyBoardLine line = SimpleKeyBoardLine.simpleBuilder().button(simpleButton).simpleBuild();
-        return SimpleKeyBoard.simpleBuilder().line(line).simpleBuild();
+        return keyBoard.build();
     }
 
 }

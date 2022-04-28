@@ -1,9 +1,8 @@
 package dev.struchkov.godfather.context.repository.impl.local;
 
-import dev.struchkov.godfather.context.repository.ContentRepository;
-import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
 import dev.struchkov.godfather.context.domain.content.Mail;
+import dev.struchkov.godfather.context.repository.ContentRepository;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import java.util.List;
  *
  * @author upagge [27/07/2019]
  */
-@Slf4j
 public class MailRepositoryList implements ContentRepository<Mail> {
 
     private final List<Mail> mails = new ArrayList<>();
@@ -28,7 +26,7 @@ public class MailRepositoryList implements ContentRepository<Mail> {
     }
 
     @Override
-    public List<Mail> betweenByCreateDateTime(@NonNull LocalDateTime dateFrom, @NonNull LocalDateTime dateTo) {
+    public List<Mail> betweenByCreateDateTime(@NotNull LocalDateTime dateFrom, @NotNull LocalDateTime dateTo) {
         ArrayList<Mail> rezultMails = new ArrayList<>();
         for (int i = mails.size() - 1; i >= 0; i--) {
             Mail mail = mails.get(i);
@@ -42,7 +40,7 @@ public class MailRepositoryList implements ContentRepository<Mail> {
     }
 
     @Override
-    public List<Mail> betweenByAddDateTime(@NonNull LocalDateTime dateFrom, @NonNull LocalDateTime dateTo) {
+    public List<Mail> betweenByAddDateTime(@NotNull LocalDateTime dateFrom, @NotNull LocalDateTime dateTo) {
         ArrayList<Mail> rezultMails = new ArrayList<>();
         for (int i = mails.size() - 1; i >= 0; i--) {
             Mail mail = mails.get(i);
@@ -57,21 +55,21 @@ public class MailRepositoryList implements ContentRepository<Mail> {
     }
 
     @Override
-    public void deleteAllByAddDateBetween(@NonNull LocalDateTime dateFrom, @NonNull LocalDateTime dateTo) {
+    public void deleteAllByAddDateBetween(@NotNull LocalDateTime dateFrom, @NotNull LocalDateTime dateTo) {
         mails.removeIf(mail -> dateFrom.isBefore(mail.getAddDate()) && dateTo.isAfter(mail.getAddDate()));
     }
 
     @Override
-    public void deleteAllByAddDateBefore(LocalDateTime date) {
+    public void deleteAllByAddDateBefore(@NotNull LocalDateTime date) {
         mails.removeIf(mail -> date.isBefore(mail.getAddDate()));
     }
 
     @Override
-    public void deleteAllByAddDateAfter(LocalDateTime date) {
+    public void deleteAllByAddDateAfter(@NotNull LocalDateTime date) {
         mails.removeIf(mail -> date.isAfter(mail.getAddDate()));
     }
 
-    private boolean isTimePeriod(@NonNull LocalDateTime dateFrom, @NonNull LocalDateTime dateTo, @NonNull LocalDateTime dateTime) {
+    private boolean isTimePeriod(@NotNull LocalDateTime dateFrom, @NotNull LocalDateTime dateTo, @NotNull LocalDateTime dateTime) {
         return dateFrom.isBefore(dateTime) && dateTo.isAfter(dateTime);
     }
 

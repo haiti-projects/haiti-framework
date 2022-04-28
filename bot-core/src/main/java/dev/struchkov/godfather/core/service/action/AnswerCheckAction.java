@@ -3,7 +3,8 @@ package dev.struchkov.godfather.core.service.action;
 import dev.struchkov.godfather.context.domain.content.Message;
 import dev.struchkov.godfather.core.domain.unit.AnswerCheck;
 import dev.struchkov.godfather.core.domain.unit.MainUnit;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
@@ -12,8 +13,9 @@ import java.util.Optional;
  *
  * @author upagge [11/07/2019]
  */
-@Slf4j
 public class AnswerCheckAction implements ActionUnit<AnswerCheck, Message> {
+
+    private static final Logger log = LoggerFactory.getLogger(AnswerCheckAction.class);
 
     @Override
     public MainUnit action(AnswerCheck answerCheck, Message mail) {

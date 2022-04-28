@@ -6,13 +6,8 @@ import dev.struchkov.godfather.core.service.save.Preservable;
 import dev.struchkov.godfather.core.service.save.data.PreservableData;
 import dev.struchkov.godfather.core.service.save.push.Pusher;
 import dev.struchkov.godfather.core.utils.TypeUnit;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Singular;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -21,8 +16,6 @@ import java.util.regex.Pattern;
  *
  * @author upagge [08/07/2019]
  */
-@Getter
-@EqualsAndHashCode(callSuper = true)
 public class AnswerSave<D> extends MainUnit {
 
     /**
@@ -52,35 +45,142 @@ public class AnswerSave<D> extends MainUnit {
 
     private final CheckSave<? super Message> checkSave;
 
-    @Builder
-    private AnswerSave(
-            @Singular Set<String> keyWords,
-            String phrase,
-            Pattern pattern,
-            Integer matchThreshold,
-            Integer priority,
-            @Singular Set<MainUnit> nextUnits,
-            Preservable<D> preservable,
-            String key,
-            Pusher<D> pusher,
-            PreservableData<D, ? super Message> preservableData,
-            CheckSave<? super Message> checkSave,
-            boolean hidden
-    ) {
-        super(keyWords, phrase, pattern, matchThreshold, priority, nextUnits, (hidden) ? UnitActiveType.AFTER : UnitActiveType.DEFAULT, TypeUnit.SAVE);
-        this.key = key;
-        this.pusher = pusher;
+    private AnswerSave(Builder<D> builder) {
+        super(builder.keyWords, builder.phrase, builder.pattern, builder.matchThreshold, builder.priority, builder.nextUnits, (builder.hidden) ? UnitActiveType.AFTER : UnitActiveType.DEFAULT, TypeUnit.SAVE);
         maintenanceNextUnit(nextUnits);
-        this.preservable = preservable;
-        this.preservableData = preservableData;
-        this.hidden = Optional.of(hidden).orElse(false);
-        this.checkSave = checkSave;
+        preservable = builder.preservable;
+        key = builder.key;
+        pusher = builder.pusher;
+        preservableData = builder.preservableData;
+        hidden = builder.hidden;
+        checkSave = builder.checkSave;
+    }
+
+    public static <D> Builder<D> builder() {
+        return new Builder<>();
     }
 
     private void maintenanceNextUnit(Collection<MainUnit> units) {
         if (units != null) {
             units.forEach(mainUnit -> mainUnit.setActiveType(UnitActiveType.AFTER));
         }
+    }
+
+    public Preservable<D> getPreservable() {
+        return preservable;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public Pusher<D> getPusher() {
+        return pusher;
+    }
+
+    public PreservableData<D, ? super Message> getPreservableData() {
+        return preservableData;
+    }
+
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public CheckSave<? super Message> getCheckSave() {
+        return checkSave;
+    }
+
+    public static final class Builder<D> {
+        private Set<String> keyWords;
+        private String phrase;
+        private Pattern pattern;
+        private Integer matchThreshold;
+        private Integer priority;
+        private Set<MainUnit> nextUnits;
+        private Preservable<D> preservable;
+        private String key;
+        private Pusher<D> pusher;
+        private PreservableData<D, ? super Message> preservableData;
+        private boolean hidden;
+        private CheckSave<? super Message> checkSave;
+
+        private Builder() {
+        }
+
+        public Builder<D> keyWords(Set<String> val) {
+            keyWords = val;
+            return this;
+        }
+
+        public Builder<D> keyWord(String val) {
+            keyWords.add(val);
+            return this;
+        }
+
+        public Builder<D> phrase(String val) {
+            phrase = val;
+            return this;
+        }
+
+        public Builder<D> pattern(Pattern val) {
+            pattern = val;
+            return this;
+        }
+
+        public Builder<D> matchThreshold(Integer val) {
+            matchThreshold = val;
+            return this;
+        }
+
+        public Builder<D> priority(Integer val) {
+            priority = val;
+            return this;
+        }
+
+        public Builder<D> nextUnits(Set<MainUnit> val) {
+            nextUnits = val;
+            return this;
+        }
+
+        public Builder<D> nextUnit(MainUnit val) {
+            nextUnits.add(val);
+            return this;
+        }
+
+        public Builder<D> preservable(Preservable<D> val) {
+            this.preservable = val;
+            return this;
+        }
+
+        public Builder<D> key(String val) {
+            this.key = val;
+            return this;
+        }
+
+        public Builder<D> pusher(Pusher<D> val) {
+            this.pusher = val;
+            return this;
+        }
+
+        public Builder<D> preservableData(PreservableData<D, ? super Message> val) {
+            this.preservableData = val;
+            return this;
+        }
+
+        public Builder<D> hidden(boolean val) {
+            this.hidden = val;
+            return this;
+        }
+
+        public Builder<D> checkSave(CheckSave<? super Message> val) {
+            this.checkSave = val;
+            return this;
+        }
+
+        public AnswerSave<D> build() {
+            return new AnswerSave<>(this);
+        }
+
     }
 
 }

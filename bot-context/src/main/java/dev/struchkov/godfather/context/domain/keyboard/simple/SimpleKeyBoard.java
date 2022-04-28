@@ -3,11 +3,6 @@ package dev.struchkov.godfather.context.domain.keyboard.simple;
 import dev.struchkov.godfather.context.domain.keyboard.KeyBoard;
 import dev.struchkov.godfather.context.domain.keyboard.KeyBoardButton;
 import dev.struchkov.godfather.context.domain.keyboard.KeyBoardLine;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Singular;
-import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +12,6 @@ import java.util.List;
  *
  * @author upagge [08/07/2019]
  */
-@Getter
-@ToString
-@EqualsAndHashCode
 public class SimpleKeyBoard implements KeyBoard {
 
     public static final String TYPE = "SIMPLE";
@@ -29,13 +21,20 @@ public class SimpleKeyBoard implements KeyBoard {
      */
     protected List<KeyBoardLine> lines = new ArrayList<>();
 
-    @Builder(builderMethodName = "simpleBuilder", buildMethodName = "simpleBuild")
-    public SimpleKeyBoard(@Singular("line") List<KeyBoardLine> lines) {
+    public SimpleKeyBoard(List<KeyBoardLine> lines) {
         this.lines = lines;
+    }
+
+    private SimpleKeyBoard(Builder builder) {
+        lines = builder.lines;
     }
 
     public static SimpleKeyBoard single(KeyBoardLine line) {
         return new SimpleKeyBoard(List.of(line));
+    }
+
+    public static Builder build() {
+        return new Builder();
     }
 
     public SimpleKeyBoard single(KeyBoardButton keyBoardButton) {
@@ -47,4 +46,29 @@ public class SimpleKeyBoard implements KeyBoard {
         return TYPE;
     }
 
+    @Override
+    public List<KeyBoardLine> getLines() {
+        return lines;
+    }
+
+    public static final class Builder {
+        private List<KeyBoardLine> lines = new ArrayList<>();
+
+        private Builder() {
+        }
+
+        public Builder lines(List<KeyBoardLine> val) {
+            lines = val;
+            return this;
+        }
+
+        public Builder line(KeyBoardLine val) {
+            lines.add(val);
+            return this;
+        }
+
+        public SimpleKeyBoard build() {
+            return new SimpleKeyBoard(this);
+        }
+    }
 }

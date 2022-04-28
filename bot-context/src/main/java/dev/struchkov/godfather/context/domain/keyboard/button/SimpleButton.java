@@ -1,20 +1,15 @@
 package dev.struchkov.godfather.context.domain.keyboard.button;
 
 import dev.struchkov.godfather.context.domain.keyboard.KeyBoardButton;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * Абстрактная сущность кнопки для клавиатуры.
  *
  * @author upagge [08/07/2019]
  */
-@Getter
-@ToString
-@EqualsAndHashCode
 public class SimpleButton implements KeyBoardButton {
 
     public static final String TYPE = "SIMPLE";
@@ -28,18 +23,38 @@ public class SimpleButton implements KeyBoardButton {
      */
     protected String callbackData;
 
-    @Builder(builderMethodName = "simpleBuilder", buildMethodName = "simpleBuild")
     protected SimpleButton(String label, String callbackData) {
         this.label = label;
         this.callbackData = callbackData;
     }
 
-    public static SimpleButton of(@NonNull String label, @NonNull String callbackData) {
+    public static SimpleButton of(@NotNull String label, @NotNull String callbackData) {
         return new SimpleButton(label, callbackData);
     }
 
-    public static SimpleButton of(@NonNull String label) {
+    public static SimpleButton of(@NotNull String label) {
         return new SimpleButton(label, label);
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public String getCallbackData() {
+        return callbackData;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SimpleButton that = (SimpleButton) o;
+        return Objects.equals(label, that.label) && Objects.equals(callbackData, that.callbackData);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(label, callbackData);
     }
 
     @Override

@@ -2,10 +2,6 @@ package dev.struchkov.godfather.context.domain.keyboard.simple;
 
 import dev.struchkov.godfather.context.domain.keyboard.KeyBoardButton;
 import dev.struchkov.godfather.context.domain.keyboard.KeyBoardLine;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Singular;
-import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +11,6 @@ import java.util.List;
  *
  * @author upagge [08/07/2019]
  */
-@ToString
-@EqualsAndHashCode
 public class SimpleKeyBoardLine implements KeyBoardLine {
 
     /**
@@ -24,13 +18,20 @@ public class SimpleKeyBoardLine implements KeyBoardLine {
      */
     protected List<KeyBoardButton> buttons = new ArrayList<>();
 
-    @Builder(builderMethodName = "simpleBuilder", buildMethodName = "simpleBuild")
-    public SimpleKeyBoardLine(@Singular(value = "button") List<KeyBoardButton> buttons) {
+    public SimpleKeyBoardLine(List<KeyBoardButton> buttons) {
         this.buttons = buttons;
+    }
+
+    private SimpleKeyBoardLine(Builder builder) {
+        buttons = builder.buttons;
     }
 
     public static SimpleKeyBoardLine single(KeyBoardButton keyBoardButton) {
         return new SimpleKeyBoardLine(List.of(keyBoardButton));
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     @Override
@@ -38,4 +39,24 @@ public class SimpleKeyBoardLine implements KeyBoardLine {
         return buttons;
     }
 
+    public static final class Builder {
+        private List<KeyBoardButton> buttons = new ArrayList<>();
+
+        private Builder() {
+        }
+
+        public Builder buttons(List<KeyBoardButton> val) {
+            buttons = val;
+            return this;
+        }
+
+        public Builder button(KeyBoardButton val) {
+            buttons.add(val);
+            return this;
+        }
+
+        public SimpleKeyBoardLine build() {
+            return new SimpleKeyBoardLine(this);
+        }
+    }
 }

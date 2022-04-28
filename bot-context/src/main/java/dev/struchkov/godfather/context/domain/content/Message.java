@@ -1,10 +1,6 @@
 package dev.struchkov.godfather.context.domain.content;
 
 import dev.struchkov.godfather.context.domain.BasicEntity;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.EnumType;
@@ -12,18 +8,14 @@ import javax.persistence.Enumerated;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * Абстрактная сущность - Сообщение от пользователя.
  *
  * @author upagge [08/07/2019]
  */
-
-@Getter
-@Setter
 @MappedSuperclass
-@NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 public abstract class Message extends BasicEntity {
 
     /**
@@ -65,6 +57,62 @@ public abstract class Message extends BasicEntity {
         this.createDate = source.getCreateDate();
         this.id = source.getPersonId();
         this.type = source.getType();
+    }
+
+    public Message() {
+    }
+
+    public ContentType getType() {
+        return type;
+    }
+
+    public void setType(ContentType type) {
+        this.type = type;
+    }
+
+    public LocalDateTime getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(LocalDateTime createDate) {
+        this.createDate = createDate;
+    }
+
+    public LocalDateTime getAddDate() {
+        return addDate;
+    }
+
+    public void setAddDate(LocalDateTime addDate) {
+        this.addDate = addDate;
+    }
+
+    public Long getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(Long personId) {
+        this.personId = personId;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Message message = (Message) o;
+        return type == message.type && Objects.equals(createDate, message.createDate) && Objects.equals(addDate, message.addDate) && Objects.equals(personId, message.personId) && Objects.equals(text, message.text);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, createDate, addDate, personId, text);
     }
 
 }

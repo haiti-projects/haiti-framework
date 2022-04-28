@@ -1,11 +1,12 @@
 package dev.struchkov.godfather.core.service.timer;
 
 import dev.struchkov.godfather.context.domain.content.Message;
+import dev.struchkov.godfather.context.service.usercode.CheckData;
 import dev.struchkov.godfather.context.utils.MessageUtils;
 import dev.struchkov.godfather.core.GeneralAutoResponder;
 import dev.struchkov.godfather.core.domain.Timer;
-import dev.struchkov.godfather.context.service.usercode.CheckData;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -17,8 +18,9 @@ import java.util.TimerTask;
  *
  * @author upagge [11/07/2019]
  */
-@Slf4j
 public class TimerActionTask extends TimerTask {
+
+    private static final Logger log = LoggerFactory.getLogger(TimerActionTask.class);
 
     private final TimerService timerService;
     private final GeneralAutoResponder generalAutoresponder;

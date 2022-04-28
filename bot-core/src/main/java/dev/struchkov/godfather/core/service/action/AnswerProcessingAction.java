@@ -22,7 +22,7 @@ public class AnswerProcessingAction implements ActionUnit<AnswerProcessing<Messa
 
     @Override
     public MainUnit action(AnswerProcessing<Message> answerProcessing, Message message) {
-        BoxAnswer boxAnswer = answerProcessing.getProcessingData().processing(message);
+        final BoxAnswer boxAnswer = answerProcessing.getProcessingData().processing(message);
 
         Sending answerProcessingSending = answerProcessing.getSending();
         if (answerProcessingSending != null) {

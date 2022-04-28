@@ -1,25 +1,21 @@
 package dev.struchkov.godfather.core.domain.unit;
 
+import dev.struchkov.godfather.context.domain.content.Message;
 import dev.struchkov.godfather.context.service.usercode.CheckData;
 import dev.struchkov.godfather.core.utils.TypeUnit;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Singular;
-import lombok.ToString;
 
 import java.util.Set;
 import java.util.regex.Pattern;
+
+import static dev.struchkov.godfather.context.exception.UnitConfigException.unitConfigException;
+import static dev.struchkov.haiti.utils.Inspector.isNotNull;
 
 /**
  * Обработчик таймер, позволяющий отложить обработку других Unit-ов.
  *
  * @author upagge [08/07/2019]
  */
-@Getter
-@ToString
-@EqualsAndHashCode(callSuper = true)
-public class AnswerTimer extends MainUnit {
+public class AnswerTimer<M extends Message> extends MainUnit {
 
     /**
      * Unit обработку которого необходимо отложить.
@@ -39,27 +35,107 @@ public class AnswerTimer extends MainUnit {
     /**
      * Условие срабатывания отложенного Unit.
      */
-    private final CheckData checkLoop;
+    private final CheckData<M> checkLoop;
 
-    @Builder
-    private AnswerTimer(
-            @Singular Set<String> keyWords,
-            String phrase,
-            Pattern pattern,
-            Integer matchThreshold,
-            Integer priority,
-            @Singular Set<MainUnit> nextUnits,
-            UnitActiveType activeType,
-            MainUnit unitAnswer,
-            Integer timeDelaySec,
-            Integer timeDeathSec,
-            CheckData checkLoop
-    ) {
-        super(keyWords, phrase, pattern, matchThreshold, priority, nextUnits, (activeType == null) ? UnitActiveType.AFTER : activeType, TypeUnit.TIMER);
-        this.unitAnswer = unitAnswer;
-        this.timeDelaySec = timeDelaySec;
-        this.timeDeathSec = timeDeathSec;
-        this.checkLoop = checkLoop;
+    private AnswerTimer(Builder<M> builder) {
+        super(builder.keyWords, builder.phrase, builder.pattern, builder.matchThreshold, builder.priority, null, builder.activeType, TypeUnit.TIMER);
+        unitAnswer = builder.unitAnswer;
+        timeDelaySec = builder.timeDelaySec;
+        timeDeathSec = builder.timeDeathSec;
+        checkLoop = builder.checkLoop;
+    }
+
+    public static <M extends Message> Builder<M> builder() {
+        return new Builder<>();
+    }
+
+    public MainUnit getUnitAnswer() {
+        return unitAnswer;
+    }
+
+    public Integer getTimeDelaySec() {
+        return timeDelaySec;
+    }
+
+    public Integer getTimeDeathSec() {
+        return timeDeathSec;
+    }
+
+    public CheckData<M> getCheckLoop() {
+        return checkLoop;
+    }
+
+    public static final class Builder<M extends Message> {
+        private MainUnit unitAnswer;
+        private Integer timeDelaySec;
+        private Integer timeDeathSec;
+        private CheckData<M> checkLoop;
+        private Set<String> keyWords;
+        private String phrase;
+        private Pattern pattern;
+        private Integer matchThreshold;
+        private Integer priority;
+        private UnitActiveType activeType = UnitActiveType.AFTER;
+
+        private Builder() {
+
+        }
+
+        public Builder<M> unitAnswer(MainUnit val) {
+            unitAnswer = val;
+            return this;
+        }
+
+        public Builder<M> timeDelaySec(Integer val) {
+            timeDelaySec = val;
+            return this;
+        }
+
+        public Builder<M> timeDeathSec(Integer val) {
+            timeDeathSec = val;
+            return this;
+        }
+
+        public Builder<M> checkLoop(CheckData<M> val) {
+            checkLoop = val;
+            return this;
+        }
+
+        public Builder<M> keyWords(Set<String> val) {
+            keyWords = val;
+            return this;
+        }
+
+        public Builder<M> phrase(String val) {
+            phrase = val;
+            return this;
+        }
+
+        public Builder<M> pattern(Pattern val) {
+            pattern = val;
+            return this;
+        }
+
+        public Builder<M> matchThreshold(Integer val) {
+            matchThreshold = val;
+            return this;
+        }
+
+        public Builder<M> priority(Integer val) {
+            priority = val;
+            return this;
+        }
+
+        public Builder<M> activeType(UnitActiveType val) {
+            activeType = val;
+            return this;
+        }
+
+        public AnswerTimer<M> build() {
+            isNotNull(unitAnswer, unitConfigException("Необходимо указать юнит, обработка которого будет отложена."));
+            return new AnswerTimer<>(this);
+        }
+
     }
 
 }

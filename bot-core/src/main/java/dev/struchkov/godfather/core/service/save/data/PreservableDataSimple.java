@@ -1,7 +1,7 @@
 package dev.struchkov.godfather.core.service.save.data;
 
 import dev.struchkov.godfather.context.domain.content.Message;
-import dev.struchkov.godfather.core.utils.Pair;
+import dev.struchkov.haiti.utils.Pair;
 
 /**
  * TODO: Добавить описание класса.

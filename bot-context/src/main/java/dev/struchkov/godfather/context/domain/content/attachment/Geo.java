@@ -1,17 +1,10 @@
 package dev.struchkov.godfather.context.domain.content.attachment;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
-
 /**
  * Вложение типа "Карта".
  *
  * @author upagge [08/07/2019]
  */
-@Getter
-@ToString
-@EqualsAndHashCode(callSuper = true)
 public class Geo extends Attachment {
 
     /**
@@ -37,9 +30,20 @@ public class Geo extends Attachment {
         return new Geo().new Builder();
     }
 
+    public GeoCoordinate getGeoCoordinate() {
+        return geoCoordinate;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
     public class Builder {
         private Builder() {
-
         }
 
         public Builder coordinate(Float lat, Float aLong) {
