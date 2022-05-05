@@ -55,10 +55,10 @@
         <google.auto.service.ver>1.0.1</google.auto.service.ver>
         <jetbrains.annotations.ver>23.0.0</jetbrains.annotations.ver>
 
-        <plugin.nexus.staging.ver>1.6.8</plugin.nexus.staging.ver>
-        <plugin.maven.compiler.ver>3.9.0</plugin.maven.compiler.ver>
+        <plugin.maven.compiler.ver>3.10.1</plugin.maven.compiler.ver>
+        <plugin.nexus.staging.ver>1.6.13</plugin.nexus.staging.ver>
         <plugin.maven.source.ver>3.2.1</plugin.maven.source.ver>
-        <plugin.maven.javadoc.ver>3.3.1</plugin.maven.javadoc.ver>
+        <plugin.maven.javadoc.ver>3.4.0</plugin.maven.javadoc.ver>
         <plugin.maven.gpg.ver>3.0.1</plugin.maven.gpg.ver>
     </properties>
 
