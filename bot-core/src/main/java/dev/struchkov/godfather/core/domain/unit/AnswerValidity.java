@@ -5,6 +5,7 @@ import dev.struchkov.godfather.core.service.save.LocalPreservable;
 import dev.struchkov.godfather.core.service.save.Preservable;
 import dev.struchkov.godfather.core.utils.TypeUnit;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -76,7 +77,7 @@ public class AnswerValidity extends MainUnit {
         private Pattern pattern;
         private Integer matchThreshold;
         private Integer priority;
-        private Set<MainUnit> nextUnits;
+        private Set<MainUnit> nextUnits = new HashSet<>();
 
         private Builder() {
         }

@@ -6,10 +6,7 @@ import dev.struchkov.godfather.core.domain.unit.AnswerText;
 import dev.struchkov.godfather.core.domain.unit.AnswerValidity;
 import dev.struchkov.godfather.core.domain.unit.MainUnit;
 
-import java.util.Collections;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Обработчик Unit-а {@link AnswerValidity}.

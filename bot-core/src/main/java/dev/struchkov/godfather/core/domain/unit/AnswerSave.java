@@ -8,8 +8,11 @@ import dev.struchkov.godfather.core.service.save.push.Pusher;
 import dev.struchkov.godfather.core.utils.TypeUnit;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
+
+import static dev.struchkov.haiti.utils.Inspector.isNotNull;
 
 /**
  * Обработчик для сохранения ответов пользователя. Так же допускается скрытое сохранение.
@@ -91,12 +94,12 @@ public class AnswerSave<D> extends MainUnit {
     }
 
     public static final class Builder<D> {
-        private Set<String> keyWords;
+        private Set<String> keyWords = new HashSet<>();
         private String phrase;
         private Pattern pattern;
         private Integer matchThreshold;
         private Integer priority;
-        private Set<MainUnit> nextUnits;
+        private Set<MainUnit> nextUnits = new HashSet<>();
         private Preservable<D> preservable;
         private String key;
         private Pusher<D> pusher;
@@ -178,6 +181,9 @@ public class AnswerSave<D> extends MainUnit {
         }
 
         public AnswerSave<D> build() {
+            isNotNull(preservable, "Не указан репозиторий для сохранения формы пользователя");
+            isNotNull(preservableData, "Не указаны данные для сохранения");
+            isNotNull(key, "Не указан ключ для сохранения");
             return new AnswerSave<>(this);
         }
 

@@ -24,7 +24,7 @@ public class BoxAnswer {
     private boolean replace;
 
     private BoxAnswer(Builder builder) {
-        setMessage(builder.message);
+        message = builder.message;
         keyBoard = builder.keyBoard;
         replace = builder.replace;
     }
@@ -33,7 +33,7 @@ public class BoxAnswer {
         return BoxAnswer.builder().message(message).build();
     }
 
-    public static <T extends Message> ProcessingData<T> processing(String messageText) {
+    public static <T extends Message> ProcessingData<T> boxAnswer(String messageText) {
         return message -> of(messageText);
     }
 

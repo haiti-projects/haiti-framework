@@ -58,6 +58,16 @@ public class AnswerProcessing<M extends Message> extends MainUnit {
         private Builder() {
         }
 
+        public Builder<M> processingData(ProcessingData<M> val) {
+            processingData = val;
+            return this;
+        }
+
+        public Builder<M> sending(Sending val) {
+            sending = val;
+            return this;
+        }
+
         public Builder<M> keyWords(Set<String> val) {
             keyWords = val;
             return this;

@@ -38,20 +38,13 @@ public class AnswerText<M extends Message> extends MainUnit {
 
     private AnswerText(Builder<M> builder) {
         super(builder.keyWords, builder.phrase, builder.pattern, builder.matchThreshold, builder.priority, builder.nextUnits, builder.activeType, TypeUnit.TEXT);
-        keyWords = builder.keyWords;
-        phrase = builder.phrase;
-        pattern = builder.pattern;
-        matchThreshold = builder.matchThreshold;
-        priority = builder.priority;
-        nextUnits = builder.nextUnits;
         boxAnswer = builder.boxAnswer;
         insert = builder.insert;
         sending = builder.sending;
-        activeType = builder.activeType;
     }
 
     public static <M extends Message> AnswerText<M> of(String message) {
-        return AnswerText.<M>builder().boxAnswer(BoxAnswer.processing(message)).build();
+        return AnswerText.<M>builder().boxAnswer(BoxAnswer.boxAnswer(message)).build();
     }
 
     public static <M extends Message> Builder<M> builder() {
@@ -74,7 +67,7 @@ public class AnswerText<M extends Message> extends MainUnit {
         private ProcessingData<M> boxAnswer;
         private Insert insert;
         private Sending sending;
-        private Set<String> keyWords;
+        private Set<String> keyWords = new HashSet<>();
         private String phrase;
         private Pattern pattern;
         private Integer matchThreshold;

@@ -6,7 +6,7 @@
 
     <groupId>dev.struchkov.godfather</groupId>
     <artifactId>godfather-bot</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -15,7 +15,7 @@
     </modules>
 
     <name>GodFather Bot</name>
-    <description>Абстрактная бииблиотека для помощи в реализации библиотек ботов для конкретных социальных сетей
+    <description>Абстрактная библиотека для помощи в реализации библиотек ботов для конкретных социальных сетей
     </description>
     <url>https://github.com/Godfather-Bots/godfather</url>
     <licenses>
@@ -32,12 +32,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <godfather.ver>0.0.4</godfather.ver>
+        <godfather.ver>0.0.5</godfather.ver>
 
         <godfather.context.ver>${godfather.ver}</godfather.context.ver>
         <godfather.core.ver>${godfather.ver}</godfather.core.ver>
 
-        <autoresponder.ver>2.0.0</autoresponder.ver>
+        <autoresponder.ver>2.0.1</autoresponder.ver>
         <haiti.utils>1.0.2</haiti.utils>
 
         <javax.persistence.api.ver>2.2</javax.persistence.api.ver>
