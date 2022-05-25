@@ -28,11 +28,11 @@ public class SimpleButton implements KeyBoardButton {
         this.callbackData = callbackData;
     }
 
-    public static SimpleButton of(@NotNull String label, @NotNull String callbackData) {
+    public static SimpleButton simpleButton(@NotNull String label, @NotNull String callbackData) {
         return new SimpleButton(label, callbackData);
     }
 
-    public static SimpleButton of(@NotNull String label) {
+    public static SimpleButton simpleButton(@NotNull String label) {
         return new SimpleButton(label, label);
     }
 

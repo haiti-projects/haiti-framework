@@ -61,7 +61,7 @@ public class GeneralAutoResponder<T extends Message> extends TimerTask {
         this.modifiables = modifiables;
     }
 
-    protected void initActionUnit(String typeUnit, ActionUnit<? super MainUnit, T> actionUnit) {
+    public void initActionUnit(String typeUnit, ActionUnit<? super MainUnit, T> actionUnit) {
         if (!actionUnitMap.containsKey(typeUnit)) {
             actionUnitMap.put(typeUnit, actionUnit);
         } else {

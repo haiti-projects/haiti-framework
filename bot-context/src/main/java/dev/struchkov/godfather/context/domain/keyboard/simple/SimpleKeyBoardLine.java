@@ -26,7 +26,7 @@ public class SimpleKeyBoardLine implements KeyBoardLine {
         buttons = builder.buttons;
     }
 
-    public static SimpleKeyBoardLine single(KeyBoardButton keyBoardButton) {
+    public static SimpleKeyBoardLine simpleLine(KeyBoardButton keyBoardButton) {
         return new SimpleKeyBoardLine(List.of(keyBoardButton));
     }
 

@@ -29,7 +29,7 @@ public class SimpleKeyBoard implements KeyBoard {
         lines = builder.lines;
     }
 
-    public static SimpleKeyBoard single(KeyBoardLine line) {
+    public static SimpleKeyBoard simpleKeyboard(KeyBoardLine line) {
         return new SimpleKeyBoard(List.of(line));
     }
 
@@ -37,8 +37,8 @@ public class SimpleKeyBoard implements KeyBoard {
         return new Builder();
     }
 
-    public SimpleKeyBoard single(KeyBoardButton keyBoardButton) {
-        return single(SimpleKeyBoardLine.single(keyBoardButton));
+    public SimpleKeyBoard simpleKeyboard(KeyBoardButton keyBoardButton) {
+        return simpleKeyboard(SimpleKeyBoardLine.simpleLine(keyBoardButton));
     }
 
     @Override

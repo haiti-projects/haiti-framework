@@ -5,11 +5,13 @@ import dev.struchkov.godfather.context.domain.content.Message;
 import dev.struchkov.godfather.context.exception.UnitConfigException;
 import dev.struchkov.godfather.context.service.sender.Sending;
 import dev.struchkov.godfather.context.service.usercode.Insert;
+import dev.struchkov.godfather.context.service.usercode.MessageFunction;
 import dev.struchkov.godfather.context.service.usercode.ProcessingData;
 import dev.struchkov.godfather.core.utils.TypeUnit;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 import static dev.struchkov.haiti.utils.Inspector.isNotNull;
@@ -29,12 +31,12 @@ public class AnswerText<M extends Message> extends MainUnit {
     /**
      * Информация, которую необходимо вставить вместо маркеров в строку ответа.
      */
-    private Insert insert;
+    private final Insert insert;
 
     /**
      * Объект нестандартной отправки ответа.
      */
-    private Sending sending;
+    private final Sending sending;
 
     private AnswerText(Builder<M> builder) {
         super(builder.keyWords, builder.phrase, builder.pattern, builder.matchThreshold, builder.priority, builder.nextUnits, builder.activeType, TypeUnit.TEXT);
@@ -76,11 +78,31 @@ public class AnswerText<M extends Message> extends MainUnit {
         private UnitActiveType activeType;
 
         private Builder() {
-
         }
 
-        public Builder<M> boxAnswer(ProcessingData<M> boxAnswer) {
-            this.boxAnswer = boxAnswer;
+        public Builder<M> message(ProcessingData<M> message) {
+            this.boxAnswer = message;
+            return this;
+        }
+
+        public Builder<M> message(MessageFunction<M> function) {
+            this.boxAnswer = message -> {
+                final BoxAnswer.Builder builder = BoxAnswer.builder();
+                function.build(message, builder);
+                return builder.build();
+            };
+            return this;
+        }
+
+        public Builder<M> boxAnswer(Consumer<BoxAnswer.Builder> boxAnswer) {
+            final BoxAnswer.Builder boxAnswerBuilder = BoxAnswer.builder();
+            boxAnswer.accept(boxAnswerBuilder);
+            this.boxAnswer = message -> boxAnswerBuilder.build();
+            return this;
+        }
+
+        public Builder<M> boxAnswer(BoxAnswer boxAnswer) {
+            this.boxAnswer = message -> boxAnswer;
             return this;
         }
 

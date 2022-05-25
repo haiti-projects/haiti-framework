@@ -14,8 +14,8 @@ import java.util.List;
  */
 public class KeyBoards {
 
-    public static final SimpleButton YES_BUTTON = SimpleButton.of("Да", "{\"button\": \"yes\"}");
-    public static final SimpleButton NO_BUTTON = SimpleButton.of("Нет", "{\"button\": \"no\"}");
+    public static final SimpleButton YES_BUTTON = SimpleButton.simpleButton("Да", "{\"button\": \"yes\"}");
+    public static final SimpleButton NO_BUTTON = SimpleButton.simpleButton("Нет", "{\"button\": \"no\"}");
 
     private KeyBoards() {
         throw new IllegalStateException();
@@ -41,7 +41,7 @@ public class KeyBoards {
     public static SimpleKeyBoard verticalMenuString(List<String> labelButtons) {
         final SimpleKeyBoard.Builder keyBoard = SimpleKeyBoard.build();
         for (String labelButton : labelButtons) {
-            final SimpleButton simpleButton = SimpleButton.of(labelButton, "{\"button\": \"" + labelButton + "\"}");
+            final SimpleButton simpleButton = SimpleButton.simpleButton(labelButton, "{\"button\": \"" + labelButton + "\"}");
             keyBoard.line(SimpleKeyBoardLine.builder().button(simpleButton).build());
         }
         return keyBoard.build();
@@ -79,7 +79,7 @@ public class KeyBoards {
         SimpleKeyBoardLine.Builder keyBoardLine = SimpleKeyBoardLine.builder();
         for (int i = 0; i <= labelButton.size() - 1; i++) {
             String label = labelButton.get(i);
-            keyBoardLine.button(SimpleButton.of(label));
+            keyBoardLine.button(SimpleButton.simpleButton(label));
             if (flag) {
                 if (i == labelButton.size() - 1) {
                     keyBoard.line(keyBoardLine.build());

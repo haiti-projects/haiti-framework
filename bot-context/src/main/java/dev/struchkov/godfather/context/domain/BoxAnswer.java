@@ -1,8 +1,6 @@
 package dev.struchkov.godfather.context.domain;
 
-import dev.struchkov.godfather.context.domain.content.Message;
 import dev.struchkov.godfather.context.domain.keyboard.KeyBoard;
-import dev.struchkov.godfather.context.service.usercode.ProcessingData;
 
 /**
  * Контейнер, которые содержит данные, которые будут отправлены пользователю как ответ на его запрос.
@@ -12,16 +10,19 @@ import dev.struchkov.godfather.context.service.usercode.ProcessingData;
 public class BoxAnswer {
 
     /**
+     * Клавиатура - меню.
+     */
+    private final KeyBoard keyBoard;
+
+    /**
+     * Флаг означающий, что надо перезаписать наше последнее отправленное сообщение, вместо отправки нового.
+     */
+    private final boolean replace;
+
+    /**
      * Обычное текстовое сообщение.
      */
     private String message;
-
-    /**
-     * Клавиатура - меню.
-     */
-    private KeyBoard keyBoard;
-
-    private boolean replace;
 
     private BoxAnswer(Builder builder) {
         message = builder.message;
@@ -29,12 +30,12 @@ public class BoxAnswer {
         replace = builder.replace;
     }
 
-    public static BoxAnswer of(String message) {
+    public static BoxAnswer boxAnswer(String message) {
         return BoxAnswer.builder().message(message).build();
     }
 
-    public static <T extends Message> ProcessingData<T> boxAnswer(String messageText) {
-        return message -> of(messageText);
+    public static BoxAnswer boxAnswer(String messageText, KeyBoard keyBoard) {
+        return BoxAnswer.builder().message(messageText).keyBoard(keyBoard).build();
     }
 
     public static Builder builder() {
@@ -66,7 +67,6 @@ public class BoxAnswer {
                 '}';
     }
 
-
     public static final class Builder {
         private String message;
         private KeyBoard keyBoard;
@@ -94,4 +94,5 @@ public class BoxAnswer {
             return new BoxAnswer(this);
         }
     }
+
 }
