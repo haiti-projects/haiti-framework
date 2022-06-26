@@ -33,7 +33,7 @@ public class SimpleKeyBoard implements KeyBoard {
         return new SimpleKeyBoard(List.of(line));
     }
 
-    public static Builder build() {
+    public static Builder builder() {
         return new Builder();
     }
 

@@ -2,6 +2,7 @@ package dev.struchkov.godfather.core.domain.unit;
 
 import dev.struchkov.godfather.context.domain.content.Message;
 import dev.struchkov.godfather.context.service.usercode.CheckData;
+import dev.struchkov.godfather.core.service.Accessibility;
 import dev.struchkov.godfather.core.utils.TypeUnit;
 
 import java.util.Set;
@@ -38,7 +39,18 @@ public class AnswerTimer<M extends Message> extends MainUnit {
     private final CheckData<M> checkLoop;
 
     private AnswerTimer(Builder<M> builder) {
-        super(builder.keyWords, builder.phrase, builder.pattern, builder.matchThreshold, builder.priority, null, builder.activeType, TypeUnit.TIMER);
+        super(
+                builder.name,
+                builder.keyWords,
+                builder.phrase,
+                builder.pattern,
+                builder.matchThreshold,
+                builder.priority,
+                null,
+                builder.activeType,
+                builder.accessibility,
+                TypeUnit.TIMER
+        );
         unitAnswer = builder.unitAnswer;
         timeDelaySec = builder.timeDelaySec;
         timeDeathSec = builder.timeDeathSec;
@@ -66,6 +78,7 @@ public class AnswerTimer<M extends Message> extends MainUnit {
     }
 
     public static final class Builder<M extends Message> {
+        private String name;
         private MainUnit unitAnswer;
         private Integer timeDelaySec;
         private Integer timeDeathSec;
@@ -76,9 +89,14 @@ public class AnswerTimer<M extends Message> extends MainUnit {
         private Integer matchThreshold;
         private Integer priority;
         private UnitActiveType activeType = UnitActiveType.AFTER;
+        private Accessibility accessibility;
 
         private Builder() {
+        }
 
+        public Builder<M> name(String name) {
+            this.name = name;
+            return this;
         }
 
         public Builder<M> unitAnswer(MainUnit val) {
@@ -123,6 +141,11 @@ public class AnswerTimer<M extends Message> extends MainUnit {
 
         public Builder<M> priority(Integer val) {
             priority = val;
+            return this;
+        }
+
+        public Builder accessibility(Accessibility val) {
+            accessibility = val;
             return this;
         }
 

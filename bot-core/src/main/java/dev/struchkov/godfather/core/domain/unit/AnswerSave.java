@@ -1,6 +1,7 @@
 package dev.struchkov.godfather.core.domain.unit;
 
 import dev.struchkov.godfather.context.domain.content.Message;
+import dev.struchkov.godfather.core.service.Accessibility;
 import dev.struchkov.godfather.core.service.save.CheckSave;
 import dev.struchkov.godfather.core.service.save.Preservable;
 import dev.struchkov.godfather.core.service.save.data.PreservableData;
@@ -49,7 +50,18 @@ public class AnswerSave<D> extends MainUnit {
     private final CheckSave<? super Message> checkSave;
 
     private AnswerSave(Builder<D> builder) {
-        super(builder.keyWords, builder.phrase, builder.pattern, builder.matchThreshold, builder.priority, builder.nextUnits, (builder.hidden) ? UnitActiveType.AFTER : UnitActiveType.DEFAULT, TypeUnit.SAVE);
+        super(
+                builder.name,
+                builder.keyWords,
+                builder.phrase,
+                builder.pattern,
+                builder.matchThreshold,
+                builder.priority,
+                builder.nextUnits,
+                (builder.hidden) ? UnitActiveType.AFTER : UnitActiveType.DEFAULT,
+                builder.accessibility,
+                TypeUnit.SAVE
+        );
         maintenanceNextUnit(nextUnits);
         preservable = builder.preservable;
         key = builder.key;
@@ -94,6 +106,7 @@ public class AnswerSave<D> extends MainUnit {
     }
 
     public static final class Builder<D> {
+        private String name;
         private Set<String> keyWords = new HashSet<>();
         private String phrase;
         private Pattern pattern;
@@ -106,8 +119,14 @@ public class AnswerSave<D> extends MainUnit {
         private PreservableData<D, ? super Message> preservableData;
         private boolean hidden;
         private CheckSave<? super Message> checkSave;
+        private Accessibility accessibility;
 
         private Builder() {
+        }
+
+        public Builder<D> name(String name) {
+            this.name = name;
+            return this;
         }
 
         public Builder<D> keyWords(Set<String> val) {
@@ -177,6 +196,11 @@ public class AnswerSave<D> extends MainUnit {
 
         public Builder<D> checkSave(CheckSave<? super Message> val) {
             this.checkSave = val;
+            return this;
+        }
+
+        public Builder accessibility(Accessibility val) {
+            accessibility = val;
             return this;
         }
 

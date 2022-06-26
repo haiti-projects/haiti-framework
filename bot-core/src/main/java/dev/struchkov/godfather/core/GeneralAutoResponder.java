@@ -1,16 +1,17 @@
 package dev.struchkov.godfather.core;
 
-import dev.struchkov.autoresponder.AutoResponder;
-import dev.struchkov.autoresponder.entity.UnitPointer;
-import dev.struchkov.autoresponder.repository.UnitPointerRepository;
-import dev.struchkov.autoresponder.service.UnitPointerServiceImpl;
+import dev.struchkov.autoresponder.Responder;
+import dev.struchkov.autoresponder.entity.Unit;
+import dev.struchkov.godfather.context.domain.UnitPointer;
 import dev.struchkov.godfather.context.domain.content.Message;
 import dev.struchkov.godfather.context.exception.ConfigAppException;
-import dev.struchkov.godfather.context.service.MessageService;
 import dev.struchkov.godfather.context.service.Modifiable;
+import dev.struchkov.godfather.context.service.PersonSettingService;
+import dev.struchkov.godfather.context.service.UnitPointerService;
 import dev.struchkov.godfather.context.service.sender.Sending;
 import dev.struchkov.godfather.core.domain.unit.MainUnit;
 import dev.struchkov.godfather.core.domain.unit.UnitActiveType;
+import dev.struchkov.godfather.core.service.Accessibility;
 import dev.struchkov.godfather.core.service.action.ActionUnit;
 import dev.struchkov.godfather.core.service.action.AnswerCheckAction;
 import dev.struchkov.godfather.core.service.action.AnswerProcessingAction;
@@ -27,26 +28,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.TimerTask;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
-public class GeneralAutoResponder<T extends Message> extends TimerTask {
+public class GeneralAutoResponder<T extends Message> {
 
-    protected final AutoResponder<MainUnit> autoResponder;
-    private final MessageService<T> messageService;
+    private final PersonSettingService personSettingService;
+    private final UnitPointerService unitPointerService;
+    private final StoryLine storyLine;
+
     protected Map<String, ActionUnit<? extends MainUnit, ? extends Message>> actionUnitMap = new HashMap<>();
-    protected List<Modifiable<T>> modifiables;
-    private ExecutorService executorService = Executors.newFixedThreadPool(10);
+    protected List<Modifiable<T>> modifiable;
 
-    protected GeneralAutoResponder(Set<MainUnit> menuUnit,
-                                   Sending sending,
-                                   MessageService<T> messageService,
-                                   UnitPointerRepository<MainUnit> unitPointerRepository
+    protected GeneralAutoResponder(
+            Sending sending,
+            PersonSettingService personSettingService,
+            UnitPointerService unitPointerService,
+            List<Object> unitConfigurations
     ) {
-        this.messageService = messageService;
-        autoResponder = new AutoResponder<>(new UnitPointerServiceImpl<>(unitPointerRepository), menuUnit);
+        this.personSettingService = personSettingService;
+        this.unitPointerService = unitPointerService;
+        this.storyLine = new StorylineMaker(unitConfigurations).createStoryLine();
         init(sending);
     }
 
@@ -57,8 +58,8 @@ public class GeneralAutoResponder<T extends Message> extends TimerTask {
         actionUnitMap.put(TypeUnit.VALIDITY, new AnswerValidityAction());
     }
 
-    public void initModifiables(List<Modifiable<T>> modifiables) {
-        this.modifiables = modifiables;
+    public void initModifiable(List<Modifiable<T>> modifiable) {
+        this.modifiable = modifiable;
     }
 
     public void initActionUnit(String typeUnit, ActionUnit<? super MainUnit, T> actionUnit) {
@@ -69,10 +70,6 @@ public class GeneralAutoResponder<T extends Message> extends TimerTask {
         }
     }
 
-    public <U extends MainUnit> void initDefaultUnit(U defaultUnit) {
-        autoResponder.setDefaultUnit(defaultUnit);
-    }
-
     public void initSaveAction(AnswerSaveAction<?> answerSaveAction) {
         actionUnitMap.put(TypeUnit.SAVE, answerSaveAction);
     }
@@ -81,33 +78,56 @@ public class GeneralAutoResponder<T extends Message> extends TimerTask {
         actionUnitMap.put(TypeUnit.TIMER, new AnswerTimerAction(timerService, this));
     }
 
-    public void setDefaultUnit(MainUnit mainUnit) {
-        autoResponder.setDefaultUnit(mainUnit);
-    }
-
-    public void checkNewMessage() {
-        List<T> eventByTime = messageService.getNewMessage();
-        if (eventByTime != null && !eventByTime.isEmpty()) {
-            executorService.execute(
-                    () -> eventByTime.parallelStream().forEach(processing())
-            );
+    public void processingNewMessage(T newMessage) {
+        if (newMessage != null) {
+            final boolean state = personSettingService.getStateProcessingByPersonId(newMessage.getPersonId()).orElse(true);
+            if (state) {
+                processing(newMessage);
+            }
         }
     }
 
-    private Consumer<T> processing() {
-        return event -> {
-            if (modifiables != null) {
-                modifiables.forEach(modifiable -> modifiable.change(event));
-            }
-            autoResponder.answer(event.getPersonId(), event.getText()).ifPresent(unitAnswer -> answer(event, unitAnswer));
-        };
+    public void processingNewMessages(List<T> newMessages) {
+        if (newMessages != null && !newMessages.isEmpty()) {
+            final Set<Long> personIds = newMessages.stream()
+                    .map(Message::getPersonId)
+                    .collect(Collectors.toSet());
+            final Set<Long> disableIds = personSettingService.getAllPersonIdDisableMessages(personIds);
+            final List<T> allowedMessages = newMessages.stream()
+                    .filter(message -> !disableIds.contains(message.getPersonId()))
+                    .toList();
+            allowedMessages.parallelStream().forEach(this::processing);
+        }
     }
 
-    public void answer(T event, MainUnit unitAnswer) {
-        unitAnswer = getAction(event, unitAnswer);
-        unitAnswer = activeUnitAfter(unitAnswer, event);
-        if (!(autoResponder.getDefaultUnit() != null && autoResponder.getDefaultUnit().equals(unitAnswer))) {
-            autoResponder.getUnitPointerService().save(new UnitPointer<>(event.getPersonId(), unitAnswer));
+    private void processing(T message) {
+        if (modifiable != null) {
+            modifiable.forEach(m -> m.change(message));
+        }
+        final Set<MainUnit> units = unitPointerService.getUnitNameByPersonId(message.getPersonId())
+                .flatMap(storyLine::getUnit)
+                .map(Unit::getNextUnits)
+                .filter(mainUnits -> !mainUnits.isEmpty())
+                .orElse(storyLine.getStartingUnits());
+        final Optional<MainUnit> optAnswer = Responder.nextUnit(message.getText(), units);
+        if (optAnswer.isPresent()) {
+            final MainUnit answer = optAnswer.get();
+            if (checkPermission(answer.getAccessibility(), message)) {
+                answer(message, answer);
+            }
+        }
+    }
+
+    private boolean checkPermission(Optional<Accessibility> accessibility, T message) {
+        return accessibility.isEmpty() || accessibility.get().check(message);
+    }
+
+    public void answer(T message, MainUnit unitAnswer) {
+        unitAnswer = getAction(message, unitAnswer);
+        unitAnswer = activeUnitAfter(unitAnswer, message);
+        final Optional<MainUnit> optDefaultUnit = storyLine.getDefaultUnit();
+        if (optDefaultUnit.isEmpty() || !optDefaultUnit.get().equals(unitAnswer)) {
+            unitPointerService.save(new UnitPointer(message.getPersonId(), unitAnswer.getName()));
         }
     }
 
@@ -134,9 +154,9 @@ public class GeneralAutoResponder<T extends Message> extends TimerTask {
         }
     }
 
-    @Override
-    public void run() {
-        checkNewMessage();
+    //TODO [22.06.2022]: Временное решение для ленивой инициализации
+    public void link(String firstName, String secondName) {
+        storyLine.link(firstName, secondName);
     }
 
 }

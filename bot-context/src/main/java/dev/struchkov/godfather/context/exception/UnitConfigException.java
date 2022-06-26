@@ -16,8 +16,12 @@ public class UnitConfigException extends AppBotException{
         super(message);
     }
 
+    public UnitConfigException(String message, Object... objects) {
+        super(MessageFormat.format(message, objects));
+    }
+
     public static Supplier<NotFoundException> unitConfigException(String message, Object... objects) {
-        return () -> new NotFoundException(MessageFormat.format(message, objects));
+        return () -> new NotFoundException(message, objects);
     }
 
 }

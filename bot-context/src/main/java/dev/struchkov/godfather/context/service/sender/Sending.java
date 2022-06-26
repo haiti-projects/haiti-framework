@@ -18,8 +18,6 @@ public interface Sending {
      */
     void send(@NotNull Long personId, @NotNull BoxAnswer boxAnswer);
 
-    void send(@NotNull Long contentId, @NotNull Long personId, @NotNull BoxAnswer boxAnswer);
-
     /**
      * Возвращает тип объекта отправляющего ответ пользователя. В зависимости от типа ответ будет отправлен с помощью
      * разных методов.

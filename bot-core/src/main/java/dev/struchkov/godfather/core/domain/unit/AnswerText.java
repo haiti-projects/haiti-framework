@@ -7,6 +7,7 @@ import dev.struchkov.godfather.context.service.sender.Sending;
 import dev.struchkov.godfather.context.service.usercode.Insert;
 import dev.struchkov.godfather.context.service.usercode.MessageFunction;
 import dev.struchkov.godfather.context.service.usercode.ProcessingData;
+import dev.struchkov.godfather.core.service.Accessibility;
 import dev.struchkov.godfather.core.utils.TypeUnit;
 
 import java.util.HashSet;
@@ -39,7 +40,18 @@ public class AnswerText<M extends Message> extends MainUnit {
     private final Sending sending;
 
     private AnswerText(Builder<M> builder) {
-        super(builder.keyWords, builder.phrase, builder.pattern, builder.matchThreshold, builder.priority, builder.nextUnits, builder.activeType, TypeUnit.TEXT);
+        super(
+                builder.name,
+                builder.keyWords,
+                builder.phrase,
+                builder.pattern,
+                builder.matchThreshold,
+                builder.priority,
+                builder.nextUnits,
+                builder.activeType,
+                builder.accessibility,
+                TypeUnit.TEXT
+        );
         boxAnswer = builder.boxAnswer;
         insert = builder.insert;
         sending = builder.sending;
@@ -66,6 +78,7 @@ public class AnswerText<M extends Message> extends MainUnit {
     }
 
     public static final class Builder<M extends Message> {
+        private String name;
         private ProcessingData<M> boxAnswer;
         private Insert insert;
         private Sending sending;
@@ -76,8 +89,14 @@ public class AnswerText<M extends Message> extends MainUnit {
         private Integer priority;
         private Set<MainUnit> nextUnits = new HashSet<>();
         private UnitActiveType activeType;
+        private Accessibility accessibility;
 
         private Builder() {
+        }
+
+        public Builder<M> name(String name) {
+            this.name = name;
+            return this;
         }
 
         public Builder<M> message(ProcessingData<M> message) {
@@ -148,6 +167,11 @@ public class AnswerText<M extends Message> extends MainUnit {
 
         public Builder<M> nextUnit(MainUnit val) {
             nextUnits.add(val);
+            return this;
+        }
+
+        public Builder accessibility(Accessibility val) {
+            accessibility = val;
             return this;
         }
 

@@ -1,5 +1,6 @@
 package dev.struchkov.godfather.core.domain.unit;
 
+import dev.struchkov.godfather.core.service.Accessibility;
 import dev.struchkov.godfather.core.service.ClarificationQuestion;
 import dev.struchkov.godfather.core.service.save.LocalPreservable;
 import dev.struchkov.godfather.core.service.save.Preservable;
@@ -36,7 +37,18 @@ public class AnswerValidity extends MainUnit {
     private final ClarificationQuestion clarificationQuestion;
 
     private AnswerValidity(Builder builder) {
-        super(builder.keyWords, builder.phrase, builder.pattern, builder.matchThreshold, builder.priority, builder.nextUnits, UnitActiveType.DEFAULT, TypeUnit.VALIDITY);
+        super(
+                builder.name,
+                builder.keyWords,
+                builder.phrase,
+                builder.pattern,
+                builder.matchThreshold,
+                builder.priority,
+                builder.nextUnits,
+                UnitActiveType.DEFAULT,
+                builder.accessibility,
+                TypeUnit.VALIDITY
+        );
         unitYes = builder.unitYes;
         unitNo = builder.unitNo;
         unitNull = builder.unitNull;
@@ -68,6 +80,7 @@ public class AnswerValidity extends MainUnit {
     }
 
     public static final class Builder {
+        private String name;
         private MainUnit unitYes;
         private MainUnit unitNo;
         private MainUnit unitNull;
@@ -78,8 +91,14 @@ public class AnswerValidity extends MainUnit {
         private Integer matchThreshold;
         private Integer priority;
         private Set<MainUnit> nextUnits = new HashSet<>();
+        private Accessibility accessibility;
 
         private Builder() {
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
         }
 
         public Builder unitYes(MainUnit val) {
@@ -144,6 +163,11 @@ public class AnswerValidity extends MainUnit {
 
         public Builder clearKeyWords() {
             nextUnits.clear();
+            return this;
+        }
+
+        public Builder accessibility(Accessibility val) {
+            accessibility = val;
             return this;
         }
 

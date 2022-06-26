@@ -12,12 +12,12 @@ import java.util.List;
  *
  * @author upagge [08/07/2019]
  */
-public class KeyBoards {
+public class SimpleKeyBoards {
 
     public static final SimpleButton YES_BUTTON = SimpleButton.simpleButton("Да", "{\"button\": \"yes\"}");
     public static final SimpleButton NO_BUTTON = SimpleButton.simpleButton("Нет", "{\"button\": \"no\"}");
 
-    private KeyBoards() {
+    private SimpleKeyBoards() {
         throw new IllegalStateException();
     }
 
@@ -27,7 +27,7 @@ public class KeyBoards {
      * @return {@link SimpleKeyBoard}
      */
     public static SimpleKeyBoard keyBoardYesNo() {
-        return SimpleKeyBoard.build().line(
+        return SimpleKeyBoard.builder().line(
                 SimpleKeyBoardLine.builder().button(YES_BUTTON).button(NO_BUTTON).build()
         ).build();
     }
@@ -39,7 +39,7 @@ public class KeyBoards {
      * @return {@link SimpleKeyBoard}
      */
     public static SimpleKeyBoard verticalMenuString(List<String> labelButtons) {
-        final SimpleKeyBoard.Builder keyBoard = SimpleKeyBoard.build();
+        final SimpleKeyBoard.Builder keyBoard = SimpleKeyBoard.builder();
         for (String labelButton : labelButtons) {
             final SimpleButton simpleButton = SimpleButton.simpleButton(labelButton, "{\"button\": \"" + labelButton + "\"}");
             keyBoard.line(SimpleKeyBoardLine.builder().button(simpleButton).build());
@@ -74,7 +74,7 @@ public class KeyBoards {
      * @return {@link SimpleKeyBoard}
      */
     public static SimpleKeyBoard verticalDuoMenuString(List<String> labelButton) {
-        final SimpleKeyBoard.Builder keyBoard = SimpleKeyBoard.build();
+        final SimpleKeyBoard.Builder keyBoard = SimpleKeyBoard.builder();
         boolean flag = true;
         SimpleKeyBoardLine.Builder keyBoardLine = SimpleKeyBoardLine.builder();
         for (int i = 0; i <= labelButton.size() - 1; i++) {
@@ -102,7 +102,7 @@ public class KeyBoards {
      * @return {@link SimpleKeyBoard}
      */
     public static SimpleKeyBoard verticalMenuButton(List<SimpleButton> simpleButtons) {
-        final SimpleKeyBoard.Builder keyBoard = SimpleKeyBoard.build();
+        final SimpleKeyBoard.Builder keyBoard = SimpleKeyBoard.builder();
         for (SimpleButton simpleButton : simpleButtons) {
             keyBoard.line(SimpleKeyBoardLine.builder().button(simpleButton).build());
         }

@@ -33,7 +33,7 @@ public class SimpleButton implements KeyBoardButton {
     }
 
     public static SimpleButton simpleButton(@NotNull String label) {
-        return new SimpleButton(label, label);
+        return new SimpleButton(label, null);
     }
 
     public String getLabel() {

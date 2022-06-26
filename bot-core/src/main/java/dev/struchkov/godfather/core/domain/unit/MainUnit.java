@@ -1,6 +1,7 @@
 package dev.struchkov.godfather.core.domain.unit;
 
 import dev.struchkov.autoresponder.entity.Unit;
+import dev.struchkov.godfather.core.service.Accessibility;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -21,13 +22,27 @@ public abstract class MainUnit extends Unit<MainUnit> {
     protected final String type;
 
     /**
+     * Уникальный идентификатор юнита
+     */
+    private final String uuid = UUID.randomUUID().toString();
+
+    /**
      * Режим срабатывания Unit-а.
      */
     protected UnitActiveType activeType;
 
-    private final String uuid = UUID.randomUUID().toString();
+    /**
+     * Уникальное имя юнита
+     */
+    private String name;
+
+    /**
+     * Проверка доступа пользователя к юниту.
+     */
+    private Accessibility accessibility;
 
     protected MainUnit(
+            String name,
             Set<String> keyWords,
             String phrase,
             Pattern pattern,
@@ -35,10 +50,13 @@ public abstract class MainUnit extends Unit<MainUnit> {
             Integer priority,
             Set<MainUnit> nextUnits,
             UnitActiveType activeType,
+            Accessibility accessibility,
             String type
     ) {
         super(keyWords, phrase, pattern, matchThreshold, priority, nextUnits);
+        this.name = name;
         this.activeType = Optional.ofNullable(activeType).orElse(UnitActiveType.DEFAULT);
+        this.accessibility = accessibility;
         this.type = type;
     }
 
@@ -46,18 +64,31 @@ public abstract class MainUnit extends Unit<MainUnit> {
         return type;
     }
 
-    public void setActiveType(UnitActiveType activeType) {
-        this.activeType = activeType;
-    }
-
     public UnitActiveType getActiveType() {
         return activeType;
+    }
+
+    public void setActiveType(UnitActiveType activeType) {
+        this.activeType = activeType;
     }
 
     public String getUuid() {
         return uuid;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Optional<Accessibility> getAccessibility() {
+        return Optional.ofNullable(accessibility);
+    }
+
+    //TODO [27.05.2022]: Возможно стоит добавить имя юнита и убрать остальное
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
