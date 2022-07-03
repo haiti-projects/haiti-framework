@@ -12,6 +12,7 @@ import dev.struchkov.godfather.context.service.sender.Sending;
 import dev.struchkov.godfather.core.domain.unit.MainUnit;
 import dev.struchkov.godfather.core.domain.unit.UnitActiveType;
 import dev.struchkov.godfather.core.service.Accessibility;
+import dev.struchkov.godfather.core.service.ErrorHandler;
 import dev.struchkov.godfather.core.service.action.ActionUnit;
 import dev.struchkov.godfather.core.service.action.AnswerCheckAction;
 import dev.struchkov.godfather.core.service.action.AnswerProcessingAction;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
 
 public class GeneralAutoResponder<T extends Message> {
 
+    private ErrorHandler errorHandler;
     private final PersonSettingService personSettingService;
     private final UnitPointerService unitPointerService;
     private final StoryLine storyLine;
@@ -76,6 +78,13 @@ public class GeneralAutoResponder<T extends Message> {
 
     public void initTimerAction(TimerService timerService) {
         actionUnitMap.put(TypeUnit.TIMER, new AnswerTimerAction(timerService, this));
+    }
+
+    /**
+     * Позволяет установить перехватчик и обработчик исключений, возникающих при обработке юнитов.
+     */
+    public void setErrorHandler(ErrorHandler errorHandler) {
+        this.errorHandler = errorHandler;
     }
 
     public void processingNewMessage(T newMessage) {
@@ -123,11 +132,20 @@ public class GeneralAutoResponder<T extends Message> {
     }
 
     public void answer(T message, MainUnit unitAnswer) {
-        unitAnswer = getAction(message, unitAnswer);
-        unitAnswer = activeUnitAfter(unitAnswer, message);
-        final Optional<MainUnit> optDefaultUnit = storyLine.getDefaultUnit();
-        if (optDefaultUnit.isEmpty() || !optDefaultUnit.get().equals(unitAnswer)) {
-            unitPointerService.save(new UnitPointer(message.getPersonId(), unitAnswer.getName()));
+        try {
+            unitAnswer = getAction(message, unitAnswer);
+            unitAnswer = activeUnitAfter(unitAnswer, message);
+
+            final Optional<MainUnit> optDefaultUnit = storyLine.getDefaultUnit();
+            if (optDefaultUnit.isEmpty() || !optDefaultUnit.get().equals(unitAnswer)) {
+                unitPointerService.save(new UnitPointer(message.getPersonId(), unitAnswer.getName()));
+            }
+        } catch (Exception e) {
+            if (errorHandler != null) {
+                errorHandler.handle(message, e);
+            } else {
+                throw e;
+            }
         }
     }
 
