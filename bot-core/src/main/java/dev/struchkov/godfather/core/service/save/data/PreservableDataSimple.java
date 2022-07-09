@@ -1,6 +1,7 @@
 package dev.struchkov.godfather.core.service.save.data;
 
 import dev.struchkov.godfather.context.domain.content.Message;
+import dev.struchkov.godfather.context.service.save.PreservableData;
 import dev.struchkov.haiti.utils.Pair;
 
 /**

@@ -1,6 +1,6 @@
 package dev.struchkov.godfather.core;
 
-import dev.struchkov.godfather.core.domain.unit.MainUnit;
+import dev.struchkov.godfather.context.domain.unit.MainUnit;
 import dev.struchkov.haiti.utils.Inspector;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,13 +10,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-public class StoryLine {
+public class Storyline {
 
     private MainUnit defaultUnit;
     private final Set<MainUnit> startingUnits = new HashSet<>();
     private final Map<String, MainUnit> units = new HashMap<>();
 
-    public StoryLine(Set<MainUnit> startingUnits, Map<String, MainUnit> units) {
+    public Storyline(Set<MainUnit> startingUnits, Map<String, MainUnit> units) {
         this.startingUnits.addAll(startingUnits);
         this.units.putAll(units);
     }

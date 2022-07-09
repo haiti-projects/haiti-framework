@@ -1,4 +1,4 @@
-package dev.struchkov.godfather.core.service;
+package dev.struchkov.godfather.context.service;
 
 import dev.struchkov.godfather.context.domain.content.Message;
 

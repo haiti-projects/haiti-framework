@@ -6,7 +6,7 @@
     <parent>
         <groupId>dev.struchkov.godfather</groupId>
         <artifactId>godfather-bot</artifactId>
-        <version>0.0.8</version>
+        <version>0.0.9</version>
     </parent>
 
     <artifactId>bot-core</artifactId>
@@ -18,11 +18,6 @@
         <dependency>
             <groupId>dev.struchkov.godfather</groupId>
             <artifactId>bot-context</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>dev.struchkov</groupId>
-            <artifactId>autoresponder</artifactId>
         </dependency>
     </dependencies>
 

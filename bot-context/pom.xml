@@ -6,7 +6,7 @@
     <parent>
         <groupId>dev.struchkov.godfather</groupId>
         <artifactId>godfather-bot</artifactId>
-        <version>0.0.8</version>
+        <version>0.0.9</version>
     </parent>
 
     <artifactId>bot-context</artifactId>
@@ -15,6 +15,10 @@
     <description>Доменные сущности, интерфейсы, для библиотеки Godfather</description>
 
     <dependencies>
+        <dependency>
+            <groupId>dev.struchkov</groupId>
+            <artifactId>autoresponder</artifactId>
+        </dependency>
         <dependency>
             <groupId>dev.struchkov.haiti</groupId>
             <artifactId>haiti-utils</artifactId>

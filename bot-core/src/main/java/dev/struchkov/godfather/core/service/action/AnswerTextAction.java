@@ -1,12 +1,13 @@
 package dev.struchkov.godfather.core.service.action;
 
 import dev.struchkov.godfather.context.domain.BoxAnswer;
+import dev.struchkov.godfather.context.domain.UnitRequest;
 import dev.struchkov.godfather.context.domain.content.Message;
+import dev.struchkov.godfather.context.domain.unit.AnswerText;
+import dev.struchkov.godfather.context.domain.unit.MainUnit;
 import dev.struchkov.godfather.context.service.sender.Sending;
 import dev.struchkov.godfather.context.utils.InsertWords;
 import dev.struchkov.godfather.context.utils.Sender;
-import dev.struchkov.godfather.core.domain.unit.AnswerText;
-import dev.struchkov.godfather.core.domain.unit.MainUnit;
 
 import java.util.List;
 
@@ -24,18 +25,21 @@ public class AnswerTextAction implements ActionUnit<AnswerText<Message>, Message
     }
 
     @Override
-    public MainUnit action(AnswerText<Message> answerText, Message message) {
-        final BoxAnswer boxAnswer = answerText.getBoxAnswer().processing(message);
-        replaceMarkers(answerText, message, boxAnswer);
+    public UnitRequest<MainUnit, Message> action(UnitRequest<AnswerText<Message>, Message> unitRequest) {
+        final AnswerText<Message> unit = unitRequest.getUnit();
+        final Message message = unitRequest.getMessage();
 
-        final Sending answerTextSending = answerText.getSending();
+        final BoxAnswer boxAnswer = unit.getBoxAnswer().processing(message);
+        replaceMarkers(unit, message, boxAnswer);
+
+        final Sending answerTextSending = unit.getSending();
         if (answerTextSending != null) {
             Sender.sends(message, boxAnswer, answerTextSending);
         } else {
             Sender.sends(message, boxAnswer, this.sending);
         }
 
-        return answerText;
+        return UnitRequest.of(unit, message);
     }
 
     private void replaceMarkers(AnswerText<Message> answerText, Message message, BoxAnswer boxAnswer) {
@@ -45,6 +49,5 @@ public class AnswerTextAction implements ActionUnit<AnswerText<Message>, Message
             boxAnswer.setMessage(newMessage);
         }
     }
-
 
 }

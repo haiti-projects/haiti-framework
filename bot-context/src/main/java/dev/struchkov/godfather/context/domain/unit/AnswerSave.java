@@ -1,17 +1,19 @@
-package dev.struchkov.godfather.core.domain.unit;
+package dev.struchkov.godfather.context.domain.unit;
 
+import dev.struchkov.autoresponder.entity.KeyWord;
+import dev.struchkov.godfather.context.domain.TypeUnit;
 import dev.struchkov.godfather.context.domain.content.Message;
-import dev.struchkov.godfather.core.service.Accessibility;
-import dev.struchkov.godfather.core.service.save.CheckSave;
-import dev.struchkov.godfather.core.service.save.Preservable;
-import dev.struchkov.godfather.core.service.save.data.PreservableData;
-import dev.struchkov.godfather.core.service.save.push.Pusher;
-import dev.struchkov.godfather.core.utils.TypeUnit;
+import dev.struchkov.godfather.context.service.Accessibility;
+import dev.struchkov.godfather.context.service.save.CheckSave;
+import dev.struchkov.godfather.context.service.save.Preservable;
+import dev.struchkov.godfather.context.service.save.PreservableData;
+import dev.struchkov.godfather.context.service.save.Pusher;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static dev.struchkov.haiti.utils.Inspector.isNotNull;
 
@@ -107,7 +109,7 @@ public class AnswerSave<D> extends MainUnit {
 
     public static final class Builder<D> {
         private String name;
-        private Set<String> keyWords = new HashSet<>();
+        private Set<KeyWord> keyWords = new HashSet<>();
         private String phrase;
         private Pattern pattern;
         private Integer matchThreshold;
@@ -129,13 +131,23 @@ public class AnswerSave<D> extends MainUnit {
             return this;
         }
 
-        public Builder<D> keyWords(Set<String> val) {
-            keyWords = val;
+        public Builder<D> keyWords(Set<KeyWord> val) {
+            keyWords.addAll(val);
+            return this;
+        }
+
+        public Builder<D> keyWord(KeyWord val) {
+            keyWords.add(val);
+            return this;
+        }
+
+        public Builder<D> stringKeyWords(Set<String> val) {
+            keyWords.addAll(val.stream().map(KeyWord::of).collect(Collectors.toSet()));
             return this;
         }
 
         public Builder<D> keyWord(String val) {
-            keyWords.add(val);
+            keyWords.add(KeyWord.of(val));
             return this;
         }
 

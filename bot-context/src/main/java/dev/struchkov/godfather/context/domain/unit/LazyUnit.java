@@ -1,7 +1,9 @@
-package dev.struchkov.godfather.core.domain.unit;
+package dev.struchkov.godfather.context.domain.unit;
 
+import dev.struchkov.autoresponder.entity.KeyWord;
 import dev.struchkov.godfather.context.domain.UnitDefinition;
-import dev.struchkov.godfather.core.service.Accessibility;
+import dev.struchkov.godfather.context.domain.keyboard.KeyBoard;
+import dev.struchkov.godfather.context.service.Accessibility;
 
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -12,7 +14,7 @@ public class LazyUnit extends MainUnit {
 
     private LazyUnit(
             String name,
-            Set<String> keyWords,
+            Set<KeyWord> keyWords,
             String phrase,
             Pattern pattern,
             Integer matchThreshold,

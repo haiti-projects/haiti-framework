@@ -1,7 +1,7 @@
-package dev.struchkov.godfather.core.service.save;
+package dev.struchkov.godfather.context.service.save;
 
 import dev.struchkov.godfather.context.domain.content.Message;
-import dev.struchkov.godfather.core.domain.unit.MainUnit;
+import dev.struchkov.godfather.context.domain.unit.MainUnit;
 
 /**
  * TODO: Добавить описание интерфейса.

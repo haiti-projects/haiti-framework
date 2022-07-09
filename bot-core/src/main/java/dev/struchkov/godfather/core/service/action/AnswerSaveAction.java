@@ -1,11 +1,12 @@
 package dev.struchkov.godfather.core.service.action;
 
+import dev.struchkov.godfather.context.domain.UnitRequest;
 import dev.struchkov.godfather.context.domain.content.Message;
-import dev.struchkov.godfather.core.domain.unit.AnswerSave;
-import dev.struchkov.godfather.core.domain.unit.MainUnit;
-import dev.struchkov.godfather.core.service.save.CheckSave;
-import dev.struchkov.godfather.core.service.save.Preservable;
-import dev.struchkov.godfather.core.service.save.data.PreservableData;
+import dev.struchkov.godfather.context.domain.unit.AnswerSave;
+import dev.struchkov.godfather.context.domain.unit.MainUnit;
+import dev.struchkov.godfather.context.service.save.CheckSave;
+import dev.struchkov.godfather.context.service.save.Preservable;
+import dev.struchkov.godfather.context.service.save.PreservableData;
 
 /**
  * Обработчик Unit-а {@link AnswerSave}.
@@ -15,27 +16,30 @@ import dev.struchkov.godfather.core.service.save.data.PreservableData;
 public class AnswerSaveAction<D> implements ActionUnit<AnswerSave<D>, Message> {
 
     @Override
-    public MainUnit action(AnswerSave<D> answerSave, Message mail) {
-        Preservable<D> preservable = answerSave.getPreservable();
-        Long personId = mail.getPersonId();
+    public UnitRequest<MainUnit, Message> action(UnitRequest<AnswerSave<D>, Message> unitRequest) {
+        final AnswerSave<D> answerSave = unitRequest.getUnit();
+        final Message message = unitRequest.getMessage();
 
-        CheckSave<? super Message> checkSave = answerSave.getCheckSave();
+        final Preservable<D> preservable = answerSave.getPreservable();
+        final Long personId = message.getPersonId();
+
+        final CheckSave<? super Message> checkSave = answerSave.getCheckSave();
         if (checkSave != null) {
-            MainUnit unit = checkSave.check(mail);
+            MainUnit unit = checkSave.check(message);
             if (unit != null) {
-                return unit;
+                return UnitRequest.of(unit, message);
             }
         }
 
         PreservableData<D, ? super Message> preservableData = answerSave.getPreservableData();
         if (preservableData != null) {
-            D data = preservableData.getData(mail);
+            D data = preservableData.getData(message);
             if (data != null) {
                 preservable.save(personId, answerSave.getKey(), data);
             }
         }
 
         preservable.push(personId, answerSave.getPusher());
-        return answerSave;
+        return UnitRequest.of(answerSave, message);
     }
 }

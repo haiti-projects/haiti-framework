@@ -1,5 +1,6 @@
 package dev.struchkov.godfather.core.service.timer;
 
+import dev.struchkov.godfather.context.domain.UnitRequest;
 import dev.struchkov.godfather.context.domain.content.Message;
 import dev.struchkov.godfather.context.service.usercode.CheckData;
 import dev.struchkov.godfather.context.utils.MessageUtils;
@@ -50,17 +51,17 @@ public class TimerActionTask extends TimerTask {
         if (!timeDeath(nowDate, timer.getTimeDeath())) {
             if (checkLoop != null) {
                 if (checkLoop.checked(emptyMessage)) {
-                    generalAutoresponder.answer(emptyMessage, timer.getUnitAnswer());
+                    generalAutoresponder.answer(UnitRequest.of(timer.getUnitAnswer(), emptyMessage));
                     timerService.remove(timer.getId());
                 } else {
                     reinstallation(timer);
                 }
             } else {
-                generalAutoresponder.answer(emptyMessage, timer.getUnitAnswer());
+                generalAutoresponder.answer(UnitRequest.of(timer.getUnitAnswer(), emptyMessage));
                 reinstallation(timer);
             }
         } else {
-            generalAutoresponder.answer(emptyMessage, timer.getUnitAnswer());
+            generalAutoresponder.answer(UnitRequest.of(timer.getUnitAnswer(), emptyMessage));
             death(timer, emptyMessage);
         }
     }
@@ -74,7 +75,7 @@ public class TimerActionTask extends TimerTask {
 
     private void death(Timer timer, Message emptyMessage) {
         if (timer.getUnitDeath() != null) {
-            generalAutoresponder.answer(emptyMessage, timer.getUnitDeath());
+            generalAutoresponder.answer(UnitRequest.of(timer.getUnitDeath(), emptyMessage));
         }
         timerService.remove(timer.getId());
     }

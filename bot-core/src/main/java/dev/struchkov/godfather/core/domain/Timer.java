@@ -1,7 +1,7 @@
 package dev.struchkov.godfather.core.domain;
 
 import dev.struchkov.godfather.context.service.usercode.CheckData;
-import dev.struchkov.godfather.core.domain.unit.MainUnit;
+import dev.struchkov.godfather.context.domain.unit.MainUnit;
 
 import java.time.LocalDateTime;
 

@@ -3,8 +3,8 @@ package dev.struchkov.godfather.core;
 import dev.struchkov.godfather.context.domain.UnitDefinition;
 import dev.struchkov.godfather.context.domain.annotation.Unit;
 import dev.struchkov.godfather.context.exception.UnitConfigException;
-import dev.struchkov.godfather.core.domain.unit.LazyUnit;
-import dev.struchkov.godfather.core.domain.unit.MainUnit;
+import dev.struchkov.godfather.context.domain.unit.LazyUnit;
+import dev.struchkov.godfather.context.domain.unit.MainUnit;
 import dev.struchkov.haiti.utils.Inspector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,13 +46,13 @@ public class StorylineMaker {
         return unitMap;
     }
 
-    public StoryLine createStoryLine() {
+    public Storyline createStoryLine() {
         generateUnitDefinitions();
         try {
             createUnitMap();
             createLazy();
             final Set<MainUnit> mainUnit = getMainUnit();
-            return new StoryLine(mainUnit, unitMap);
+            return new Storyline(mainUnit, unitMap);
         } catch (IllegalAccessException | InvocationTargetException e) {
             log.error(e.getMessage(), e);
         }

@@ -1,14 +1,16 @@
-package dev.struchkov.godfather.core.domain.unit;
+package dev.struchkov.godfather.context.domain.unit;
 
-import dev.struchkov.godfather.core.service.Accessibility;
-import dev.struchkov.godfather.core.service.ClarificationQuestion;
-import dev.struchkov.godfather.core.service.save.LocalPreservable;
-import dev.struchkov.godfather.core.service.save.Preservable;
-import dev.struchkov.godfather.core.utils.TypeUnit;
+import dev.struchkov.autoresponder.entity.KeyWord;
+import dev.struchkov.godfather.context.domain.TypeUnit;
+import dev.struchkov.godfather.context.service.Accessibility;
+import dev.struchkov.godfather.context.service.ClarificationQuestion;
+import dev.struchkov.godfather.context.service.save.LocalPreservable;
+import dev.struchkov.godfather.context.service.save.Preservable;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Обработка данных со страницы пользователя.
@@ -85,7 +87,7 @@ public class AnswerValidity extends MainUnit {
         private MainUnit unitNo;
         private MainUnit unitNull;
         private ClarificationQuestion clarificationQuestion;
-        private Set<String> keyWords;
+        private Set<KeyWord> keyWords = new HashSet<>();
         private String phrase;
         private Pattern pattern;
         private Integer matchThreshold;
@@ -121,13 +123,23 @@ public class AnswerValidity extends MainUnit {
             return this;
         }
 
-        public Builder keyWords(Set<String> val) {
-            keyWords = val;
+        public Builder keyWords(Set<KeyWord> val) {
+            keyWords.addAll(val);
+            return this;
+        }
+
+        public Builder keyWord(KeyWord val) {
+            keyWords.add(val);
+            return this;
+        }
+
+        public Builder stringKeyWords(Set<String> val) {
+            keyWords.addAll(val.stream().map(KeyWord::of).collect(Collectors.toSet()));
             return this;
         }
 
         public Builder keyWord(String val) {
-            keyWords.add(val);
+            keyWords.add(KeyWord.of(val));
             return this;
         }
 
@@ -162,7 +174,7 @@ public class AnswerValidity extends MainUnit {
         }
 
         public Builder clearKeyWords() {
-            nextUnits.clear();
+            keyWords.clear();
             return this;
         }
 

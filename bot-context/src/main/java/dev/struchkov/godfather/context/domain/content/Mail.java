@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -33,9 +35,9 @@ public class Mail extends Message {
     /**
      * Вложения к сообщению.
      */
-    @OneToMany(fetch = FetchType.EAGER)
     @Column(name = "attachment")
-    private List<Attachment> attachments;
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Attachment> attachments = new ArrayList<>();
 
     /**
      * Пересланные сообщения.
@@ -68,8 +70,12 @@ public class Mail extends Message {
         return attachments;
     }
 
-    public void setAttachments(List<Attachment> attachments) {
-        this.attachments = attachments;
+    public void addAttachment(Attachment attachment) {
+        this.attachments.add(attachment);
+    }
+
+    public void addAttachments(Collection<Attachment> attachments) {
+        this.attachments.addAll(attachments);
     }
 
     public List<Mail> getForwardMail() {

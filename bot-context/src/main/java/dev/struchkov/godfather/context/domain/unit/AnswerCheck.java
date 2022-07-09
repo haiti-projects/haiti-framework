@@ -1,13 +1,15 @@
-package dev.struchkov.godfather.core.domain.unit;
+package dev.struchkov.godfather.context.domain.unit;
 
+import dev.struchkov.autoresponder.entity.KeyWord;
+import dev.struchkov.godfather.context.domain.TypeUnit;
 import dev.struchkov.godfather.context.domain.content.Message;
+import dev.struchkov.godfather.context.service.Accessibility;
 import dev.struchkov.godfather.context.service.usercode.CheckData;
-import dev.struchkov.godfather.core.service.Accessibility;
-import dev.struchkov.godfather.core.utils.TypeUnit;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static dev.struchkov.godfather.context.exception.UnitConfigException.unitConfigException;
 import static dev.struchkov.haiti.utils.Inspector.isAnyNotNull;
@@ -71,7 +73,7 @@ public class AnswerCheck extends MainUnit {
 
     public static final class Builder {
         private String name;
-        private Set<String> keyWords = new HashSet<>();
+        private Set<KeyWord> keyWords = new HashSet<>();
         private String phrase;
         private Pattern pattern;
         private Integer matchThreshold;
@@ -90,13 +92,23 @@ public class AnswerCheck extends MainUnit {
             return this;
         }
 
-        public Builder keyWords(Set<String> val) {
-            keyWords = val;
+        public Builder keyWords(Set<KeyWord> val) {
+            keyWords.addAll(val);
+            return this;
+        }
+
+        public Builder keyWord(KeyWord val) {
+            keyWords.add(val);
+            return this;
+        }
+
+        public Builder stringKeyWords(Set<String> val) {
+            keyWords.addAll(val.stream().map(KeyWord::of).collect(Collectors.toSet()));
             return this;
         }
 
         public Builder keyWord(String val) {
-            keyWords.add(val);
+            keyWords.add(KeyWord.of(val));
             return this;
         }
 

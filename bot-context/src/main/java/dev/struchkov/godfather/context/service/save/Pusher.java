@@ -1,4 +1,4 @@
-package dev.struchkov.godfather.core.service.save.push;
+package dev.struchkov.godfather.context.service.save;
 
 import java.util.Map;
 

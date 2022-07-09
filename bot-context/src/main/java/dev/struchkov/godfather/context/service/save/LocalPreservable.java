@@ -1,4 +1,6 @@
-package dev.struchkov.godfather.core.service.save;
+package dev.struchkov.godfather.context.service.save;
+
+import dev.struchkov.godfather.context.service.save.Preservable;
 
 import java.util.HashMap;
 import java.util.Map;

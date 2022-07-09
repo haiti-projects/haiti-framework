@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public class UnitPointLocalRepository implements UnitPointerRepository {
 
-    public static final Map<Long, String> map = new HashMap<>();
+    public final Map<Long, String> map = new HashMap<>();
 
     @Override
     public UnitPointer save(@NotNull UnitPointer unitPointer) {

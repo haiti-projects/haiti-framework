@@ -1,27 +1,25 @@
 package dev.struchkov.godfather.core;
 
 import dev.struchkov.autoresponder.Responder;
-import dev.struchkov.autoresponder.entity.Unit;
-import dev.struchkov.godfather.context.domain.UnitPointer;
+import dev.struchkov.godfather.context.domain.TypeUnit;
+import dev.struchkov.godfather.context.domain.UnitRequest;
 import dev.struchkov.godfather.context.domain.content.Message;
+import dev.struchkov.godfather.context.domain.unit.MainUnit;
+import dev.struchkov.godfather.context.domain.unit.UnitActiveType;
 import dev.struchkov.godfather.context.exception.ConfigAppException;
+import dev.struchkov.godfather.context.service.Accessibility;
 import dev.struchkov.godfather.context.service.Modifiable;
 import dev.struchkov.godfather.context.service.PersonSettingService;
-import dev.struchkov.godfather.context.service.UnitPointerService;
+import dev.struchkov.godfather.context.service.StorylineService;
 import dev.struchkov.godfather.context.service.sender.Sending;
-import dev.struchkov.godfather.core.domain.unit.MainUnit;
-import dev.struchkov.godfather.core.domain.unit.UnitActiveType;
-import dev.struchkov.godfather.core.service.Accessibility;
 import dev.struchkov.godfather.core.service.ErrorHandler;
 import dev.struchkov.godfather.core.service.action.ActionUnit;
 import dev.struchkov.godfather.core.service.action.AnswerCheckAction;
-import dev.struchkov.godfather.core.service.action.AnswerProcessingAction;
 import dev.struchkov.godfather.core.service.action.AnswerSaveAction;
 import dev.struchkov.godfather.core.service.action.AnswerTextAction;
 import dev.struchkov.godfather.core.service.action.AnswerTimerAction;
 import dev.struchkov.godfather.core.service.action.AnswerValidityAction;
 import dev.struchkov.godfather.core.service.timer.TimerService;
-import dev.struchkov.godfather.core.utils.TypeUnit;
 import dev.struchkov.haiti.context.exception.NotFoundException;
 
 import java.util.HashMap;
@@ -33,10 +31,10 @@ import java.util.stream.Collectors;
 
 public class GeneralAutoResponder<T extends Message> {
 
-    private ErrorHandler errorHandler;
     private final PersonSettingService personSettingService;
-    private final UnitPointerService unitPointerService;
-    private final StoryLine storyLine;
+
+    private ErrorHandler errorHandler;
+    private final StorylineService<T> storyLineService;
 
     protected Map<String, ActionUnit<? extends MainUnit, ? extends Message>> actionUnitMap = new HashMap<>();
     protected List<Modifiable<T>> modifiable;
@@ -44,18 +42,15 @@ public class GeneralAutoResponder<T extends Message> {
     protected GeneralAutoResponder(
             Sending sending,
             PersonSettingService personSettingService,
-            UnitPointerService unitPointerService,
-            List<Object> unitConfigurations
+            StorylineService<T> storyLineService
     ) {
         this.personSettingService = personSettingService;
-        this.unitPointerService = unitPointerService;
-        this.storyLine = new StorylineMaker(unitConfigurations).createStoryLine();
+        this.storyLineService = storyLineService;
         init(sending);
     }
 
     private void init(Sending sending) {
         actionUnitMap.put(TypeUnit.CHECK, new AnswerCheckAction());
-        actionUnitMap.put(TypeUnit.PROCESSING, new AnswerProcessingAction(sending));
         actionUnitMap.put(TypeUnit.TEXT, new AnswerTextAction(sending));
         actionUnitMap.put(TypeUnit.VALIDITY, new AnswerValidityAction());
     }
@@ -64,7 +59,7 @@ public class GeneralAutoResponder<T extends Message> {
         this.modifiable = modifiable;
     }
 
-    public void initActionUnit(String typeUnit, ActionUnit<? super MainUnit, T> actionUnit) {
+    public void initActionUnit(String typeUnit, ActionUnit<? extends MainUnit, T> actionUnit) {
         if (!actionUnitMap.containsKey(typeUnit)) {
             actionUnitMap.put(typeUnit, actionUnit);
         } else {
@@ -113,16 +108,12 @@ public class GeneralAutoResponder<T extends Message> {
         if (modifiable != null) {
             modifiable.forEach(m -> m.change(message));
         }
-        final Set<MainUnit> units = unitPointerService.getUnitNameByPersonId(message.getPersonId())
-                .flatMap(storyLine::getUnit)
-                .map(Unit::getNextUnits)
-                .filter(mainUnits -> !mainUnits.isEmpty())
-                .orElse(storyLine.getStartingUnits());
+        final Set<MainUnit> units = storyLineService.getNextUnitByPersonId(message.getPersonId());
         final Optional<MainUnit> optAnswer = Responder.nextUnit(message.getText(), units);
         if (optAnswer.isPresent()) {
             final MainUnit answer = optAnswer.get();
             if (checkPermission(answer.getAccessibility(), message)) {
-                answer(message, answer);
+                answer(UnitRequest.of(answer, message));
             }
         }
     }
@@ -131,50 +122,51 @@ public class GeneralAutoResponder<T extends Message> {
         return accessibility.isEmpty() || accessibility.get().check(message);
     }
 
-    public void answer(T message, MainUnit unitAnswer) {
+    public void answer(UnitRequest<MainUnit, T> unitRequest) {
         try {
-            unitAnswer = getAction(message, unitAnswer);
-            unitAnswer = activeUnitAfter(unitAnswer, message);
+            unitRequest = getAction(unitRequest);
+            unitRequest = activeUnitAfter(unitRequest);
 
-            final Optional<MainUnit> optDefaultUnit = storyLine.getDefaultUnit();
-            if (optDefaultUnit.isEmpty() || !optDefaultUnit.get().equals(unitAnswer)) {
-                unitPointerService.save(new UnitPointer(message.getPersonId(), unitAnswer.getName()));
+            final Optional<MainUnit> optDefaultUnit = storyLineService.getDefaultUnit();
+            final MainUnit unit = unitRequest.getUnit();
+            final T message = unitRequest.getMessage();
+            if (optDefaultUnit.isEmpty() || !optDefaultUnit.get().equals(unit)) {
+                storyLineService.save(message.getPersonId(), unit.getName(), message);
             }
         } catch (Exception e) {
             if (errorHandler != null) {
-                errorHandler.handle(message, e);
+                errorHandler.handle(unitRequest.getMessage(), e);
             } else {
                 throw e;
             }
         }
     }
 
-    private MainUnit activeUnitAfter(MainUnit mainUnit, T content) {
-        if (mainUnit.getNextUnits() != null) {
-            Optional<MainUnit> first = mainUnit.getNextUnits().stream()
+    private UnitRequest<MainUnit, T> activeUnitAfter(UnitRequest<MainUnit, T> unitRequest) {
+        final Set<MainUnit> nextUnits = unitRequest.getUnit().getNextUnits();
+        if (nextUnits != null) {
+            Optional<MainUnit> first = nextUnits.stream()
                     .filter(unit -> UnitActiveType.AFTER.equals(unit.getActiveType()))
                     .findFirst();
             if (first.isPresent()) {
-                getAction(content, first.get());
-                return activeUnitAfter(first.get(), content);
+                getAction(UnitRequest.of(first.get(), unitRequest.getMessage()));
+                return activeUnitAfter(UnitRequest.of(first.get(), unitRequest.getMessage()));
             }
         }
-        return mainUnit;
+        return unitRequest;
     }
 
-    private MainUnit getAction(T event, MainUnit unitAnswer) {
-        if (actionUnitMap.containsKey(unitAnswer.getType())) {
-            ActionUnit actionUnit = actionUnitMap.get(unitAnswer.getType());
-            MainUnit mainUnit = actionUnit.action(unitAnswer, event);
-            return !unitAnswer.equals(mainUnit) ? getAction(event, mainUnit) : mainUnit;
+    private UnitRequest<MainUnit, T> getAction(UnitRequest<MainUnit, T> unitRequest) {
+        final MainUnit unit = unitRequest.getUnit();
+        final String typeUnit = unit.getType();
+        if (actionUnitMap.containsKey(typeUnit)) {
+            ActionUnit actionUnit = actionUnitMap.get(typeUnit);
+            UnitRequest<MainUnit, T> newUnitRequest = actionUnit.action(unitRequest);
+            final MainUnit newUnit = newUnitRequest.getUnit();
+            return !unit.equals(newUnit) ? getAction(newUnitRequest) : unitRequest;
         } else {
-            throw new NotFoundException("ActionUnit для типа {0} не зарегистрирован", unitAnswer.getType());
+            throw new NotFoundException("ActionUnit для типа {0} не зарегистрирован", unit.getType());
         }
-    }
-
-    //TODO [22.06.2022]: Временное решение для ленивой инициализации
-    public void link(String firstName, String secondName) {
-        storyLine.link(firstName, secondName);
     }
 
 }

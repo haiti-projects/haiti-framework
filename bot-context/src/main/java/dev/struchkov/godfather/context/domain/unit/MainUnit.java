@@ -1,7 +1,8 @@
-package dev.struchkov.godfather.core.domain.unit;
+package dev.struchkov.godfather.context.domain.unit;
 
+import dev.struchkov.autoresponder.entity.KeyWord;
 import dev.struchkov.autoresponder.entity.Unit;
-import dev.struchkov.godfather.core.service.Accessibility;
+import dev.struchkov.godfather.context.service.Accessibility;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -43,7 +44,7 @@ public abstract class MainUnit extends Unit<MainUnit> {
 
     protected MainUnit(
             String name,
-            Set<String> keyWords,
+            Set<KeyWord> keyWords,
             String phrase,
             Pattern pattern,
             Integer matchThreshold,

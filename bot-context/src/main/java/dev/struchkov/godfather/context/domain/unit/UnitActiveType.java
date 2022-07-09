@@ -1,4 +1,4 @@
-package dev.struchkov.godfather.core.domain.unit;
+package dev.struchkov.godfather.context.domain.unit;
 
 /**
  * Тип активации Unit-а. Определяет порядок обработки Unit.

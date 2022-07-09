@@ -1,19 +1,21 @@
-package dev.struchkov.godfather.core.domain.unit;
+package dev.struchkov.godfather.context.domain.unit;
 
+import dev.struchkov.autoresponder.entity.KeyWord;
 import dev.struchkov.godfather.context.domain.BoxAnswer;
+import dev.struchkov.godfather.context.domain.TypeUnit;
 import dev.struchkov.godfather.context.domain.content.Message;
 import dev.struchkov.godfather.context.exception.UnitConfigException;
+import dev.struchkov.godfather.context.service.Accessibility;
 import dev.struchkov.godfather.context.service.sender.Sending;
 import dev.struchkov.godfather.context.service.usercode.Insert;
 import dev.struchkov.godfather.context.service.usercode.MessageFunction;
 import dev.struchkov.godfather.context.service.usercode.ProcessingData;
-import dev.struchkov.godfather.core.service.Accessibility;
-import dev.struchkov.godfather.core.utils.TypeUnit;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static dev.struchkov.haiti.utils.Inspector.isNotNull;
 
@@ -82,7 +84,7 @@ public class AnswerText<M extends Message> extends MainUnit {
         private ProcessingData<M> boxAnswer;
         private Insert insert;
         private Sending sending;
-        private Set<String> keyWords = new HashSet<>();
+        private Set<KeyWord> keyWords = new HashSet<>();
         private String phrase;
         private Pattern pattern;
         private Integer matchThreshold;
@@ -135,8 +137,23 @@ public class AnswerText<M extends Message> extends MainUnit {
             return this;
         }
 
-        public Builder<M> keyWords(Set<String> val) {
-            keyWords = val;
+        public Builder<M> keyWords(Set<KeyWord> val) {
+            keyWords.addAll(val);
+            return this;
+        }
+
+        public Builder<M> keyWord(KeyWord val) {
+            keyWords.add(val);
+            return this;
+        }
+
+        public Builder<M> stringKeyWords(Set<String> val) {
+            keyWords.addAll(val.stream().map(KeyWord::of).collect(Collectors.toSet()));
+            return this;
+        }
+
+        public Builder<M> keyWord(String val) {
+            keyWords.add(KeyWord.of(val));
             return this;
         }
 

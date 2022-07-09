@@ -1,6 +1,4 @@
-package dev.struchkov.godfather.core.domain;
-
-import dev.struchkov.godfather.context.domain.BoxAnswer;
+package dev.struchkov.godfather.context.domain;
 
 public class Clarification {
 

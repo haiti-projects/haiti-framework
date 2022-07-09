@@ -1,4 +1,4 @@
-package dev.struchkov.godfather.core.service.save.data;
+package dev.struchkov.godfather.context.service.save;
 
 import dev.struchkov.godfather.context.domain.content.Message;
 
