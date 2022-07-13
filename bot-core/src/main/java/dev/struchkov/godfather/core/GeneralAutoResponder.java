@@ -32,12 +32,10 @@ import java.util.stream.Collectors;
 public class GeneralAutoResponder<T extends Message> {
 
     private final PersonSettingService personSettingService;
-
-    private ErrorHandler errorHandler;
     private final StorylineService<T> storyLineService;
-
     protected Map<String, ActionUnit<? extends MainUnit, ? extends Message>> actionUnitMap = new HashMap<>();
     protected List<Modifiable<T>> modifiable;
+    private ErrorHandler errorHandler;
 
     protected GeneralAutoResponder(
             Sending sending,

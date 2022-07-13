@@ -82,6 +82,11 @@ public class StorylineMailService implements StorylineService<Mail> {
     }
 
     @Override
+    public Optional<StorylineHistory> replaceUserToBack(long personId, String unitName) {
+        return storylineRepository.findByCountLast(personId, unitName);
+    }
+
+    @Override
     public Optional<MainUnit> getDefaultUnit() {
         return storyLine.getDefaultUnit();
     }

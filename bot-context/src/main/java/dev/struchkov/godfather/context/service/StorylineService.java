@@ -20,13 +20,12 @@ public interface StorylineService<T extends Message> {
 
     Optional<StorylineHistory> replaceUserToBack(long personId, int countUnitsToBack);
 
+    Optional<StorylineHistory> replaceUserToBack(long personId, String unitName);
+
     Optional<MainUnit> getDefaultUnit();
 
     /**
      * Ленивая (поздняя) связка юнитов между собой. Осуществляется уже после создания сценария. С помощью данного подхода можно реализовать циклические зависимости юнитов. Либо можно использовать {@link dev.struchkov.godfather.context.domain.unit.cmd.TeleportCmd}
-     *
-     * @param firstName
-     * @param secondName
      */
     void lazyLink(String firstName, String secondName);
 

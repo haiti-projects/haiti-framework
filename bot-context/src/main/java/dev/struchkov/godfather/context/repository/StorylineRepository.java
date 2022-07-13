@@ -11,6 +11,8 @@ public interface StorylineRepository {
 
     Optional<StorylineHistory> findByCountLast(long personId, int countUnitsToBack);
 
+    Optional<StorylineHistory> findByCountLast(long personId, String unitName);
+
     void cleanHistoryByPersonId(@NotNull Long personId);
 
 }

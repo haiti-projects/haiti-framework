@@ -36,6 +36,21 @@ public class StorylineMapRepository implements StorylineRepository {
     }
 
     @Override
+    public Optional<StorylineHistory> findByCountLast(long personId, String unitName) {
+        if (map.containsKey(personId)) {
+            final Stack<StorylineHistory> stack = map.get(personId);
+            StorylineHistory storylineHistory = null;
+            while (!stack.isEmpty()) {
+                storylineHistory = stack.pop();
+                if (unitName.equals(storylineHistory.getUnitName())) {
+                    return Optional.of(storylineHistory);
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    @Override
     public void cleanHistoryByPersonId(@NotNull Long personId) {
         if (map.containsKey(personId)) {
             map.get(personId).clear();

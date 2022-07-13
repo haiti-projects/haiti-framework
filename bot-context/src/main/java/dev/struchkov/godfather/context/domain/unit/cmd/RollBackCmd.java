@@ -21,6 +21,11 @@ public class RollBackCmd extends MainUnit {
      */
     private final int countBack;
 
+    /**
+     * Имя юнита, на который нужно вернуть пользователя.
+     */
+    private final String rollbackUnitName;
+
     private RollBackCmd(Builder builder) {
         super(
                 builder.name,
@@ -35,10 +40,7 @@ public class RollBackCmd extends MainUnit {
                 TypeUnit.BACK_CMD
         );
         this.countBack = builder.countBack;
-    }
-
-    public int getCountBack() {
-        return countBack;
+        this.rollbackUnitName = builder.rollbackUnitName;
     }
 
     public static RollBackCmd.Builder builder() {
@@ -53,76 +55,90 @@ public class RollBackCmd extends MainUnit {
         return RollBackCmd.builder().countBack(1).build();
     }
 
+    public int getCountBack() {
+        return countBack;
+    }
+
+    public String getRollbackUnitName() {
+        return rollbackUnitName;
+    }
+
     public static final class Builder {
+        private final Set<KeyWord> keyWords = new HashSet<>();
         private String name;
-        private Set<KeyWord> keyWords = new HashSet<>();
         private String phrase;
         private Pattern pattern;
         private Integer matchThreshold;
         private Integer priority;
         private UnitActiveType activeType = UnitActiveType.DEFAULT;
         private int countBack;
+        private String rollbackUnitName;
 
         private Builder() {
         }
 
-        public RollBackCmd.Builder name(String name) {
+        public Builder name(String name) {
             this.name = name;
             return this;
         }
 
-        public RollBackCmd.Builder keyWords(Set<KeyWord> val) {
+        public Builder keyWords(Set<KeyWord> val) {
             keyWords.addAll(val);
             return this;
         }
 
-        public RollBackCmd.Builder keyWord(KeyWord val) {
+        public Builder keyWord(KeyWord val) {
             keyWords.add(val);
             return this;
         }
 
-        public RollBackCmd.Builder stringKeyWords(Set<String> val) {
+        public Builder stringKeyWords(Set<String> val) {
             keyWords.addAll(val.stream().map(KeyWord::of).collect(Collectors.toSet()));
             return this;
         }
 
-        public RollBackCmd.Builder keyWord(String val) {
+        public Builder keyWord(String val) {
             keyWords.add(KeyWord.of(val));
             return this;
         }
 
-        public RollBackCmd.Builder phrase(String val) {
+        public Builder phrase(String val) {
             phrase = val;
             return this;
         }
 
-        public RollBackCmd.Builder pattern(Pattern val) {
+        public Builder pattern(Pattern val) {
             pattern = val;
             return this;
         }
 
-        public RollBackCmd.Builder matchThreshold(Integer val) {
+        public Builder matchThreshold(Integer val) {
             matchThreshold = val;
             return this;
         }
 
-        public RollBackCmd.Builder priority(Integer val) {
+        public Builder priority(Integer val) {
             priority = val;
             return this;
         }
 
-        public RollBackCmd.Builder activeType(UnitActiveType val) {
+        public Builder activeType(UnitActiveType val) {
             activeType = val;
             return this;
         }
 
-        public RollBackCmd.Builder countBack(int val) {
+        public Builder countBack(int val) {
             countBack = val + 1;
             return this;
         }
 
+        public Builder rollbackUnitName(String val) {
+            rollbackUnitName = val;
+            return this;
+        }
+
         public RollBackCmd build() {
-            if (countBack < 2) {
+            if (rollbackUnitName == null && countBack < 2) {
                 throw new UnitConfigException("Ошибка конфигурирования юнита {0}: Количество юнитов для отката не должно быть меньше 1.", name);
             }
             return new RollBackCmd(this);
