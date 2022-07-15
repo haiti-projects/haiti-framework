@@ -6,6 +6,7 @@ import dev.struchkov.godfather.context.domain.content.Message;
 import dev.struchkov.godfather.context.service.Accessibility;
 import dev.struchkov.godfather.context.service.usercode.CheckData;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -41,12 +42,13 @@ public class AnswerCheck extends MainUnit {
         super(
                 builder.name,
                 builder.keyWords,
-                builder.phrase,
+                builder.phrases,
                 builder.pattern,
                 builder.matchThreshold,
                 builder.priority,
                 new HashSet<>(),
                 builder.activeType,
+                builder.notSaveHistory,
                 builder.accessibility,
                 TypeUnit.CHECK
         );
@@ -73,8 +75,8 @@ public class AnswerCheck extends MainUnit {
 
     public static final class Builder {
         private String name;
-        private Set<KeyWord> keyWords = new HashSet<>();
-        private String phrase;
+        private final Set<KeyWord> keyWords = new HashSet<>();
+        private final Set<String> phrases = new HashSet<>();
         private Pattern pattern;
         private Integer matchThreshold;
         private Integer priority;
@@ -83,6 +85,7 @@ public class AnswerCheck extends MainUnit {
         private CheckData<Message> check;
         private UnitActiveType activeType;
         private Accessibility accessibility;
+        private boolean notSaveHistory;
 
         private Builder() {
         }
@@ -113,7 +116,12 @@ public class AnswerCheck extends MainUnit {
         }
 
         public Builder phrase(String val) {
-            phrase = val;
+            phrases.add(val);
+            return this;
+        }
+
+        public Builder phrases(Collection<String> val) {
+            phrases.addAll(val);
             return this;
         }
 
@@ -154,6 +162,11 @@ public class AnswerCheck extends MainUnit {
 
         public Builder activeType(UnitActiveType val) {
             activeType = val;
+            return this;
+        }
+
+        public Builder notSaveHistory() {
+            notSaveHistory = true;
             return this;
         }
 

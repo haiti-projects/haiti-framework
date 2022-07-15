@@ -40,25 +40,29 @@ public abstract class MainUnit extends Unit<MainUnit> {
     /**
      * Проверка доступа пользователя к юниту.
      */
-    private Accessibility accessibility;
+    private final Accessibility accessibility;
+
+    private final boolean notSaveHistory;
 
     protected MainUnit(
             String name,
             Set<KeyWord> keyWords,
-            String phrase,
+            Set<String> phrases,
             Pattern pattern,
             Integer matchThreshold,
             Integer priority,
             Set<MainUnit> nextUnits,
             UnitActiveType activeType,
+            boolean notSaveHistory,
             Accessibility accessibility,
             String type
     ) {
-        super(keyWords, phrase, pattern, matchThreshold, priority, nextUnits);
+        super(keyWords, phrases, pattern, matchThreshold, priority, nextUnits);
         this.name = name;
         this.activeType = Optional.ofNullable(activeType).orElse(UnitActiveType.DEFAULT);
         this.accessibility = accessibility;
         this.type = type;
+        this.notSaveHistory = notSaveHistory;
     }
 
     public String getType() {
@@ -83,6 +87,10 @@ public abstract class MainUnit extends Unit<MainUnit> {
 
     public String getName() {
         return name;
+    }
+
+    public boolean isNotSaveHistory() {
+        return notSaveHistory;
     }
 
     public Optional<Accessibility> getAccessibility() {

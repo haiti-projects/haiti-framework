@@ -39,7 +39,7 @@ public class StorylineMapRepository implements StorylineRepository {
     public Optional<StorylineHistory> findByCountLast(long personId, String unitName) {
         if (map.containsKey(personId)) {
             final Stack<StorylineHistory> stack = map.get(personId);
-            StorylineHistory storylineHistory = null;
+            StorylineHistory storylineHistory;
             while (!stack.isEmpty()) {
                 storylineHistory = stack.pop();
                 if (unitName.equals(storylineHistory.getUnitName())) {

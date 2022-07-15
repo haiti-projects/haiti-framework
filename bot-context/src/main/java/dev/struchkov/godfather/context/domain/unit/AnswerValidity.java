@@ -7,6 +7,7 @@ import dev.struchkov.godfather.context.service.ClarificationQuestion;
 import dev.struchkov.godfather.context.service.save.LocalPreservable;
 import dev.struchkov.godfather.context.service.save.Preservable;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -42,12 +43,13 @@ public class AnswerValidity extends MainUnit {
         super(
                 builder.name,
                 builder.keyWords,
-                builder.phrase,
+                builder.phrases,
                 builder.pattern,
                 builder.matchThreshold,
                 builder.priority,
                 builder.nextUnits,
                 UnitActiveType.DEFAULT,
+                builder.notSaveHistory,
                 builder.accessibility,
                 TypeUnit.VALIDITY
         );
@@ -82,18 +84,19 @@ public class AnswerValidity extends MainUnit {
     }
 
     public static final class Builder {
+        private final Set<KeyWord> keyWords = new HashSet<>();
+        private final Set<String> phrases = new HashSet<>();
         private String name;
         private MainUnit unitYes;
         private MainUnit unitNo;
         private MainUnit unitNull;
         private ClarificationQuestion clarificationQuestion;
-        private Set<KeyWord> keyWords = new HashSet<>();
-        private String phrase;
         private Pattern pattern;
         private Integer matchThreshold;
         private Integer priority;
         private Set<MainUnit> nextUnits = new HashSet<>();
         private Accessibility accessibility;
+        private boolean notSaveHistory;
 
         private Builder() {
         }
@@ -144,7 +147,12 @@ public class AnswerValidity extends MainUnit {
         }
 
         public Builder phrase(String val) {
-            phrase = val;
+            phrases.add(val);
+            return this;
+        }
+
+        public Builder phrases(Collection<String> val) {
+            phrases.addAll(val);
             return this;
         }
 
@@ -180,6 +188,11 @@ public class AnswerValidity extends MainUnit {
 
         public Builder accessibility(Accessibility val) {
             accessibility = val;
+            return this;
+        }
+
+        public Builder notSaveHistory() {
+            notSaveHistory = true;
             return this;
         }
 

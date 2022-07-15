@@ -14,9 +14,10 @@ public class TypeUnit {
     public static final String TIMER = "TIMER";
     public static final String CHECK = "CHECK";
     public static final String VALIDITY = "VALIDITY";
-    public static final String BACK_CMD = "BACK_CMD";
 
+    public static final String BACK_CMD = "BACK_CMD";
     public static final String TELEPORT_CMD = "TELEPORT_CMD";
+    public static final String REPLACE_CMD = "REPLACE_CMD";
 
     private TypeUnit() {
         utilityClass();

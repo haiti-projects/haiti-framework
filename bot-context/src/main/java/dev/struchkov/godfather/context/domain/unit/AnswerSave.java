@@ -55,12 +55,13 @@ public class AnswerSave<D> extends MainUnit {
         super(
                 builder.name,
                 builder.keyWords,
-                builder.phrase,
+                builder.phrases,
                 builder.pattern,
                 builder.matchThreshold,
                 builder.priority,
                 builder.nextUnits,
                 (builder.hidden) ? UnitActiveType.AFTER : UnitActiveType.DEFAULT,
+                builder.notSaveHistory,
                 builder.accessibility,
                 TypeUnit.SAVE
         );
@@ -110,7 +111,7 @@ public class AnswerSave<D> extends MainUnit {
     public static final class Builder<D> {
         private String name;
         private Set<KeyWord> keyWords = new HashSet<>();
-        private String phrase;
+        private Set<String> phrases = new HashSet<>();
         private Pattern pattern;
         private Integer matchThreshold;
         private Integer priority;
@@ -122,6 +123,7 @@ public class AnswerSave<D> extends MainUnit {
         private boolean hidden;
         private CheckSave<? super Message> checkSave;
         private Accessibility accessibility;
+        private boolean notSaveHistory;
 
         private Builder() {
         }
@@ -152,7 +154,12 @@ public class AnswerSave<D> extends MainUnit {
         }
 
         public Builder<D> phrase(String val) {
-            phrase = val;
+            phrases.add(val);
+            return this;
+        }
+
+        public Builder<D> phrases(Collection<String> val) {
+            phrases.addAll(val);
             return this;
         }
 
@@ -211,8 +218,13 @@ public class AnswerSave<D> extends MainUnit {
             return this;
         }
 
-        public Builder accessibility(Accessibility val) {
+        public Builder<D> accessibility(Accessibility val) {
             accessibility = val;
+            return this;
+        }
+
+        public Builder<D> notSaveHistory() {
+            notSaveHistory = true;
             return this;
         }
 

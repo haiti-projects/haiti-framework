@@ -3,10 +3,10 @@ package dev.struchkov.godfather.context.domain.unit;
 import dev.struchkov.autoresponder.entity.KeyWord;
 import dev.struchkov.godfather.context.domain.TypeUnit;
 import dev.struchkov.godfather.context.domain.content.Message;
-import dev.struchkov.godfather.context.domain.keyboard.KeyBoard;
 import dev.struchkov.godfather.context.service.Accessibility;
 import dev.struchkov.godfather.context.service.usercode.CheckData;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -46,12 +46,13 @@ public class AnswerTimer<M extends Message> extends MainUnit {
         super(
                 builder.name,
                 builder.keyWords,
-                builder.phrase,
+                builder.phrases,
                 builder.pattern,
                 builder.matchThreshold,
                 builder.priority,
                 null,
                 builder.activeType,
+                builder.notSaveHistory,
                 builder.accessibility,
                 TypeUnit.TIMER
         );
@@ -87,13 +88,14 @@ public class AnswerTimer<M extends Message> extends MainUnit {
         private Integer timeDelaySec;
         private Integer timeDeathSec;
         private CheckData<M> checkLoop;
-        private Set<KeyWord> keyWords = new HashSet<>();
-        private String phrase;
+        private final Set<KeyWord> keyWords = new HashSet<>();
+        private final Set<String> phrases = new HashSet<>();
         private Pattern pattern;
         private Integer matchThreshold;
         private Integer priority;
         private UnitActiveType activeType = UnitActiveType.AFTER;
         private Accessibility accessibility;
+        private boolean notSaveHistory;
 
         private Builder() {
         }
@@ -144,7 +146,12 @@ public class AnswerTimer<M extends Message> extends MainUnit {
         }
 
         public Builder<M> phrase(String val) {
-            phrase = val;
+            phrases.add(val);
+            return this;
+        }
+
+        public Builder<M> phrases(Collection<String> val) {
+            phrases.addAll(val);
             return this;
         }
 
@@ -163,8 +170,13 @@ public class AnswerTimer<M extends Message> extends MainUnit {
             return this;
         }
 
-        public Builder accessibility(Accessibility val) {
+        public Builder<M> accessibility(Accessibility val) {
             accessibility = val;
+            return this;
+        }
+
+        public Builder<M> notSaveHistory() {
+            notSaveHistory = true;
             return this;
         }
 

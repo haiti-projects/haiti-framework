@@ -4,7 +4,6 @@ import dev.struchkov.autoresponder.entity.KeyWord;
 import dev.struchkov.godfather.context.domain.TypeUnit;
 import dev.struchkov.godfather.context.domain.unit.MainUnit;
 import dev.struchkov.godfather.context.domain.unit.UnitActiveType;
-import dev.struchkov.godfather.context.exception.UnitConfigException;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -12,22 +11,11 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-/**
- * Юнит, который позволяет откатить пользователя на предыдущие юниты в сценарии с сохранением ранее введенной информации в сообщениях.
- */
-public class RollBackCmd extends MainUnit {
+public class ReplaceCmd extends MainUnit {
 
-    /**
-     * Количество юнитов, на которые можно откатиться назад.
-     */
-    private final int countBack;
+    private final MainUnit thisUnit;
 
-    /**
-     * Имя юнита, на который нужно вернуть пользователя.
-     */
-    private final String rollbackUnitName;
-
-    private RollBackCmd(Builder builder) {
+    private ReplaceCmd(Builder builder) {
         super(
                 builder.name,
                 builder.keyWords,
@@ -39,30 +27,17 @@ public class RollBackCmd extends MainUnit {
                 builder.activeType,
                 true,
                 null,
-                TypeUnit.BACK_CMD
+                TypeUnit.REPLACE_CMD
         );
-        this.countBack = builder.countBack;
-        this.rollbackUnitName = builder.rollbackUnitName;
+        this.thisUnit = builder.thisUnit;
     }
 
-    public static RollBackCmd.Builder builder() {
-        return new RollBackCmd.Builder();
+    public static Builder builder() {
+        return new Builder();
     }
 
-    public static RollBackCmd rollBack(int countToBack) {
-        return RollBackCmd.builder().countBack(countToBack).build();
-    }
-
-    public static RollBackCmd singleRollBack() {
-        return RollBackCmd.builder().countBack(1).build();
-    }
-
-    public int getCountBack() {
-        return countBack;
-    }
-
-    public String getRollbackUnitName() {
-        return rollbackUnitName;
+    public MainUnit getThisUnit() {
+        return thisUnit;
     }
 
     public static final class Builder {
@@ -72,9 +47,9 @@ public class RollBackCmd extends MainUnit {
         private Pattern pattern;
         private Integer matchThreshold;
         private Integer priority;
-        private UnitActiveType activeType = UnitActiveType.DEFAULT;
-        private int countBack;
-        private String rollbackUnitName;
+        private UnitActiveType activeType = UnitActiveType.AFTER;
+
+        private MainUnit thisUnit;
 
         private Builder() {
         }
@@ -134,21 +109,14 @@ public class RollBackCmd extends MainUnit {
             return this;
         }
 
-        public Builder countBack(int val) {
-            countBack = val + 1;
+        public Builder thisUnit(MainUnit val) {
+            thisUnit = val;
             return this;
         }
 
-        public Builder rollbackUnitName(String val) {
-            rollbackUnitName = val;
-            return this;
-        }
 
-        public RollBackCmd build() {
-            if (rollbackUnitName == null && countBack < 2) {
-                throw new UnitConfigException("Ошибка конфигурирования юнита {0}: Количество юнитов для отката не должно быть меньше 1.", name);
-            }
-            return new RollBackCmd(this);
+        public ReplaceCmd build() {
+            return new ReplaceCmd(this);
         }
 
     }

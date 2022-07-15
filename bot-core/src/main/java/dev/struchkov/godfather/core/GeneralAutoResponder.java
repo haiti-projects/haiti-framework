@@ -19,6 +19,7 @@ import dev.struchkov.godfather.core.service.action.AnswerSaveAction;
 import dev.struchkov.godfather.core.service.action.AnswerTextAction;
 import dev.struchkov.godfather.core.service.action.AnswerTimerAction;
 import dev.struchkov.godfather.core.service.action.AnswerValidityAction;
+import dev.struchkov.godfather.core.service.action.cmd.ReplaceCmdAction;
 import dev.struchkov.godfather.core.service.timer.TimerService;
 import dev.struchkov.haiti.context.exception.NotFoundException;
 
@@ -51,6 +52,7 @@ public class GeneralAutoResponder<T extends Message> {
         actionUnitMap.put(TypeUnit.CHECK, new AnswerCheckAction());
         actionUnitMap.put(TypeUnit.TEXT, new AnswerTextAction(sending));
         actionUnitMap.put(TypeUnit.VALIDITY, new AnswerValidityAction());
+        actionUnitMap.put(TypeUnit.REPLACE_CMD, new ReplaceCmdAction());
     }
 
     public void initModifiable(List<Modifiable<T>> modifiable) {
@@ -128,14 +130,7 @@ public class GeneralAutoResponder<T extends Message> {
     public void answer(UnitRequest<MainUnit, T> unitRequest) {
         try {
             unitRequest = getAction(unitRequest);
-            unitRequest = activeUnitAfter(unitRequest);
-
-            final Optional<MainUnit> optDefaultUnit = storyLineService.getDefaultUnit();
-            final MainUnit unit = unitRequest.getUnit();
-            final T message = unitRequest.getMessage();
-            if (optDefaultUnit.isEmpty() || !optDefaultUnit.get().equals(unit)) {
-                storyLineService.save(message.getPersonId(), unit.getName(), message);
-            }
+            activeUnitAfter(unitRequest);
         } catch (Exception e) {
             if (errorHandler != null) {
                 errorHandler.handle(unitRequest.getMessage(), e);
@@ -161,10 +156,15 @@ public class GeneralAutoResponder<T extends Message> {
 
     private UnitRequest<MainUnit, T> getAction(UnitRequest<MainUnit, T> unitRequest) {
         final MainUnit unit = unitRequest.getUnit();
+        final T message = unitRequest.getMessage();
         final String typeUnit = unit.getType();
         if (actionUnitMap.containsKey(typeUnit)) {
             ActionUnit actionUnit = actionUnitMap.get(typeUnit);
             UnitRequest<MainUnit, T> newUnitRequest = actionUnit.action(unitRequest);
+            final Optional<MainUnit> optDefaultUnit = storyLineService.getDefaultUnit();
+            if (!unit.isNotSaveHistory() && (optDefaultUnit.isEmpty() || !optDefaultUnit.get().equals(unit))) {
+                storyLineService.save(message.getPersonId(), unit.getName(), message);
+            }
             final MainUnit newUnit = newUnitRequest.getUnit();
             return !unit.equals(newUnit) ? getAction(newUnitRequest) : unitRequest;
         } else {

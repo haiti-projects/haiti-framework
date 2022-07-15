@@ -5,6 +5,7 @@ import dev.struchkov.godfather.context.domain.TypeUnit;
 import dev.struchkov.godfather.context.domain.unit.MainUnit;
 import dev.struchkov.godfather.context.domain.unit.UnitActiveType;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -18,36 +19,37 @@ public class TeleportCmd extends MainUnit {
     /**
      * Название юнита, в которое необходимо осуществить перенос.
      */
-    private String unitNameToTeleport;
+    private final String unitNameToTeleport;
 
     private TeleportCmd(Builder builder) {
         super(
                 builder.name,
                 builder.keyWords,
-                builder.phrase,
+                builder.phrases,
                 builder.pattern,
                 builder.matchThreshold,
                 builder.priority,
                 new HashSet<>(),
                 builder.activeType,
+                true,
                 null,
                 TypeUnit.TELEPORT_CMD
         );
         this.unitNameToTeleport = builder.unitNameToTeleport;
     }
 
-    public String getUnitNameToTeleport() {
-        return unitNameToTeleport;
-    }
-
     public static Builder builder() {
         return new Builder();
     }
 
+    public String getUnitNameToTeleport() {
+        return unitNameToTeleport;
+    }
+
     public static final class Builder {
+        private final Set<KeyWord> keyWords = new HashSet<>();
+        private final Set<String> phrases = new HashSet<>();
         private String name;
-        private Set<KeyWord> keyWords = new HashSet<>();
-        private String phrase;
         private Pattern pattern;
         private Integer matchThreshold;
         private Integer priority;
@@ -83,7 +85,12 @@ public class TeleportCmd extends MainUnit {
         }
 
         public Builder phrase(String val) {
-            phrase = val;
+            phrases.add(val);
+            return this;
+        }
+
+        public Builder phrases(Collection<String> val) {
+            phrases.addAll(val);
             return this;
         }
 

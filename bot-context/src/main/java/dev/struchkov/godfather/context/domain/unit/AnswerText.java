@@ -11,6 +11,7 @@ import dev.struchkov.godfather.context.service.usercode.Insert;
 import dev.struchkov.godfather.context.service.usercode.MessageFunction;
 import dev.struchkov.godfather.context.service.usercode.ProcessingData;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -45,12 +46,13 @@ public class AnswerText<M extends Message> extends MainUnit {
         super(
                 builder.name,
                 builder.keyWords,
-                builder.phrase,
+                builder.phrases,
                 builder.pattern,
                 builder.matchThreshold,
                 builder.priority,
                 builder.nextUnits,
                 builder.activeType,
+                builder.notSaveHistory,
                 builder.accessibility,
                 TypeUnit.TEXT
         );
@@ -80,18 +82,19 @@ public class AnswerText<M extends Message> extends MainUnit {
     }
 
     public static final class Builder<M extends Message> {
+        private final Set<KeyWord> keyWords = new HashSet<>();
+        private final Set<String> phrases = new HashSet<>();
         private String name;
         private ProcessingData<M> boxAnswer;
         private Insert insert;
         private Sending sending;
-        private Set<KeyWord> keyWords = new HashSet<>();
-        private String phrase;
         private Pattern pattern;
         private Integer matchThreshold;
         private Integer priority;
         private Set<MainUnit> nextUnits = new HashSet<>();
         private UnitActiveType activeType;
         private Accessibility accessibility;
+        private boolean notSaveHistory;
 
         private Builder() {
         }
@@ -158,7 +161,12 @@ public class AnswerText<M extends Message> extends MainUnit {
         }
 
         public Builder<M> phrase(String val) {
-            phrase = val;
+            phrases.add(val);
+            return this;
+        }
+
+        public Builder<M> phrases(Collection<String> val) {
+            phrases.addAll(val);
             return this;
         }
 
@@ -187,8 +195,13 @@ public class AnswerText<M extends Message> extends MainUnit {
             return this;
         }
 
-        public Builder accessibility(Accessibility val) {
+        public Builder<M> accessibility(Accessibility val) {
             accessibility = val;
+            return this;
+        }
+
+        public Builder<M> notSaveHistory() {
+            notSaveHistory = true;
             return this;
         }
 
