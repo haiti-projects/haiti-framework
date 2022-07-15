@@ -12,7 +12,6 @@ public class UnitDefinition {
     private String name;
     private Object objectConfig;
     private Method method;
-    private boolean lazy;
 
     public String getName() {
         return name;
@@ -64,14 +63,6 @@ public class UnitDefinition {
 
     public void setDependentUnits(Set<String> dependentUnitNames) {
         this.dependentUnits.addAll(dependentUnitNames);
-    }
-
-    public boolean isLazy() {
-        return lazy;
-    }
-
-    public void setLazy(boolean lazy) {
-        this.lazy = lazy;
     }
 
 }

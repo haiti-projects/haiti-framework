@@ -31,7 +31,6 @@ public class StorylineMaker {
 
     private final Map<String, UnitDefinition> unitDefinitions = new HashMap<>();
     private final Map<String, MainUnit> unitMap = new HashMap<>();
-    private final Set<String> lazyUnits = new HashSet<>();
     private final Set<String> mainUnits = new HashSet<>();
 
     public StorylineMaker(List<Object> unitConfigurations) {
@@ -50,7 +49,6 @@ public class StorylineMaker {
         generateUnitDefinitions();
         try {
             createUnitMap();
-            createLazy();
             final Set<MainUnit> mainUnit = getMainUnit();
             return new Storyline(mainUnit, unitMap);
         } catch (IllegalAccessException | InvocationTargetException e) {
@@ -66,43 +64,18 @@ public class StorylineMaker {
                 .collect(Collectors.toSet());
     }
 
-    private void createLazy() throws IllegalAccessException, InvocationTargetException {
-        final List<UnitDefinition> lazyDefinitions = unitDefinitions.values().stream()
-                .filter(UnitDefinition::isLazy)
-                .toList();
-        for (UnitDefinition lazyDefinition : lazyDefinitions) {
-            final MainUnit lazyUnit = createUnit(lazyDefinition);
-            unitMap.put(lazyDefinition.getName(), lazyUnit);
-            for (String dependentUnit : lazyDefinition.getDependentUnits()) {
-                final MainUnit mainUnit = unitMap.get(dependentUnit);
-                final Set<MainUnit> nextUnits = mainUnit.getNextUnits();
-                if (nextUnits != null) {
-                    nextUnits.add(lazyUnit);
-                }
-            }
-        }
-    }
-
     private void createUnitMap() throws IllegalAccessException, InvocationTargetException {
         for (UnitDefinition unitDefinition : unitDefinitions.values()) {
             if (!unitMap.containsKey(unitDefinition.getName())) {
                 final Set<String> nextUnitNames = unitDefinition.getNextUnitNames();
                 if (nextUnitNames.isEmpty() || unitMap.keySet().containsAll(nextUnitNames)) {
                     createUnit(unitDefinition);
-                } else if (unitDefinition.isLazy()) {
-                    createLazyUnit(unitDefinition);
                 }
             }
         }
     }
 
-    private void createLazyUnit(UnitDefinition unitDefinition) {
-        final String unitName = unitDefinition.getName();
-        unitMap.put(unitName, LazyUnit.create(unitName, unitDefinition));
-    }
-
     private MainUnit createUnit(UnitDefinition unitDefinition) throws IllegalAccessException, InvocationTargetException {
-
         final Object objectConfig = unitDefinition.getObjectConfig();
         final String currentUnitName = unitDefinition.getName();
         final Method method = unitDefinition.getMethod();
@@ -118,7 +91,6 @@ public class StorylineMaker {
         unitMap.put(currentUnitName, newUnit);
 
         final Set<String> dependentUnitsName = unitDefinition.getDependentUnits();
-        dependentUnitsName.removeAll(lazyUnits);
         for (String dependentUnitName : dependentUnitsName) {
             final Set<String> dependentNextUnitNames = unitDefinitions.get(dependentUnitName).getNextUnitNames();
             if (unitMap.keySet().containsAll(dependentNextUnitNames)) {
@@ -145,11 +117,7 @@ public class StorylineMaker {
                     unitDefinition.setName(unitName);
                     unitDefinition.setMethod(method);
                     unitDefinition.setObjectConfig(config);
-                    unitDefinition.setLazy(unitConfig.lazy());
 
-                    if (unitConfig.lazy()) {
-                        lazyUnits.add(unitName);
-                    }
                     if (unitConfig.mainUnit()) {
                         mainUnits.add(unitName);
                     }

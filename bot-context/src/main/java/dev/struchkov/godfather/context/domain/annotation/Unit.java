@@ -13,8 +13,6 @@ public @interface Unit {
 
     String value() default "";
 
-    boolean lazy() default false;
-
     boolean mainUnit() default false;
 
 }
