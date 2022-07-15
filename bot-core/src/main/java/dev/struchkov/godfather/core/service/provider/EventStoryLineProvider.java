@@ -17,4 +17,9 @@ public class EventStoryLineProvider implements EventProvider<Mail> {
         generalAutoResponder.processingNewMessage(message);
     }
 
+    @Override
+    public String getEventType() {
+        return Mail.TYPE;
+    }
+
 }

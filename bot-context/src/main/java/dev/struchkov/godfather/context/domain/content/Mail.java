@@ -1,6 +1,7 @@
 package dev.struchkov.godfather.context.domain.content;
 
 import dev.struchkov.godfather.context.domain.content.attachment.Attachment;
+import dev.struchkov.godfather.context.domain.event.Event;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +19,9 @@ import java.util.List;
  */
 @Entity
 @Table(name = "mail")
-public class Mail extends Message {
+public class Mail extends Message implements Event {
+
+    public static final String TYPE = "MAIL";
 
     /**
      * Имя отправителя.
@@ -47,7 +50,7 @@ public class Mail extends Message {
     private List<Mail> forwardMail;
 
     public Mail() {
-        type = ContentType.MAIL;
+        contentType = ContentType.MAIL;
     }
 
     public String getFirstName() {
@@ -84,6 +87,11 @@ public class Mail extends Message {
 
     public void setForwardMail(List<Mail> forwardMail) {
         this.forwardMail = forwardMail;
+    }
+
+    @Override
+    public String getType() {
+        return TYPE;
     }
 
 }

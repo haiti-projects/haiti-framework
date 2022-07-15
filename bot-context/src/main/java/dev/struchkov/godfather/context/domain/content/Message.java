@@ -23,7 +23,7 @@ public abstract class Message extends BasicEntity {
      */
     @Column(name = "type")
     @Enumerated(value = EnumType.STRING)
-    protected ContentType type;
+    protected ContentType contentType;
 
     /**
      * Дата создания.
@@ -56,18 +56,18 @@ public abstract class Message extends BasicEntity {
         this.text = source.getText();
         this.createDate = source.getCreateDate();
         this.id = source.getPersonId();
-        this.type = source.getType();
+        this.contentType = source.getContentType();
     }
 
     public Message() {
     }
 
-    public ContentType getType() {
-        return type;
+    public ContentType getContentType() {
+        return contentType;
     }
 
-    public void setType(ContentType type) {
-        this.type = type;
+    public void setContentType(ContentType type) {
+        this.contentType = type;
     }
 
     public LocalDateTime getCreateDate() {
@@ -107,12 +107,12 @@ public abstract class Message extends BasicEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Message message = (Message) o;
-        return type == message.type && Objects.equals(createDate, message.createDate) && Objects.equals(addDate, message.addDate) && Objects.equals(personId, message.personId) && Objects.equals(text, message.text);
+        return contentType == message.contentType && Objects.equals(createDate, message.createDate) && Objects.equals(addDate, message.addDate) && Objects.equals(personId, message.personId) && Objects.equals(text, message.text);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, createDate, addDate, personId, text);
+        return Objects.hash(contentType, createDate, addDate, personId, text);
     }
 
 }

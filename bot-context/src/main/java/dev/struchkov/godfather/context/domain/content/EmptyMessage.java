@@ -10,7 +10,7 @@ import dev.struchkov.godfather.context.exception.AppBotException;
 public class EmptyMessage extends Message {
 
     public EmptyMessage() {
-        type = ContentType.EMPTY;
+        contentType = ContentType.EMPTY;
     }
 
     @Override

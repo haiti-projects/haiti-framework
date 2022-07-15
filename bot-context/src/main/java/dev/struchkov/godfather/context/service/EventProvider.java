@@ -1,9 +1,11 @@
 package dev.struchkov.godfather.context.service;
 
-import dev.struchkov.godfather.context.domain.content.Message;
+import dev.struchkov.godfather.context.domain.event.Event;
 
-public interface EventProvider<M extends Message> {
+public interface EventProvider<T extends Event> {
 
-    void sendEvent(M message);
+    void sendEvent(T event);
+
+    String getEventType();
 
 }
