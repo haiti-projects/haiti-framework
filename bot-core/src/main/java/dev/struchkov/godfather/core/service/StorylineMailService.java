@@ -27,6 +27,7 @@ public class StorylineMailService implements StorylineService<Mail> {
     private final UnitPointerService unitPointerService;
     private final StorylineRepository storylineRepository;
     private final Storyline storyLine;
+    private String defaultUnitName;
 
     public StorylineMailService(
             UnitPointerService unitPointerService,
@@ -60,8 +61,9 @@ public class StorylineMailService implements StorylineService<Mail> {
         if (optMainUnits.isEmpty()) {
             storylineRepository.cleanHistoryByPersonId(personId);
         }
-        return optMainUnits
-                .orElse(storyLine.getStartingUnits());
+        final Set<MainUnit> nextUnits = optMainUnits.orElse(storyLine.getStartingUnits());
+        nextUnits.addAll(storyLine.getGlobalUnits());
+        return nextUnits;
     }
 
     @Override
@@ -88,7 +90,13 @@ public class StorylineMailService implements StorylineService<Mail> {
 
     @Override
     public Optional<MainUnit> getDefaultUnit() {
-        return storyLine.getDefaultUnit();
+        if (defaultUnitName == null) return Optional.empty();
+        return storyLine.getUnit(defaultUnitName);
+    }
+
+    @Override
+    public void setDefaultUnit(String defaultUnit) {
+        defaultUnitName = defaultUnit;
     }
 
     //TODO [22.06.2022]: Временное решение для ленивой инициализации

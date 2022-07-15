@@ -2,9 +2,8 @@ package dev.struchkov.godfather.core;
 
 import dev.struchkov.godfather.context.domain.UnitDefinition;
 import dev.struchkov.godfather.context.domain.annotation.Unit;
-import dev.struchkov.godfather.context.exception.UnitConfigException;
-import dev.struchkov.godfather.context.domain.unit.LazyUnit;
 import dev.struchkov.godfather.context.domain.unit.MainUnit;
+import dev.struchkov.godfather.context.exception.UnitConfigException;
 import dev.struchkov.haiti.utils.Inspector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +30,9 @@ public class StorylineMaker {
 
     private final Map<String, UnitDefinition> unitDefinitions = new HashMap<>();
     private final Map<String, MainUnit> unitMap = new HashMap<>();
+
     private final Set<String> mainUnits = new HashSet<>();
+    private final Set<String> globalUnits = new HashSet<>();
 
     public StorylineMaker(List<Object> unitConfigurations) {
         this.configurations.addAll(unitConfigurations);
@@ -50,7 +51,10 @@ public class StorylineMaker {
         try {
             createUnitMap();
             final Set<MainUnit> mainUnit = getMainUnit();
-            return new Storyline(mainUnit, unitMap);
+            final Set<MainUnit> globalUnit = getGlobalUnit();
+            final Storyline storyline = new Storyline(mainUnit, unitMap);
+            storyline.addGlobalUnits(globalUnit);
+            return storyline;
         } catch (IllegalAccessException | InvocationTargetException e) {
             log.error(e.getMessage(), e);
         }
@@ -60,6 +64,12 @@ public class StorylineMaker {
     private Set<MainUnit> getMainUnit() {
         Inspector.isNotEmpty(mainUnits, unitConfigException("Не задан ни один mainUnit. Установите хотя бы для одного Unit флаг mainUnit"));
         return mainUnits.stream()
+                .map(unitMap::get)
+                .collect(Collectors.toSet());
+    }
+
+    private Set<MainUnit> getGlobalUnit() {
+        return globalUnits.stream()
                 .map(unitMap::get)
                 .collect(Collectors.toSet());
     }
@@ -118,8 +128,11 @@ public class StorylineMaker {
                     unitDefinition.setMethod(method);
                     unitDefinition.setObjectConfig(config);
 
-                    if (unitConfig.mainUnit()) {
+                    if (unitConfig.main()) {
                         mainUnits.add(unitName);
+                    }
+                    if (unitConfig.global()) {
+                        globalUnits.add(unitName);
                     }
 
                     final Parameter[] nextUnits = method.getParameters();

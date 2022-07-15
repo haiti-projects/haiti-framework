@@ -12,8 +12,8 @@ import java.util.Set;
 
 public class Storyline {
 
-    private MainUnit defaultUnit;
     private final Set<MainUnit> startingUnits = new HashSet<>();
+    private final Set<MainUnit> globalUnits = new HashSet<>();
     private final Map<String, MainUnit> units = new HashMap<>();
 
     public Storyline(Set<MainUnit> startingUnits, Map<String, MainUnit> units) {
@@ -21,12 +21,12 @@ public class Storyline {
         this.units.putAll(units);
     }
 
-    public void setDefaultUnit(MainUnit defaultUnit) {
-        this.defaultUnit = defaultUnit;
+    public void addGlobalUnits(Set<MainUnit> globalUnits) {
+        this.globalUnits.addAll(globalUnits);
     }
 
-    public Optional<MainUnit> getDefaultUnit() {
-        return Optional.ofNullable(defaultUnit);
+    public Set<MainUnit> getGlobalUnits() {
+        return globalUnits;
     }
 
     /**

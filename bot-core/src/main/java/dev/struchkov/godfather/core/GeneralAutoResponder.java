@@ -80,6 +80,10 @@ public class GeneralAutoResponder<T extends Message> {
         this.errorHandler = errorHandler;
     }
 
+    public void setDefaultUnit(String unitName) {
+        storyLineService.setDefaultUnit(unitName);
+    }
+
     public void processingNewMessage(T newMessage) {
         if (newMessage != null) {
             final boolean state = personSettingService.getStateProcessingByPersonId(newMessage.getPersonId()).orElse(true);
@@ -107,7 +111,8 @@ public class GeneralAutoResponder<T extends Message> {
             modifiable.forEach(m -> m.change(message));
         }
         final Set<MainUnit> units = storyLineService.getNextUnitByPersonId(message.getPersonId());
-        final Optional<MainUnit> optAnswer = Responder.nextUnit(message.getText(), units);
+        final Optional<MainUnit> optAnswer = Responder.nextUnit(message.getText(), units)
+                .or(storyLineService::getDefaultUnit);
         if (optAnswer.isPresent()) {
             final MainUnit answer = optAnswer.get();
             if (checkPermission(answer.getAccessibility(), message)) {

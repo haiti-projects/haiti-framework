@@ -31,4 +31,6 @@ public interface StorylineService<T extends Message> {
 
     Optional<MainUnit> getUnitByName(String unitName);
 
+    void setDefaultUnit(String unitName);
+
 }
