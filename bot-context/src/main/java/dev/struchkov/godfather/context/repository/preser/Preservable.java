@@ -1,6 +1,4 @@
-package dev.struchkov.godfather.context.service.save;
-
-import dev.struchkov.godfather.context.service.save.Pusher;
+package dev.struchkov.godfather.context.repository.preser;
 
 import java.util.Map;
 import java.util.Optional;
@@ -21,15 +19,6 @@ public interface Preservable<S> {
     void save(Long personId, String key, S save);
 
     Optional<S> getByKey(Long personId, String key);
-
-    /**
-     * Финальное сохранение, можно реализовать как отправку данных куда-то
-     *
-     * @param personId Идентификатор пользователя
-     */
-    default void push(Long personId, Pusher<S> pusher) {
-        Optional.ofNullable(pusher).ifPresent(sPusher -> sPusher.push(getAllSaveElement(personId)));
-    }
 
     Map<String, S> getAllSaveElement(Long personId);
 

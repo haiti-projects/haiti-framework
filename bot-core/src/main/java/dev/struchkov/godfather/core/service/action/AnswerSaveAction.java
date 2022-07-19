@@ -4,8 +4,8 @@ import dev.struchkov.godfather.context.domain.UnitRequest;
 import dev.struchkov.godfather.context.domain.content.Message;
 import dev.struchkov.godfather.context.domain.unit.AnswerSave;
 import dev.struchkov.godfather.context.domain.unit.MainUnit;
+import dev.struchkov.godfather.context.repository.preser.AnswerSavePreservable;
 import dev.struchkov.godfather.context.service.save.CheckSave;
-import dev.struchkov.godfather.context.service.save.Preservable;
 import dev.struchkov.godfather.context.service.save.PreservableData;
 
 /**
@@ -20,7 +20,7 @@ public class AnswerSaveAction<D> implements ActionUnit<AnswerSave<D>, Message> {
         final AnswerSave<D> answerSave = unitRequest.getUnit();
         final Message message = unitRequest.getMessage();
 
-        final Preservable<D> preservable = answerSave.getPreservable();
+        final AnswerSavePreservable<D> preservable = answerSave.getPreservable();
         final Long personId = message.getPersonId();
 
         final CheckSave<? super Message> checkSave = answerSave.getCheckSave();

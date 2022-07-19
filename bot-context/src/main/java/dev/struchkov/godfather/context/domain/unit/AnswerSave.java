@@ -3,9 +3,9 @@ package dev.struchkov.godfather.context.domain.unit;
 import dev.struchkov.autoresponder.entity.KeyWord;
 import dev.struchkov.godfather.context.domain.TypeUnit;
 import dev.struchkov.godfather.context.domain.content.Message;
+import dev.struchkov.godfather.context.repository.preser.AnswerSavePreservable;
 import dev.struchkov.godfather.context.service.Accessibility;
 import dev.struchkov.godfather.context.service.save.CheckSave;
-import dev.struchkov.godfather.context.service.save.Preservable;
 import dev.struchkov.godfather.context.service.save.PreservableData;
 import dev.struchkov.godfather.context.service.save.Pusher;
 
@@ -27,7 +27,7 @@ public class AnswerSave<D> extends MainUnit {
     /**
      * Объект отвечающий за сохранение - репозиторий.
      */
-    private final Preservable<D> preservable;
+    private final AnswerSavePreservable<D> preservable;
 
     /**
      * Ключ для данных.
@@ -84,7 +84,7 @@ public class AnswerSave<D> extends MainUnit {
         }
     }
 
-    public Preservable<D> getPreservable() {
+    public AnswerSavePreservable<D> getPreservable() {
         return preservable;
     }
 
@@ -110,13 +110,13 @@ public class AnswerSave<D> extends MainUnit {
 
     public static final class Builder<D> {
         private String name;
-        private Set<KeyWord> keyWords = new HashSet<>();
-        private Set<String> phrases = new HashSet<>();
+        private final Set<KeyWord> keyWords = new HashSet<>();
+        private final Set<String> phrases = new HashSet<>();
         private Pattern pattern;
         private Integer matchThreshold;
         private Integer priority;
         private Set<MainUnit> nextUnits = new HashSet<>();
-        private Preservable<D> preservable;
+        private AnswerSavePreservable<D> preservable;
         private String key;
         private Pusher<D> pusher;
         private PreservableData<D, ? super Message> preservableData;
@@ -188,7 +188,7 @@ public class AnswerSave<D> extends MainUnit {
             return this;
         }
 
-        public Builder<D> preservable(Preservable<D> val) {
+        public Builder<D> preservable(AnswerSavePreservable<D> val) {
             this.preservable = val;
             return this;
         }

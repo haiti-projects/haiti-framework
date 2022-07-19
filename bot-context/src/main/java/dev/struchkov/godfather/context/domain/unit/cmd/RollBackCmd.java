@@ -57,6 +57,18 @@ public class RollBackCmd extends MainUnit {
         return RollBackCmd.builder().countBack(1).build();
     }
 
+    public static RollBackCmd doubleRollBack() {
+        return RollBackCmd.builder().countBack(2).build();
+    }
+
+    public static RollBackCmd rollBack(String unitName) {
+        return RollBackCmd.builder().rollbackUnitName(unitName).build();
+    }
+
+    public static RollBackCmd rollBack(String phrase, String unitName) {
+        return RollBackCmd.builder().phrase(phrase).rollbackUnitName(unitName).build();
+    }
+
     public int getCountBack() {
         return countBack;
     }

@@ -4,6 +4,7 @@ import dev.struchkov.godfather.context.domain.keyboard.KeyBoardButton;
 import dev.struchkov.godfather.context.domain.keyboard.KeyBoardLine;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ public class SimpleKeyBoardLine implements KeyBoardLine {
     /**
      * Кнопки в строке.
      */
-    protected List<KeyBoardButton> buttons = new ArrayList<>();
+    protected List<KeyBoardButton> buttons;
 
     public SimpleKeyBoardLine(List<KeyBoardButton> buttons) {
         this.buttons = buttons;
@@ -26,8 +27,8 @@ public class SimpleKeyBoardLine implements KeyBoardLine {
         buttons = builder.buttons;
     }
 
-    public static SimpleKeyBoardLine simpleLine(KeyBoardButton keyBoardButton) {
-        return new SimpleKeyBoardLine(List.of(keyBoardButton));
+    public static SimpleKeyBoardLine simpleLine(KeyBoardButton... keyBoardButton) {
+        return new SimpleKeyBoardLine(Arrays.stream(keyBoardButton).toList());
     }
 
     public static Builder builder() {

@@ -4,8 +4,8 @@ import dev.struchkov.autoresponder.entity.KeyWord;
 import dev.struchkov.godfather.context.domain.TypeUnit;
 import dev.struchkov.godfather.context.service.Accessibility;
 import dev.struchkov.godfather.context.service.ClarificationQuestion;
-import dev.struchkov.godfather.context.service.save.LocalPreservable;
-import dev.struchkov.godfather.context.service.save.Preservable;
+import dev.struchkov.godfather.context.repository.preser.AnswerSaveMapPreservable;
+import dev.struchkov.godfather.context.repository.preser.Preservable;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -35,7 +35,7 @@ public class AnswerValidity extends MainUnit {
      */
     private final MainUnit unitNull;
 
-    private final Preservable<String> tempSave = new LocalPreservable<>();
+    private final Preservable<String> tempSave = new AnswerSaveMapPreservable<>();
 
     private final ClarificationQuestion clarificationQuestion;
 
