@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 /**
@@ -48,6 +49,7 @@ public abstract class MainUnit extends Unit<MainUnit> {
             String name,
             Set<KeyWord> keyWords,
             Set<String> phrases,
+            Predicate<String> triggerCheck,
             Pattern pattern,
             Integer matchThreshold,
             Integer priority,
@@ -57,7 +59,7 @@ public abstract class MainUnit extends Unit<MainUnit> {
             Accessibility accessibility,
             String type
     ) {
-        super(keyWords, phrases, pattern, matchThreshold, priority, nextUnits);
+        super(keyWords, phrases, triggerCheck, pattern, matchThreshold, priority, nextUnits);
         this.name = name;
         this.activeType = Optional.ofNullable(activeType).orElse(UnitActiveType.DEFAULT);
         this.accessibility = accessibility;

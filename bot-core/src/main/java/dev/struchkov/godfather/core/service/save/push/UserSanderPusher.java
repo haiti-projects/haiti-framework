@@ -19,7 +19,7 @@ public class UserSanderPusher implements Pusher<String> {
     }
 
     @Override
-    public void push(Map<String, String> saveElement) {
+    public void push(Long personId, Map<String, String> saveElement) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("========= ").append(nameForm).append(" =========\n");
         saveElement.forEach((key, value) -> stringBuilder.append(key).append(": ").append(value).append("\n"));

@@ -9,6 +9,7 @@ import dev.struchkov.godfather.context.exception.UnitConfigException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -32,6 +33,7 @@ public class RollBackCmd extends MainUnit {
                 builder.name,
                 builder.keyWords,
                 builder.phrases,
+                builder.triggerCheck,
                 builder.pattern,
                 builder.matchThreshold,
                 builder.priority,
@@ -80,7 +82,8 @@ public class RollBackCmd extends MainUnit {
     public static final class Builder {
         private final Set<KeyWord> keyWords = new HashSet<>();
         private String name;
-        private Set<String> phrases = new HashSet<>();
+        private final Set<String> phrases = new HashSet<>();
+        private Predicate<String> triggerCheck;
         private Pattern pattern;
         private Integer matchThreshold;
         private Integer priority;
@@ -118,6 +121,11 @@ public class RollBackCmd extends MainUnit {
 
         public Builder phrase(String val) {
             phrases.add(val);
+            return this;
+        }
+
+        public Builder triggerCheck(Predicate<String> trigger) {
+            triggerCheck = trigger;
             return this;
         }
 

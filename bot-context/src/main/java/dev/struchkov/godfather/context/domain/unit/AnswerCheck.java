@@ -9,6 +9,7 @@ import dev.struchkov.godfather.context.service.usercode.CheckData;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -43,6 +44,7 @@ public class AnswerCheck extends MainUnit {
                 builder.name,
                 builder.keyWords,
                 builder.phrases,
+                builder.triggerCheck,
                 builder.pattern,
                 builder.matchThreshold,
                 builder.priority,
@@ -77,6 +79,7 @@ public class AnswerCheck extends MainUnit {
         private String name;
         private final Set<KeyWord> keyWords = new HashSet<>();
         private final Set<String> phrases = new HashSet<>();
+        private Predicate<String> triggerCheck;
         private Pattern pattern;
         private Integer matchThreshold;
         private Integer priority;
@@ -127,6 +130,11 @@ public class AnswerCheck extends MainUnit {
 
         public Builder pattern(Pattern val) {
             pattern = val;
+            return this;
+        }
+
+        private Builder triggerCheck(Predicate<String> trigger) {
+            triggerCheck = trigger;
             return this;
         }
 

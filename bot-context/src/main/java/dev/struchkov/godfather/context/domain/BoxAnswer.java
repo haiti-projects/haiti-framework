@@ -30,16 +30,36 @@ public class BoxAnswer {
         replace = builder.replace;
     }
 
+    public static BoxAnswer boxAnswer(boolean replace, String message) {
+        return BoxAnswer.builder().replace(replace).message(message).build();
+    }
+
+    public static BoxAnswer boxAnswer(boolean replace, String messageText, KeyBoard keyBoard) {
+        return BoxAnswer.builder().replace(replace).message(messageText).keyBoard(keyBoard).build();
+    }
+
     public static BoxAnswer boxAnswer(String message) {
-        return BoxAnswer.builder().message(message).build();
+        return boxAnswer(false, message);
     }
 
     public static BoxAnswer boxAnswer(String messageText, KeyBoard keyBoard) {
-        return BoxAnswer.builder().message(messageText).keyBoard(keyBoard).build();
+        return boxAnswer(false, messageText, keyBoard);
+    }
+
+    public static BoxAnswer replaceBoxAnswer(String message) {
+        return boxAnswer(true, message);
+    }
+
+    public static BoxAnswer replaceBoxAnswer(String messageText, KeyBoard keyBoard) {
+        return boxAnswer(true, messageText, keyBoard);
     }
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    public static Builder replaceBuilder() {
+        return new Builder().replace(true);
     }
 
     public String getMessage() {

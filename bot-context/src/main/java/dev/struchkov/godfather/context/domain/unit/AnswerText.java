@@ -8,13 +8,12 @@ import dev.struchkov.godfather.context.exception.UnitConfigException;
 import dev.struchkov.godfather.context.service.Accessibility;
 import dev.struchkov.godfather.context.service.sender.Sending;
 import dev.struchkov.godfather.context.service.usercode.Insert;
-import dev.struchkov.godfather.context.service.usercode.MessageFunction;
 import dev.struchkov.godfather.context.service.usercode.ProcessingData;
 
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -47,6 +46,7 @@ public class AnswerText<M extends Message> extends MainUnit {
                 builder.name,
                 builder.keyWords,
                 builder.phrases,
+                builder.triggerCheck,
                 builder.pattern,
                 builder.matchThreshold,
                 builder.priority,
@@ -63,6 +63,10 @@ public class AnswerText<M extends Message> extends MainUnit {
 
     public static <M extends Message> AnswerText<M> of(String message) {
         return AnswerText.<M>builder().boxAnswer(BoxAnswer.boxAnswer(message)).build();
+    }
+
+    public static <M extends Message> AnswerText<M> of(BoxAnswer boxAnswer) {
+        return AnswerText.<M>builder().boxAnswer(boxAnswer).build();
     }
 
     public static <M extends Message> Builder<M> builder() {
@@ -84,6 +88,7 @@ public class AnswerText<M extends Message> extends MainUnit {
     public static final class Builder<M extends Message> {
         private final Set<KeyWord> keyWords = new HashSet<>();
         private final Set<String> phrases = new HashSet<>();
+        private Predicate<String> triggerCheck;
         private String name;
         private ProcessingData<M> boxAnswer;
         private Insert insert;
@@ -106,22 +111,6 @@ public class AnswerText<M extends Message> extends MainUnit {
 
         public Builder<M> message(ProcessingData<M> message) {
             this.boxAnswer = message;
-            return this;
-        }
-
-        public Builder<M> message(MessageFunction<M> function) {
-            this.boxAnswer = message -> {
-                final BoxAnswer.Builder builder = BoxAnswer.builder();
-                function.build(message, builder);
-                return builder.build();
-            };
-            return this;
-        }
-
-        public Builder<M> boxAnswer(Consumer<BoxAnswer.Builder> boxAnswer) {
-            final BoxAnswer.Builder boxAnswerBuilder = BoxAnswer.builder();
-            boxAnswer.accept(boxAnswerBuilder);
-            this.boxAnswer = message -> boxAnswerBuilder.build();
             return this;
         }
 
@@ -165,8 +154,13 @@ public class AnswerText<M extends Message> extends MainUnit {
             return this;
         }
 
-        public Builder<M> phrases(Collection<String> val) {
-            phrases.addAll(val);
+        public Builder<M> phrases(String... val) {
+            phrases.addAll(Arrays.asList(val));
+            return this;
+        }
+
+        public Builder<M> triggerCheck(Predicate<String> trigger) {
+            triggerCheck = trigger;
             return this;
         }
 

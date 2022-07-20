@@ -12,9 +12,11 @@ import dev.struchkov.godfather.context.service.save.Pusher;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static dev.struchkov.haiti.utils.Checker.checkNull;
 import static dev.struchkov.haiti.utils.Inspector.isNotNull;
 
 /**
@@ -56,6 +58,7 @@ public class AnswerSave<D> extends MainUnit {
                 builder.name,
                 builder.keyWords,
                 builder.phrases,
+                builder.triggerCheck,
                 builder.pattern,
                 builder.matchThreshold,
                 builder.priority,
@@ -112,6 +115,7 @@ public class AnswerSave<D> extends MainUnit {
         private String name;
         private final Set<KeyWord> keyWords = new HashSet<>();
         private final Set<String> phrases = new HashSet<>();
+        private Predicate<String> triggerCheck;
         private Pattern pattern;
         private Integer matchThreshold;
         private Integer priority;
@@ -165,6 +169,11 @@ public class AnswerSave<D> extends MainUnit {
 
         public Builder<D> pattern(Pattern val) {
             pattern = val;
+            return this;
+        }
+
+        public Builder<D> triggerCheck(Predicate<String> trigger) {
+            triggerCheck = trigger;
             return this;
         }
 
@@ -230,8 +239,10 @@ public class AnswerSave<D> extends MainUnit {
 
         public AnswerSave<D> build() {
             isNotNull(preservable, "Не указан репозиторий для сохранения формы пользователя");
-            isNotNull(preservableData, "Не указаны данные для сохранения");
-            isNotNull(key, "Не указан ключ для сохранения");
+            if (checkNull(pusher)) {
+                isNotNull(preservableData, "Не указаны данные для сохранения");
+                isNotNull(key, "Не указан ключ для сохранения");
+            }
             return new AnswerSave<>(this);
         }
 

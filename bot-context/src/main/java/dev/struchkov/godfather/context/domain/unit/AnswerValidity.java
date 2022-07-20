@@ -2,14 +2,15 @@ package dev.struchkov.godfather.context.domain.unit;
 
 import dev.struchkov.autoresponder.entity.KeyWord;
 import dev.struchkov.godfather.context.domain.TypeUnit;
-import dev.struchkov.godfather.context.service.Accessibility;
-import dev.struchkov.godfather.context.service.ClarificationQuestion;
 import dev.struchkov.godfather.context.repository.preser.AnswerSaveMapPreservable;
 import dev.struchkov.godfather.context.repository.preser.Preservable;
+import dev.struchkov.godfather.context.service.Accessibility;
+import dev.struchkov.godfather.context.service.ClarificationQuestion;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -44,6 +45,7 @@ public class AnswerValidity extends MainUnit {
                 builder.name,
                 builder.keyWords,
                 builder.phrases,
+                builder.triggerCheck,
                 builder.pattern,
                 builder.matchThreshold,
                 builder.priority,
@@ -86,6 +88,7 @@ public class AnswerValidity extends MainUnit {
     public static final class Builder {
         private final Set<KeyWord> keyWords = new HashSet<>();
         private final Set<String> phrases = new HashSet<>();
+        private Predicate<String> triggerCheck;
         private String name;
         private MainUnit unitYes;
         private MainUnit unitNo;
@@ -158,6 +161,11 @@ public class AnswerValidity extends MainUnit {
 
         public Builder pattern(Pattern val) {
             pattern = val;
+            return this;
+        }
+
+        public Builder triggerCheck(Predicate<String> trigger) {
+            triggerCheck = trigger;
             return this;
         }
 

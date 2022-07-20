@@ -31,7 +31,7 @@ public class AnswerSaveMapPreservable<S> implements AnswerSavePreservable<S> {
 
     @Override
     public void push(Long personId, Pusher<S> pusher) {
-        Optional.ofNullable(pusher).ifPresent(sPusher -> sPusher.push(getAllSaveElement(personId)));
+        Optional.ofNullable(pusher).ifPresent(sPusher -> sPusher.push(personId, getAllSaveElement(personId)));
     }
 
 }
