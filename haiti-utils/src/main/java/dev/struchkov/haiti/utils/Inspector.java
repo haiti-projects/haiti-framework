@@ -3,6 +3,10 @@ package dev.struchkov.haiti.utils;
 import java.util.Collection;
 import java.util.function.Supplier;
 
+import static dev.struchkov.haiti.utils.Checker.checkEmpty;
+import static dev.struchkov.haiti.utils.Checker.checkNotEmpty;
+import static dev.struchkov.haiti.utils.Checker.checkNotNull;
+import static dev.struchkov.haiti.utils.Checker.checkNull;
 import static dev.struchkov.haiti.utils.Exceptions.utilityClass;
 
 /**
@@ -19,44 +23,24 @@ public final class Inspector {
     /**
      * Проверка на null значение с возвращением исключения, если объект не null.
      *
-     * @param object    Проверяемый объект
-     * @param exception Возвращаемое исключение
+     * @param o Проверяемый объект
+     * @param e Возвращаемое исключение
      * @throws RuntimeException
      */
-    public static void isNull(Object object, Supplier<? extends RuntimeException> exception) {
-        if (object != null) throw exception.get();
+    public static void isNull(Object o, Supplier<? extends RuntimeException> e) {
+        if (checkNotNull(o)) throw e.get();
     }
 
     /**
      * Проверяет множество объектов на null. Если хотябы один объект null, то будет выброшено исключение
      *
-     * @param exception исключение, которое необходимо выбросить
+     * @param e исключение, которое необходимо выбросить
      * @param objects   проверяемое множество объектов
      * @throws RuntimeException
      */
-    public static void isAnyNotNull(Supplier<? extends RuntimeException> exception, Object... objects) {
-        for (Object object : objects)
-            if (object == null) throw exception.get();
-    }
-
-    /**
-     * Проверка на null значение с возвращением исключения, если объект null.
-     *
-     * @param object    Проверяемый объект
-     * @param exception Возвращаемое исключение
-     */
-    public static void isNotNull(Object object, Supplier<? extends RuntimeException> exception) {
-        if (object == null) throw exception.get();
-    }
-
-    /**
-     * Проверка на null значение с возвращением исключения, если объект null.
-     *
-     * @param object Проверяемый объект
-     * @throws NullPointerException
-     */
-    public static void isNotNull(Object object) {
-        if (object == null) throw new NullPointerException("Object cannot be null");
+    public static void isAnyNotNull(Supplier<? extends RuntimeException> e, Object... objects) {
+        for (Object o : objects)
+            if (checkNull(o)) throw e.get();
     }
 
     /**
@@ -67,7 +51,7 @@ public final class Inspector {
      */
     public static void isNotNull(Object... objects) {
         for (Object o : objects)
-            if (o == null) throw new NullPointerException("Object cannot be null");
+            if (checkNull(o)) throw new NullPointerException("Object cannot be null");
     }
 
     /**
@@ -91,53 +75,13 @@ public final class Inspector {
     }
 
     /**
-     * Проверка коллекции на пустоту.
-     *
-     * @return false - если коллекция null или пустая, true в противном случае.
-     */
-    public static boolean isNotEmpty(Collection<?> collection) {
-        return collection != null && !collection.isEmpty();
-    }
-
-    /**
-     * Проверка массива на пустоту
-     *
-     * @return false - если массив null или пустой, true в противном случае.
-     */
-    public static boolean isNotEmpty(Object... args) {
-        if (args == null) {
-            return false;
-        } else {
-            return args.length > 0;
-        }
-    }
-
-    /**
-     * Проверка коллекции на пустоту.
-     *
-     * @return true - если коллекция null или пустая, false в противном случае
-     */
-    public static boolean isEmpty(Collection<?> collection) {
-        return collection == null || collection.isEmpty();
-    }
-
-    /**
-     * Проверка массива на пустоту.
-     *
-     * @return true - если массив null или пустой, false в противном случае
-     */
-    public static boolean isEmpty(Object... args) {
-        return args == null || args.length == 0;
-    }
-
-    /**
      * Проверка коллекции на пустоту. Если коллекция пустая или null, то будет выбрашено исключение.
      *
      * @param exception Возвращаемое исключение
      * @throws RuntimeException
      */
     public static void isNotEmpty(Collection<?> collection, Supplier<? extends RuntimeException> exception) {
-        if (isEmpty(collection)) {
+        if (checkEmpty(collection)) {
             throw exception.get();
         }
     }
@@ -149,7 +93,7 @@ public final class Inspector {
      * @throws RuntimeException
      */
     public static void isNotEmpty(Supplier<? extends RuntimeException> exception, Object... args) {
-        if (isEmpty(args)) {
+        if (checkEmpty(args)) {
             throw exception.get();
         }
     }
@@ -161,7 +105,7 @@ public final class Inspector {
      * @throws RuntimeException
      */
     public static void isEmpty(Collection<?> collection, Supplier<? extends RuntimeException> exception) {
-        if (isNotEmpty(collection)) throw exception.get();
+        if (checkNotEmpty(collection)) throw exception.get();
     }
 
     /**
@@ -171,14 +115,13 @@ public final class Inspector {
      * @throws RuntimeException
      */
     public static void isEmpty(Supplier<? extends RuntimeException> exception, Object... args) {
-        if (isNotEmpty(args)) throw exception.get();
+        if (checkNotEmpty(args)) throw exception.get();
     }
 
     /**
      * Утилитарный класс.
      */
     public static final class Utils {
-
         private Utils() {
             utilityClass();
         }

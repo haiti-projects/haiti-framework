@@ -2,7 +2,6 @@ package dev.struchkov.haiti.core.service;
 
 import dev.struchkov.haiti.context.domain.BasicEntity;
 import dev.struchkov.haiti.context.domain.ExistsContainer;
-import dev.struchkov.haiti.context.exception.NotFoundException;
 import dev.struchkov.haiti.context.page.Pagination;
 import dev.struchkov.haiti.context.page.Sheet;
 import dev.struchkov.haiti.context.repository.SimpleManagerRepository;

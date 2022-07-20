@@ -4,7 +4,6 @@ import dev.struchkov.haiti.context.domain.BasicEntity;
 import dev.struchkov.haiti.context.page.Pagination;
 import dev.struchkov.haiti.context.page.Sheet;
 import dev.struchkov.haiti.context.repository.SimpleManagerRepository;
-import dev.struchkov.haiti.utils.Inspector;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -13,6 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static dev.struchkov.haiti.utils.Inspector.isNotNull;
 import static dev.struchkov.haiti.utils.Strings.ERR_OPERATION_NOT_SUPPORTED;
 
 public class SimpleManagerRepositoryMap<T extends BasicEntity<Long>> implements SimpleManagerRepository<T, Long> {
@@ -22,7 +22,7 @@ public class SimpleManagerRepositoryMap<T extends BasicEntity<Long>> implements 
 
     @Override
     public T save(T accessTarget) {
-        Inspector.isNotNull(accessTarget);
+        isNotNull(accessTarget);
         accessTarget.setId(key);
         map.put(key, accessTarget);
         key++;
@@ -31,25 +31,25 @@ public class SimpleManagerRepositoryMap<T extends BasicEntity<Long>> implements 
 
     @Override
     public Optional<T> findById(Long id) {
-        Inspector.isNotNull(id);
+        isNotNull(id);
         return Optional.ofNullable(map.get(id));
     }
 
     @Override
     public boolean existsById(Long id) {
-        Inspector.isNotNull(id);
+        isNotNull(id);
         return map.containsKey(id);
     }
 
     @Override
     public void deleteById(Long id) {
-        Inspector.isNotNull(id);
+        isNotNull(id);
         map.remove(id);
     }
 
     @Override
     public List<T> saveAll(Collection<T> accessTargets) {
-        Inspector.isNotNull(accessTargets);
+        isNotNull(accessTargets);
         return accessTargets.stream()
                 .map(this::save)
                 .collect(Collectors.toList());
@@ -57,13 +57,13 @@ public class SimpleManagerRepositoryMap<T extends BasicEntity<Long>> implements 
 
     @Override
     public void deleteAllById(Collection<Long> accessTargets) {
-        Inspector.isNotNull(accessTargets);
+        isNotNull(accessTargets);
         accessTargets.forEach(map::remove);
     }
 
     @Override
     public List<T> findAllById(Collection<Long> ids) {
-        Inspector.isNotNull(ids);
+        isNotNull(ids);
         return ids.stream()
                 .map(map::get)
                 .collect(Collectors.toList());
