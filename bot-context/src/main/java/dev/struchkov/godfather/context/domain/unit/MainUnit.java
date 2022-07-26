@@ -2,6 +2,7 @@ package dev.struchkov.godfather.context.domain.unit;
 
 import dev.struchkov.autoresponder.entity.KeyWord;
 import dev.struchkov.autoresponder.entity.Unit;
+import dev.struchkov.godfather.context.domain.content.Message;
 import dev.struchkov.godfather.context.service.Accessibility;
 
 import java.util.Objects;
@@ -16,7 +17,7 @@ import java.util.regex.Pattern;
  *
  * @author upagge [08/07/2019]
  */
-public abstract class MainUnit extends Unit<MainUnit> {
+public abstract class MainUnit<M extends Message> extends Unit<MainUnit<M>, M> {
 
     /**
      * Тип Unit-а.
@@ -49,17 +50,17 @@ public abstract class MainUnit extends Unit<MainUnit> {
             String name,
             Set<KeyWord> keyWords,
             Set<String> phrases,
-            Predicate<String> triggerCheck,
-            Pattern pattern,
+            Predicate<M> triggerCheck,
+            Set<Pattern> patterns,
             Integer matchThreshold,
             Integer priority,
-            Set<MainUnit> nextUnits,
+            Set<MainUnit<M>> nextUnits,
             UnitActiveType activeType,
             boolean notSaveHistory,
             Accessibility accessibility,
             String type
     ) {
-        super(keyWords, phrases, triggerCheck, pattern, matchThreshold, priority, nextUnits);
+        super(keyWords, phrases, triggerCheck, patterns, matchThreshold, priority, nextUnits);
         this.name = name;
         this.activeType = Optional.ofNullable(activeType).orElse(UnitActiveType.DEFAULT);
         this.accessibility = accessibility;

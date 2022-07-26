@@ -10,13 +10,13 @@ import dev.struchkov.godfather.context.domain.unit.MainUnit;
  * @author upagge [11/07/2019]
  */
 @FunctionalInterface
-public interface ActionUnit<M extends MainUnit, C extends Message> {
+public interface ActionUnit<U extends MainUnit, M extends Message> {
 
     /**
      * Метод обработки Unit-а.
      *
      * @return Новый Unit, который может нуждаться в обработке
      */
-    UnitRequest<MainUnit, C> action(UnitRequest<M, C> unitRequest);
+    UnitRequest<MainUnit, M> action(UnitRequest<U, M> unitRequest);
 
 }

@@ -6,7 +6,6 @@ import dev.struchkov.godfather.context.domain.content.Message;
 import dev.struchkov.godfather.context.service.Accessibility;
 import dev.struchkov.godfather.context.service.usercode.CheckData;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -22,7 +21,7 @@ import static dev.struchkov.haiti.utils.Inspector.isNotNull;
  *
  * @author upagge [08/07/2019]
  */
-public class AnswerCheck extends MainUnit {
+public class AnswerCheck<M extends Message> extends MainUnit<M> {
 
     /**
      * Unit для true.
@@ -37,15 +36,15 @@ public class AnswerCheck extends MainUnit {
     /**
      * Условие проверки.
      */
-    private final CheckData<Message> check;
+    private final CheckData<M> check;
 
-    private AnswerCheck(Builder builder) {
+    private AnswerCheck(Builder<M> builder) {
         super(
                 builder.name,
-                builder.keyWords,
-                builder.phrases,
+                builder.triggerWords,
+                builder.triggerPhrases,
                 builder.triggerCheck,
-                builder.pattern,
+                builder.triggerPatterns,
                 builder.matchThreshold,
                 builder.priority,
                 new HashSet<>(),
@@ -59,8 +58,8 @@ public class AnswerCheck extends MainUnit {
         check = builder.check;
     }
 
-    public static Builder builder() {
-        return new Builder();
+    public static <M extends Message> Builder<M> builder() {
+        return new Builder<>();
     }
 
     public MainUnit getUnitTrue() {
@@ -71,117 +70,144 @@ public class AnswerCheck extends MainUnit {
         return unitFalse;
     }
 
-    public CheckData<Message> getCheck() {
+    public CheckData<M> getCheck() {
         return check;
     }
 
-    public static final class Builder {
+    public static final class Builder<M extends Message> {
         private String name;
-        private final Set<KeyWord> keyWords = new HashSet<>();
-        private final Set<String> phrases = new HashSet<>();
-        private Predicate<String> triggerCheck;
-        private Pattern pattern;
+
+        private Set<KeyWord> triggerWords;
+        private Set<String> triggerPhrases;
+        private Predicate<M> triggerCheck;
+        private Set<Pattern> triggerPatterns;
         private Integer matchThreshold;
+
         private Integer priority;
-        private MainUnit unitTrue;
-        private MainUnit unitFalse;
-        private CheckData<Message> check;
         private UnitActiveType activeType;
+
         private Accessibility accessibility;
         private boolean notSaveHistory;
+
+        private MainUnit unitTrue;
+        private MainUnit unitFalse;
+        private CheckData<M> check;
 
         private Builder() {
         }
 
-        public Builder name(String name) {
+        public Builder<M> name(String name) {
             this.name = name;
             return this;
         }
 
-        public Builder keyWords(Set<KeyWord> val) {
-            keyWords.addAll(val);
+        public Builder<M> triggerWords(Set<KeyWord> val) {
+            if (triggerWords == null) {
+                triggerWords = new HashSet<>();
+            }
+            triggerWords.addAll(val);
             return this;
         }
 
-        public Builder keyWord(KeyWord val) {
-            keyWords.add(val);
+        public Builder<M> triggerWord(KeyWord val) {
+            if (triggerWords == null) {
+                triggerWords = new HashSet<>();
+            }
+            triggerWords.add(val);
             return this;
         }
 
-        public Builder stringKeyWords(Set<String> val) {
-            keyWords.addAll(val.stream().map(KeyWord::of).collect(Collectors.toSet()));
+        public Builder<M> triggerStringWords(Set<String> val) {
+            if (triggerWords == null) {
+                triggerWords = new HashSet<>();
+            }
+            triggerWords.addAll(val.stream().map(KeyWord::of).collect(Collectors.toSet()));
             return this;
         }
 
-        public Builder keyWord(String val) {
-            keyWords.add(KeyWord.of(val));
+        public Builder<M> triggerWord(String val) {
+            if (triggerWords == null) {
+                triggerWords = new HashSet<>();
+            }
+            triggerWords.add(KeyWord.of(val));
             return this;
         }
 
-        public Builder phrase(String val) {
-            phrases.add(val);
+        public Builder<M> triggerPhrase(String... val) {
+            if (triggerPhrases == null) {
+                triggerPhrases = new HashSet<>();
+            }
+            if (val.length == 1) {
+                triggerPhrases.add(val[0]);
+            } else {
+                triggerPhrases.addAll(Set.of(val));
+            }
+            triggerPhrases.addAll(Set.of(val));
             return this;
         }
 
-        public Builder phrases(Collection<String> val) {
-            phrases.addAll(val);
+        public Builder<M> triggerPattern(Pattern... val) {
+            if (triggerPatterns == null) {
+                triggerPatterns = new HashSet<>();
+            }
+            if (val.length == 1) {
+                triggerPatterns.add(val[0]);
+            } else {
+                triggerPatterns.addAll(Set.of(val));
+            }
+            triggerPatterns.addAll(Set.of(val));
             return this;
         }
 
-        public Builder pattern(Pattern val) {
-            pattern = val;
-            return this;
-        }
-
-        private Builder triggerCheck(Predicate<String> trigger) {
+        private Builder<M> triggerCheck(Predicate<M> trigger) {
             triggerCheck = trigger;
             return this;
         }
 
-        public Builder matchThreshold(Integer val) {
+        public Builder<M> matchThreshold(Integer val) {
             matchThreshold = val;
             return this;
         }
 
-        public Builder priority(Integer val) {
+        public Builder<M> priority(Integer val) {
             priority = val;
             return this;
         }
 
-        public Builder unitTrue(MainUnit unitTrue) {
+        public Builder<M> unitTrue(MainUnit unitTrue) {
             this.unitTrue = unitTrue;
             return this;
         }
 
-        public Builder unitFalse(MainUnit unitFalse) {
+        public Builder<M> unitFalse(MainUnit unitFalse) {
             this.unitFalse = unitFalse;
             return this;
         }
 
-        public Builder check(CheckData<Message> check) {
+        public Builder<M> check(CheckData<M> check) {
             this.check = check;
             return this;
         }
 
-        public Builder accessibility(Accessibility val) {
+        public Builder<M> accessibility(Accessibility val) {
             accessibility = val;
             return this;
         }
 
-        public Builder activeType(UnitActiveType val) {
+        public Builder<M> activeType(UnitActiveType val) {
             activeType = val;
             return this;
         }
 
-        public Builder notSaveHistory() {
+        public Builder<M> notSaveHistory() {
             notSaveHistory = true;
             return this;
         }
 
-        public AnswerCheck build() {
+        public AnswerCheck<M> build() {
             isNotNull(check, unitConfigException("Необходимо установить параметр проверки."));
             isAnyNotNull(unitConfigException("Необходимо задать хотя бы один unit результата проверки."));
-            return new AnswerCheck(this);
+            return new AnswerCheck<>(this);
         }
 
     }

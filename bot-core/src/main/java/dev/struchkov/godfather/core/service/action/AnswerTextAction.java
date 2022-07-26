@@ -10,6 +10,7 @@ import dev.struchkov.godfather.context.utils.InsertWords;
 import dev.struchkov.godfather.context.utils.Sender;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Обработчик Unit-а {@link AnswerText}.
@@ -29,14 +30,17 @@ public class AnswerTextAction implements ActionUnit<AnswerText<Message>, Message
         final AnswerText<Message> unit = unitRequest.getUnit();
         final Message message = unitRequest.getMessage();
 
-        final BoxAnswer boxAnswer = unit.getBoxAnswer().processing(message);
-        replaceMarkers(unit, message, boxAnswer);
+        final Optional<BoxAnswer> optAnswer = unit.getAnswer().processing(message);
+        if (optAnswer.isPresent()) {
+            final BoxAnswer answer = optAnswer.get();
+            replaceMarkers(unit, message, answer);
 
-        final Sending answerTextSending = unit.getSending();
-        if (answerTextSending != null) {
-            Sender.sends(message, boxAnswer, answerTextSending);
-        } else {
-            Sender.sends(message, boxAnswer, this.sending);
+            final Sending answerTextSending = unit.getSending();
+            if (answerTextSending != null) {
+                Sender.sends(message, answer, answerTextSending);
+            } else {
+                Sender.sends(message, answer, this.sending);
+            }
         }
 
         return UnitRequest.of(unit, message);

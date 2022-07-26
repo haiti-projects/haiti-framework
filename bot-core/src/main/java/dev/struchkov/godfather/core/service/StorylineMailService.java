@@ -26,7 +26,7 @@ public class StorylineMailService implements StorylineService<Mail> {
 
     private final UnitPointerService unitPointerService;
     private final StorylineRepository storylineRepository;
-    private final Storyline storyLine;
+    private final Storyline<Mail> storyLine;
     private String defaultUnitName;
 
     public StorylineMailService(
@@ -34,7 +34,7 @@ public class StorylineMailService implements StorylineService<Mail> {
             StorylineRepository storylineRepository,
             List<Object> unitConfigurations
     ) {
-        this.storyLine = new StorylineMaker(unitConfigurations).createStoryLine();
+        this.storyLine = new StorylineMaker<Mail>(unitConfigurations).createStoryLine();
         this.unitPointerService = unitPointerService;
         this.storylineRepository = storylineRepository;
     }
@@ -47,21 +47,21 @@ public class StorylineMailService implements StorylineService<Mail> {
     }
 
     @Override
-    public Optional<MainUnit> getUnitNameByPersonId(@NotNull Long personId) {
+    public Optional<MainUnit<Mail>> getUnitNameByPersonId(@NotNull Long personId) {
         Inspector.isNotNull(personId);
         return unitPointerService.getUnitNameByPersonId(personId)
                 .flatMap(storyLine::getUnit);
     }
 
     @Override
-    public Set<MainUnit> getNextUnitByPersonId(@NotNull Long personId) {
-        final Optional<Set<MainUnit>> optMainUnits = getUnitNameByPersonId(personId)
+    public Set<MainUnit<Mail>> getNextUnitByPersonId(@NotNull Long personId) {
+        final Optional<Set<MainUnit<Mail>>> optMainUnits = getUnitNameByPersonId(personId)
                 .map(Unit::getNextUnits)
                 .filter(mainUnits -> !mainUnits.isEmpty());
         if (optMainUnits.isEmpty()) {
             storylineRepository.cleanHistoryByPersonId(personId);
         }
-        final Set<MainUnit> nextUnits = optMainUnits.orElse(storyLine.getStartingUnits());
+        final Set<MainUnit<Mail>> nextUnits = optMainUnits.orElse(storyLine.getStartingUnits());
         nextUnits.addAll(storyLine.getGlobalUnits());
         return nextUnits;
     }
@@ -89,7 +89,7 @@ public class StorylineMailService implements StorylineService<Mail> {
     }
 
     @Override
-    public Optional<MainUnit> getDefaultUnit() {
+    public Optional<MainUnit<Mail>> getDefaultUnit() {
         if (defaultUnitName == null) return Optional.empty();
         return storyLine.getUnit(defaultUnitName);
     }
@@ -106,7 +106,7 @@ public class StorylineMailService implements StorylineService<Mail> {
     }
 
     @Override
-    public Optional<MainUnit> getUnitByName(String unitName) {
+    public Optional<MainUnit<Mail>> getUnitByName(String unitName) {
         return storyLine.getUnit(unitName);
     }
 

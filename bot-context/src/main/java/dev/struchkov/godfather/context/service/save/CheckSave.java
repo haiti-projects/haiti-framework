@@ -9,8 +9,8 @@ import dev.struchkov.godfather.context.domain.unit.MainUnit;
  * @author upagge [04/08/2019]
  */
 @FunctionalInterface
-public interface CheckSave<D extends Message> {
+public interface CheckSave<M extends Message> {
 
-    MainUnit check(D content);
+    MainUnit<M> check(M content);
 
 }

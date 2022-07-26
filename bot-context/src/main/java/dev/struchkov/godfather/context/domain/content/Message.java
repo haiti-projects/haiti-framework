@@ -1,5 +1,6 @@
 package dev.struchkov.godfather.context.domain.content;
 
+import dev.struchkov.autoresponder.entity.DeliverableText;
 import dev.struchkov.godfather.context.domain.BasicEntity;
 
 import javax.persistence.Column;
@@ -16,7 +17,7 @@ import java.util.Objects;
  * @author upagge [08/07/2019]
  */
 @MappedSuperclass
-public abstract class Message extends BasicEntity {
+public abstract class Message extends BasicEntity implements DeliverableText {
 
     /**
      * Тип сообщения.

@@ -6,7 +6,6 @@ import dev.struchkov.godfather.context.domain.content.Message;
 import dev.struchkov.godfather.context.service.Accessibility;
 import dev.struchkov.godfather.context.service.usercode.CheckData;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -21,12 +20,12 @@ import static dev.struchkov.haiti.utils.Inspector.isNotNull;
  *
  * @author upagge [08/07/2019]
  */
-public class AnswerTimer<M extends Message> extends MainUnit {
+public class AnswerTimer<M extends Message> extends MainUnit<M> {
 
     /**
      * Unit обработку которого необходимо отложить.
      */
-    private final MainUnit unitAnswer;
+    private final MainUnit<M> unitAnswer;
 
     /**
      * Задержка обработки в секундах.
@@ -46,10 +45,10 @@ public class AnswerTimer<M extends Message> extends MainUnit {
     private AnswerTimer(Builder<M> builder) {
         super(
                 builder.name,
-                builder.keyWords,
-                builder.phrases,
+                builder.triggerWords,
+                builder.triggerPhrases,
                 builder.triggerCheck,
-                builder.pattern,
+                builder.triggerPatterns,
                 builder.matchThreshold,
                 builder.priority,
                 null,
@@ -68,7 +67,7 @@ public class AnswerTimer<M extends Message> extends MainUnit {
         return new Builder<>();
     }
 
-    public MainUnit getUnitAnswer() {
+    public MainUnit<M> getUnitAnswer() {
         return unitAnswer;
     }
 
@@ -86,19 +85,22 @@ public class AnswerTimer<M extends Message> extends MainUnit {
 
     public static final class Builder<M extends Message> {
         private String name;
-        private MainUnit unitAnswer;
-        private Integer timeDelaySec;
-        private Integer timeDeathSec;
-        private CheckData<M> checkLoop;
-        private final Set<KeyWord> keyWords = new HashSet<>();
-        private final Set<String> phrases = new HashSet<>();
-        private Predicate<String> triggerCheck;
-        private Pattern pattern;
+
+        private Set<KeyWord> triggerWords;
+        private Set<String> triggerPhrases;
+        private Predicate<M> triggerCheck;
+        private Set<Pattern> triggerPatterns;
         private Integer matchThreshold;
+
         private Integer priority;
         private UnitActiveType activeType = UnitActiveType.AFTER;
         private Accessibility accessibility;
         private boolean notSaveHistory;
+
+        private MainUnit<M> unitAnswer;
+        private Integer timeDelaySec;
+        private Integer timeDeathSec;
+        private CheckData<M> checkLoop;
 
         private Builder() {
         }
@@ -108,7 +110,7 @@ public class AnswerTimer<M extends Message> extends MainUnit {
             return this;
         }
 
-        public Builder<M> unitAnswer(MainUnit val) {
+        public Builder<M> unitAnswer(MainUnit<M> val) {
             unitAnswer = val;
             return this;
         }
@@ -128,42 +130,65 @@ public class AnswerTimer<M extends Message> extends MainUnit {
             return this;
         }
 
-        public Builder<M> keyWords(Set<KeyWord> val) {
-            keyWords.addAll(val);
+        public Builder<M> triggerWords(Set<KeyWord> val) {
+            if (triggerWords == null) {
+                triggerWords = new HashSet<>();
+            }
+            triggerWords.addAll(val);
             return this;
         }
 
-        public Builder<M> keyWord(KeyWord val) {
-            keyWords.add(val);
+        public Builder<M> triggerWord(KeyWord val) {
+            if (triggerWords == null) {
+                triggerWords = new HashSet<>();
+            }
+            triggerWords.add(val);
             return this;
         }
 
-        public Builder<M> stringKeyWords(Set<String> val) {
-            keyWords.addAll(val.stream().map(KeyWord::of).collect(Collectors.toSet()));
+        public Builder<M> triggerStringWords(Set<String> val) {
+            if (triggerWords == null) {
+                triggerWords = new HashSet<>();
+            }
+            triggerWords.addAll(val.stream().map(KeyWord::of).collect(Collectors.toSet()));
             return this;
         }
 
-        public Builder<M> keyWord(String val) {
-            keyWords.add(KeyWord.of(val));
+        public Builder<M> triggerWord(String val) {
+            if (triggerWords == null) {
+                triggerWords = new HashSet<>();
+            }
+            triggerWords.add(KeyWord.of(val));
             return this;
         }
 
-        public Builder<M> phrase(String val) {
-            phrases.add(val);
+        public Builder<M> triggerPhrase(String... val) {
+            if (triggerPhrases == null) {
+                triggerPhrases = new HashSet<>();
+            }
+            if (val.length == 1) {
+                triggerPhrases.add(val[0]);
+            } else {
+                triggerPhrases.addAll(Set.of(val));
+            }
+            triggerPhrases.addAll(Set.of(val));
             return this;
         }
 
-        public Builder<M> phrases(Collection<String> val) {
-            phrases.addAll(val);
+        public Builder<M> triggerPattern(Pattern... val) {
+            if (triggerPatterns == null) {
+                triggerPatterns = new HashSet<>();
+            }
+            if (val.length == 1) {
+                triggerPatterns.add(val[0]);
+            } else {
+                triggerPatterns.addAll(Set.of(val));
+            }
+            triggerPatterns.addAll(Set.of(val));
             return this;
         }
 
-        public Builder<M> pattern(Pattern val) {
-            pattern = val;
-            return this;
-        }
-
-        public Builder<M> triggerCheck(Predicate<String> trigger) {
+        public Builder<M> triggerCheck(Predicate<M> trigger) {
             triggerCheck = trigger;
             return this;
         }

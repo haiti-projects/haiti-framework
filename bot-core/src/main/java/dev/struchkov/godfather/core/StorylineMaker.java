@@ -2,6 +2,7 @@ package dev.struchkov.godfather.core;
 
 import dev.struchkov.godfather.context.domain.UnitDefinition;
 import dev.struchkov.godfather.context.domain.annotation.Unit;
+import dev.struchkov.godfather.context.domain.content.Message;
 import dev.struchkov.godfather.context.domain.unit.MainUnit;
 import dev.struchkov.godfather.context.exception.UnitConfigException;
 import dev.struchkov.haiti.utils.Inspector;
@@ -22,14 +23,14 @@ import java.util.stream.Collectors;
 
 import static dev.struchkov.godfather.context.exception.UnitConfigException.unitConfigException;
 
-public class StorylineMaker {
+public class StorylineMaker<M extends Message> {
 
     private static final Logger log = LoggerFactory.getLogger(StorylineMaker.class);
 
     private final List<Object> configurations = new ArrayList<>();
 
     private final Map<String, UnitDefinition> unitDefinitions = new HashMap<>();
-    private final Map<String, MainUnit> unitMap = new HashMap<>();
+    private final Map<String, MainUnit<M>> unitMap = new HashMap<>();
 
     private final Set<String> mainUnits = new HashSet<>();
     private final Set<String> globalUnits = new HashSet<>();
@@ -42,17 +43,17 @@ public class StorylineMaker {
         return unitDefinitions;
     }
 
-    public Map<String, MainUnit> getUnitMap() {
+    public Map<String, MainUnit<M>> getUnitMap() {
         return unitMap;
     }
 
-    public Storyline createStoryLine() {
+    public Storyline<M> createStoryLine() {
         generateUnitDefinitions();
         try {
             createUnitMap();
-            final Set<MainUnit> mainUnit = getMainUnit();
-            final Set<MainUnit> globalUnit = getGlobalUnit();
-            final Storyline storyline = new Storyline(mainUnit, unitMap);
+            final Set<MainUnit<M>> mainUnit = getMainUnit();
+            final Set<MainUnit<M>> globalUnit = getGlobalUnit();
+            final Storyline<M> storyline = new Storyline<>(mainUnit, unitMap);
             storyline.addGlobalUnits(globalUnit);
             return storyline;
         } catch (IllegalAccessException | InvocationTargetException e) {
@@ -61,14 +62,14 @@ public class StorylineMaker {
         throw new UnitConfigException("Ошибка построения StoryLine");
     }
 
-    private Set<MainUnit> getMainUnit() {
+    private Set<MainUnit<M>> getMainUnit() {
         Inspector.isNotEmpty(mainUnits, unitConfigException("Не задан ни один mainUnit. Установите хотя бы для одного Unit флаг mainUnit"));
         return mainUnits.stream()
                 .map(unitMap::get)
                 .collect(Collectors.toSet());
     }
 
-    private Set<MainUnit> getGlobalUnit() {
+    private Set<MainUnit<M>> getGlobalUnit() {
         return globalUnits.stream()
                 .map(unitMap::get)
                 .collect(Collectors.toSet());
@@ -85,7 +86,7 @@ public class StorylineMaker {
         }
     }
 
-    private MainUnit createUnit(UnitDefinition unitDefinition) throws IllegalAccessException, InvocationTargetException {
+    private MainUnit<M> createUnit(UnitDefinition unitDefinition) throws IllegalAccessException, InvocationTargetException {
         final Object objectConfig = unitDefinition.getObjectConfig();
         final String currentUnitName = unitDefinition.getName();
         final Method method = unitDefinition.getMethod();
@@ -95,7 +96,7 @@ public class StorylineMaker {
                 .map(Unit::value)
                 .map(unitMap::get)
                 .toArray();
-        MainUnit newUnit = (MainUnit) method.invoke(objectConfig, nextUnits);
+        MainUnit<M> newUnit = (MainUnit<M>) method.invoke(objectConfig, nextUnits);
         newUnit.setName(currentUnitName);
 
         unitMap.put(currentUnitName, newUnit);

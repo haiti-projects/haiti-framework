@@ -24,7 +24,7 @@ import static dev.struchkov.haiti.utils.Inspector.isNotNull;
  *
  * @author upagge [08/07/2019]
  */
-public class AnswerSave<D> extends MainUnit {
+public class AnswerSave<M extends Message, D> extends MainUnit<M> {
 
     /**
      * Объект отвечающий за сохранение - репозиторий.
@@ -44,22 +44,22 @@ public class AnswerSave<D> extends MainUnit {
     /**
      * Данные для скрытого сохранения.
      */
-    private final PreservableData<D, ? super Message> preservableData;
+    private final PreservableData<D, M> preservableData;
 
     /**
      * Скрытое сохранение.
      */
     private final boolean hidden;
 
-    private final CheckSave<? super Message> checkSave;
+    private final CheckSave<M> checkSave;
 
-    private AnswerSave(Builder<D> builder) {
+    private AnswerSave(Builder<M, D> builder) {
         super(
                 builder.name,
-                builder.keyWords,
-                builder.phrases,
+                builder.triggerWords,
+                builder.triggerPhrases,
                 builder.triggerCheck,
-                builder.pattern,
+                builder.triggerPatterns,
                 builder.matchThreshold,
                 builder.priority,
                 builder.nextUnits,
@@ -77,11 +77,11 @@ public class AnswerSave<D> extends MainUnit {
         checkSave = builder.checkSave;
     }
 
-    public static <D> Builder<D> builder() {
+    public static <M extends Message, D> Builder<M, D> builder() {
         return new Builder<>();
     }
 
-    private void maintenanceNextUnit(Collection<MainUnit> units) {
+    private void maintenanceNextUnit(Collection<MainUnit<M>> units) {
         if (units != null) {
             units.forEach(mainUnit -> mainUnit.setActiveType(UnitActiveType.AFTER));
         }
@@ -99,7 +99,7 @@ public class AnswerSave<D> extends MainUnit {
         return pusher;
     }
 
-    public PreservableData<D, ? super Message> getPreservableData() {
+    public PreservableData<D, M> getPreservableData() {
         return preservableData;
     }
 
@@ -107,137 +107,162 @@ public class AnswerSave<D> extends MainUnit {
         return hidden;
     }
 
-    public CheckSave<? super Message> getCheckSave() {
+    public CheckSave<M> getCheckSave() {
         return checkSave;
     }
 
-    public static final class Builder<D> {
+    public static final class Builder<M extends Message, D> {
         private String name;
-        private final Set<KeyWord> keyWords = new HashSet<>();
-        private final Set<String> phrases = new HashSet<>();
-        private Predicate<String> triggerCheck;
-        private Pattern pattern;
+        private Set<MainUnit<M>> nextUnits;
+
+        private Set<KeyWord> triggerWords;
+        private Set<String> triggerPhrases;
+        private Set<Pattern> triggerPatterns;
+        private Predicate<M> triggerCheck;
+
         private Integer matchThreshold;
         private Integer priority;
-        private Set<MainUnit> nextUnits = new HashSet<>();
+
+        private Accessibility accessibility;
+        private boolean notSaveHistory;
+
         private AnswerSavePreservable<D> preservable;
         private String key;
         private Pusher<D> pusher;
-        private PreservableData<D, ? super Message> preservableData;
+        private PreservableData<D, M> preservableData;
         private boolean hidden;
-        private CheckSave<? super Message> checkSave;
-        private Accessibility accessibility;
-        private boolean notSaveHistory;
+        private CheckSave<M> checkSave;
 
         private Builder() {
         }
 
-        public Builder<D> name(String name) {
+        public Builder<M, D> name(String name) {
             this.name = name;
             return this;
         }
 
-        public Builder<D> keyWords(Set<KeyWord> val) {
-            keyWords.addAll(val);
+        public Builder<M, D> triggerWords(Set<KeyWord> val) {
+            if (checkNull(triggerWords)) {
+                triggerWords = new HashSet<>();
+            }
+            triggerWords.addAll(val);
             return this;
         }
 
-        public Builder<D> keyWord(KeyWord val) {
-            keyWords.add(val);
+        public Builder<M, D> triggerWord(KeyWord val) {
+            if (checkNull(triggerWords)) {
+                triggerWords = new HashSet<>();
+            }
+            triggerWords.add(val);
             return this;
         }
 
-        public Builder<D> stringKeyWords(Set<String> val) {
-            keyWords.addAll(val.stream().map(KeyWord::of).collect(Collectors.toSet()));
+        public Builder<M, D> triggerStringWords(Set<String> val) {
+            if (checkNull(triggerWords)) {
+                triggerWords = new HashSet<>();
+            }
+            triggerWords.addAll(val.stream().map(KeyWord::of).collect(Collectors.toSet()));
             return this;
         }
 
-        public Builder<D> keyWord(String val) {
-            keyWords.add(KeyWord.of(val));
+        public Builder<M, D> triggerWord(String val) {
+            if (checkNull(triggerWords)) {
+                triggerWords = new HashSet<>();
+            }
+            triggerWords.add(KeyWord.of(val));
             return this;
         }
 
-        public Builder<D> phrase(String val) {
-            phrases.add(val);
+        public Builder<M, D> triggerPhrase(String... val) {
+            if (checkNull(triggerPhrases)) {
+                triggerPhrases = new HashSet<>();
+            }
+            if (val.length == 1) {
+                triggerPhrases.add(val[0]);
+            } else {
+                triggerPhrases.addAll(Set.of(val));
+            }
+            triggerPhrases.addAll(Set.of(val));
             return this;
         }
 
-        public Builder<D> phrases(Collection<String> val) {
-            phrases.addAll(val);
+        public Builder<M, D> triggerPattern(Pattern... val) {
+            if (checkNull(triggerPatterns)) {
+                triggerPatterns = new HashSet<>();
+            }
+            if (val.length == 1) {
+                triggerPatterns.add(val[0]);
+            } else {
+                triggerPatterns.addAll(Set.of(val));
+            }
+            triggerPatterns.addAll(Set.of(val));
             return this;
         }
 
-        public Builder<D> pattern(Pattern val) {
-            pattern = val;
-            return this;
-        }
-
-        public Builder<D> triggerCheck(Predicate<String> trigger) {
+        public Builder<M, D> triggerCheck(Predicate<M> trigger) {
             triggerCheck = trigger;
             return this;
         }
 
-        public Builder<D> matchThreshold(Integer val) {
+        public Builder<M, D> matchThreshold(Integer val) {
             matchThreshold = val;
             return this;
         }
 
-        public Builder<D> priority(Integer val) {
+        public Builder<M, D> priority(Integer val) {
             priority = val;
             return this;
         }
 
-        public Builder<D> nextUnits(Set<MainUnit> val) {
-            nextUnits = val;
-            return this;
-        }
-
-        public Builder<D> nextUnit(MainUnit val) {
+        public Builder<M, D> next(MainUnit<M> val) {
+            if (checkNull(nextUnits)) {
+                nextUnits = new HashSet<>();
+            }
             nextUnits.add(val);
             return this;
         }
 
-        public Builder<D> preservable(AnswerSavePreservable<D> val) {
+        public Builder<M, D> preservable(AnswerSavePreservable<D> val) {
             this.preservable = val;
             return this;
         }
 
-        public Builder<D> key(String val) {
+        public Builder<M, D> key(String val) {
             this.key = val;
             return this;
         }
 
-        public Builder<D> pusher(Pusher<D> val) {
+        public Builder<M, D> pusher(Pusher<D> val) {
             this.pusher = val;
             return this;
         }
 
-        public Builder<D> preservableData(PreservableData<D, ? super Message> val) {
+        public Builder<M, D> preservableData(PreservableData<D, M> val) {
             this.preservableData = val;
             return this;
         }
 
-        public Builder<D> hidden(boolean val) {
+        public Builder<M, D> hidden(boolean val) {
             this.hidden = val;
             return this;
         }
 
-        public Builder<D> checkSave(CheckSave<? super Message> val) {
+        public Builder<M, D> checkSave(CheckSave<M> val) {
             this.checkSave = val;
             return this;
         }
 
-        public Builder<D> accessibility(Accessibility val) {
+        public Builder<M, D> accessibility(Accessibility val) {
             accessibility = val;
             return this;
         }
 
-        public Builder<D> notSaveHistory() {
+        public Builder<M, D> notSaveHistory() {
             notSaveHistory = true;
             return this;
         }
 
-        public AnswerSave<D> build() {
+        public AnswerSave<M, D> build() {
             isNotNull(preservable, "Не указан репозиторий для сохранения формы пользователя");
             if (checkNull(pusher)) {
                 isNotNull(preservableData, "Не указаны данные для сохранения");

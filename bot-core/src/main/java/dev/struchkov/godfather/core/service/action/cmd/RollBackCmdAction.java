@@ -10,18 +10,18 @@ import dev.struchkov.godfather.core.service.action.ActionUnit;
 
 import static dev.struchkov.godfather.context.exception.RollBackException.rollBackException;
 
-public class RollBackCmdAction<T extends Message> implements ActionUnit<RollBackCmd, T> {
+public class RollBackCmdAction<M extends Message> implements ActionUnit<RollBackCmd<M>, M> {
 
-    private final StorylineService<T> storyLineService;
+    private final StorylineService<M> storyLineService;
 
-    public RollBackCmdAction(StorylineService<T> storyLineService) {
+    public RollBackCmdAction(StorylineService<M> storyLineService) {
         this.storyLineService = storyLineService;
     }
 
     @Override
-    public UnitRequest<MainUnit, T> action(UnitRequest<RollBackCmd, T> unitRequest) {
-        final RollBackCmd unit = unitRequest.getUnit();
-        final T message = unitRequest.getMessage();
+    public UnitRequest<MainUnit, M> action(UnitRequest<RollBackCmd<M>, M> unitRequest) {
+        final RollBackCmd<M> unit = unitRequest.getUnit();
+        final M message = unitRequest.getMessage();
 
         final int countToBack = unit.getCountBack();
         final String rollbackUnitName = unit.getRollbackUnitName();
@@ -30,8 +30,9 @@ public class RollBackCmdAction<T extends Message> implements ActionUnit<RollBack
                 ? storyLineService.replaceUserToBack(message.getPersonId(), rollbackUnitName).orElseThrow(rollBackException("Юнит для возвращения не был найден"))
                 : storyLineService.replaceUserToBack(message.getPersonId(), countToBack).orElseThrow(rollBackException("Юнит для возвращения не был найден"));
         final String unitName = history.getUnitName();
-        final MainUnit nextUnit = storyLineService.getUnitByName(unitName).orElse(unit);
-        final T oldMessage = (T) history.getMessage();
+        final MainUnit<M> nextUnit = storyLineService.getUnitByName(unitName).orElse(unit);
+        final M oldMessage = (M) history.getMessage();
         return UnitRequest.of(nextUnit, oldMessage);
     }
+
 }

@@ -8,23 +8,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Обработчик Unit-а {@link AnswerCheck}.
  *
  * @author upagge [11/07/2019]
  */
-public class AnswerCheckAction implements ActionUnit<AnswerCheck, Message> {
+public class AnswerCheckAction<M extends Message> implements ActionUnit<AnswerCheck<M>, M> {
 
     private static final Logger log = LoggerFactory.getLogger(AnswerCheckAction.class);
 
     @Override
-    public UnitRequest<MainUnit, Message> action(UnitRequest<AnswerCheck, Message> unitRequest) {
-        final AnswerCheck unit = unitRequest.getUnit();
-        final Message message = unitRequest.getMessage();
+    public UnitRequest<MainUnit, M> action(UnitRequest<AnswerCheck<M>, M> unitRequest) {
+        final AnswerCheck<M> unit = unitRequest.getUnit();
+        final M message = unitRequest.getMessage();
 
-        MainUnit unitAnswer;
+        MainUnit<M> unitAnswer;
         if (unit.getCheck().checked(message)) {
             log.info("Проверка пройдена");
             unitAnswer = unit.getUnitTrue();

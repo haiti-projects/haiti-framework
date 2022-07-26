@@ -2,21 +2,23 @@ package dev.struchkov.godfather.context.domain.unit.cmd;
 
 import dev.struchkov.autoresponder.entity.KeyWord;
 import dev.struchkov.godfather.context.domain.TypeUnit;
+import dev.struchkov.godfather.context.domain.content.Message;
 import dev.struchkov.godfather.context.domain.unit.MainUnit;
 import dev.struchkov.godfather.context.domain.unit.UnitActiveType;
 import dev.struchkov.godfather.context.exception.UnitConfigException;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static dev.struchkov.haiti.utils.Checker.checkNull;
+
 /**
  * Юнит, который позволяет откатить пользователя на предыдущие юниты в сценарии с сохранением ранее введенной информации в сообщениях.
  */
-public class RollBackCmd extends MainUnit {
+public class RollBackCmd<M extends Message> extends MainUnit<M> {
 
     /**
      * Количество юнитов, на которые можно откатиться назад.
@@ -28,13 +30,13 @@ public class RollBackCmd extends MainUnit {
      */
     private final String rollbackUnitName;
 
-    private RollBackCmd(Builder builder) {
+    private RollBackCmd(Builder<M> builder) {
         super(
                 builder.name,
-                builder.keyWords,
-                builder.phrases,
+                builder.triggerWords,
+                builder.triggerPhrases,
                 builder.triggerCheck,
-                builder.pattern,
+                builder.triggerPatterns,
                 builder.matchThreshold,
                 builder.priority,
                 new HashSet<>(),
@@ -47,28 +49,28 @@ public class RollBackCmd extends MainUnit {
         this.rollbackUnitName = builder.rollbackUnitName;
     }
 
-    public static RollBackCmd.Builder builder() {
-        return new RollBackCmd.Builder();
+    public static <M extends Message> RollBackCmd.Builder<M> builder() {
+        return new RollBackCmd.Builder<>();
     }
 
-    public static RollBackCmd rollBack(int countToBack) {
-        return RollBackCmd.builder().countBack(countToBack).build();
+    public static <M extends Message> RollBackCmd<M> rollBack(int countToBack) {
+        return RollBackCmd.<M>builder().countBack(countToBack).build();
     }
 
-    public static RollBackCmd singleRollBack() {
-        return RollBackCmd.builder().countBack(1).build();
+    public static <M extends Message> RollBackCmd<M> singleRollBack() {
+        return RollBackCmd.<M>builder().countBack(1).build();
     }
 
-    public static RollBackCmd doubleRollBack() {
-        return RollBackCmd.builder().countBack(2).build();
+    public static <M extends Message> RollBackCmd<M> doubleRollBack() {
+        return RollBackCmd.<M>builder().countBack(2).build();
     }
 
-    public static RollBackCmd rollBack(String unitName) {
-        return RollBackCmd.builder().rollbackUnitName(unitName).build();
+    public static <M extends Message> RollBackCmd<M> rollBack(String unitName) {
+        return RollBackCmd.<M>builder().rollbackUnitName(unitName).build();
     }
 
-    public static RollBackCmd rollBack(String phrase, String unitName) {
-        return RollBackCmd.builder().phrase(phrase).rollbackUnitName(unitName).build();
+    public static <M extends Message> RollBackCmd<M> rollBack(String phrase, String unitName) {
+        return RollBackCmd.<M>builder().triggerPhrase(phrase).rollbackUnitName(unitName).build();
     }
 
     public int getCountBack() {
@@ -79,96 +81,122 @@ public class RollBackCmd extends MainUnit {
         return rollbackUnitName;
     }
 
-    public static final class Builder {
-        private final Set<KeyWord> keyWords = new HashSet<>();
+    public static final class Builder<M extends Message> {
         private String name;
-        private final Set<String> phrases = new HashSet<>();
-        private Predicate<String> triggerCheck;
-        private Pattern pattern;
+
+        private Set<String> triggerPhrases;
+        private Predicate<M> triggerCheck;
+        private Set<Pattern> triggerPatterns;
+        private Set<KeyWord> triggerWords;
         private Integer matchThreshold;
+
         private Integer priority;
         private UnitActiveType activeType = UnitActiveType.DEFAULT;
+
         private int countBack;
         private String rollbackUnitName;
 
         private Builder() {
         }
 
-        public Builder name(String name) {
+        public Builder<M> name(String name) {
             this.name = name;
             return this;
         }
 
-        public Builder keyWords(Set<KeyWord> val) {
-            keyWords.addAll(val);
+        public Builder<M> triggerWords(Set<KeyWord> val) {
+            if (checkNull(triggerWords)) {
+                triggerWords = new HashSet<>();
+            }
+            triggerWords.addAll(val);
             return this;
         }
 
-        public Builder keyWord(KeyWord val) {
-            keyWords.add(val);
+        public Builder<M> triggerWord(KeyWord val) {
+            if (checkNull(triggerWords)) {
+                triggerWords = new HashSet<>();
+            }
+            triggerWords.add(val);
             return this;
         }
 
-        public Builder stringKeyWords(Set<String> val) {
-            keyWords.addAll(val.stream().map(KeyWord::of).collect(Collectors.toSet()));
+        public Builder<M> triggerStringWords(Set<String> val) {
+            if (checkNull(triggerWords)) {
+                triggerWords = new HashSet<>();
+            }
+            triggerWords.addAll(val.stream().map(KeyWord::of).collect(Collectors.toSet()));
             return this;
         }
 
-        public Builder keyWord(String val) {
-            keyWords.add(KeyWord.of(val));
+        public Builder<M> triggerWord(String val) {
+            if (checkNull(triggerWords)) {
+                triggerWords = new HashSet<>();
+            }
+            triggerWords.add(KeyWord.of(val));
             return this;
         }
 
-        public Builder phrase(String val) {
-            phrases.add(val);
+        public Builder<M> triggerPhrase(String... val) {
+            if (checkNull(triggerPhrases)) {
+                triggerPhrases = new HashSet<>();
+            }
+            if (val.length == 1) {
+                triggerPhrases.add(val[0]);
+            } else {
+                triggerPhrases.addAll(Set.of(val));
+            }
+            triggerPhrases.addAll(Set.of(val));
             return this;
         }
 
-        public Builder triggerCheck(Predicate<String> trigger) {
+        public Builder<M> triggerCheck(Predicate<M> trigger) {
             triggerCheck = trigger;
             return this;
         }
 
-        public Builder phrases(Collection<String> val) {
-            phrases.addAll(val);
+        public Builder<M> triggerPattern(Pattern... val) {
+            if (checkNull(triggerPatterns)) {
+                triggerPatterns = new HashSet<>();
+            }
+            if (val.length == 1) {
+                triggerPatterns.add(val[0]);
+            } else {
+                triggerPatterns.addAll(Set.of(val));
+            }
+            triggerPatterns.addAll(Set.of(val));
             return this;
         }
 
-        public Builder pattern(Pattern val) {
-            pattern = val;
-            return this;
-        }
-
-        public Builder matchThreshold(Integer val) {
+        public Builder<M> matchThreshold(Integer val) {
             matchThreshold = val;
             return this;
         }
 
-        public Builder priority(Integer val) {
+        public Builder<M> priority(Integer val) {
             priority = val;
             return this;
         }
 
-        public Builder activeType(UnitActiveType val) {
+        public Builder<M> activeType(UnitActiveType val) {
             activeType = val;
             return this;
         }
 
-        public Builder countBack(int val) {
+        public Builder<M> countBack(int val) {
             countBack = val + 1;
             return this;
         }
 
-        public Builder rollbackUnitName(String val) {
+        public Builder<M> rollbackUnitName(String val) {
             rollbackUnitName = val;
             return this;
         }
 
-        public RollBackCmd build() {
+        public RollBackCmd<M> build() {
             if (rollbackUnitName == null && countBack < 2) {
                 throw new UnitConfigException("Ошибка конфигурирования юнита {0}: Количество юнитов для отката не должно быть меньше 1.", name);
             }
-            return new RollBackCmd(this);
+            return new RollBackCmd<>(this);
         }
 
     }

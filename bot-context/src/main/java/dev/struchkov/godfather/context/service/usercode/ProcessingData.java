@@ -2,9 +2,11 @@ package dev.struchkov.godfather.context.service.usercode;
 
 import dev.struchkov.godfather.context.domain.BoxAnswer;
 
+import java.util.Optional;
+
 @FunctionalInterface
 public interface ProcessingData<C> {
 
-    BoxAnswer processing(C content);
+    Optional<BoxAnswer> processing(C content);
 
 }

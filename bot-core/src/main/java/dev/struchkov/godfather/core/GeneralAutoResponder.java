@@ -18,7 +18,6 @@ import dev.struchkov.godfather.core.service.action.AnswerCheckAction;
 import dev.struchkov.godfather.core.service.action.AnswerSaveAction;
 import dev.struchkov.godfather.core.service.action.AnswerTextAction;
 import dev.struchkov.godfather.core.service.action.AnswerTimerAction;
-import dev.struchkov.godfather.core.service.action.AnswerValidityAction;
 import dev.struchkov.godfather.core.service.action.cmd.ReplaceCmdAction;
 import dev.struchkov.godfather.core.service.timer.TimerService;
 import dev.struchkov.haiti.context.exception.NotFoundException;
@@ -30,18 +29,18 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class GeneralAutoResponder<T extends Message> {
+public class GeneralAutoResponder<M extends Message> {
 
     private final PersonSettingService personSettingService;
-    private final StorylineService<T> storyLineService;
-    protected Map<String, ActionUnit<? extends MainUnit, ? extends Message>> actionUnitMap = new HashMap<>();
-    protected List<Modifiable<T>> modifiable;
+    private final StorylineService<M> storyLineService;
+    protected Map<String, ActionUnit> actionUnitMap = new HashMap<>();
+    protected List<Modifiable<M>> modifiable;
     private ErrorHandler errorHandler;
 
     protected GeneralAutoResponder(
             Sending sending,
             PersonSettingService personSettingService,
-            StorylineService<T> storyLineService
+            StorylineService<M> storyLineService
     ) {
         this.personSettingService = personSettingService;
         this.storyLineService = storyLineService;
@@ -49,17 +48,16 @@ public class GeneralAutoResponder<T extends Message> {
     }
 
     private void init(Sending sending) {
-        actionUnitMap.put(TypeUnit.CHECK, new AnswerCheckAction());
+        actionUnitMap.put(TypeUnit.CHECK, new AnswerCheckAction<>());
         actionUnitMap.put(TypeUnit.TEXT, new AnswerTextAction(sending));
-        actionUnitMap.put(TypeUnit.VALIDITY, new AnswerValidityAction());
         actionUnitMap.put(TypeUnit.REPLACE_CMD, new ReplaceCmdAction());
     }
 
-    public void initModifiable(List<Modifiable<T>> modifiable) {
+    public void initModifiable(List<Modifiable<M>> modifiable) {
         this.modifiable = modifiable;
     }
 
-    public void initActionUnit(String typeUnit, ActionUnit<? extends MainUnit, T> actionUnit) {
+    public void initActionUnit(String typeUnit, ActionUnit<? extends MainUnit<M>, M> actionUnit) {
         if (!actionUnitMap.containsKey(typeUnit)) {
             actionUnitMap.put(typeUnit, actionUnit);
         } else {
@@ -67,7 +65,7 @@ public class GeneralAutoResponder<T extends Message> {
         }
     }
 
-    public void initSaveAction(AnswerSaveAction<?> answerSaveAction) {
+    public void initSaveAction(AnswerSaveAction<M, ?> answerSaveAction) {
         actionUnitMap.put(TypeUnit.SAVE, answerSaveAction);
     }
 
@@ -86,7 +84,7 @@ public class GeneralAutoResponder<T extends Message> {
         storyLineService.setDefaultUnit(unitName);
     }
 
-    public void processingNewMessage(T newMessage) {
+    public void processingNewMessage(M newMessage) {
         if (newMessage != null) {
             final boolean state = personSettingService.getStateProcessingByPersonId(newMessage.getPersonId()).orElse(true);
             if (state) {
@@ -95,39 +93,39 @@ public class GeneralAutoResponder<T extends Message> {
         }
     }
 
-    public void processingNewMessages(List<T> newMessages) {
+    public void processingNewMessages(List<M> newMessages) {
         if (newMessages != null && !newMessages.isEmpty()) {
             final Set<Long> personIds = newMessages.stream()
                     .map(Message::getPersonId)
                     .collect(Collectors.toSet());
             final Set<Long> disableIds = personSettingService.getAllPersonIdDisableMessages(personIds);
-            final List<T> allowedMessages = newMessages.stream()
+            final List<M> allowedMessages = newMessages.stream()
                     .filter(message -> !disableIds.contains(message.getPersonId()))
                     .toList();
             allowedMessages.parallelStream().forEach(this::processing);
         }
     }
 
-    private void processing(T message) {
+    private void processing(M message) {
         if (modifiable != null) {
             modifiable.forEach(m -> m.change(message));
         }
-        final Set<MainUnit> units = storyLineService.getNextUnitByPersonId(message.getPersonId());
-        final Optional<MainUnit> optAnswer = Responder.nextUnit(message.getText(), units)
+        final Set<MainUnit<M>> units = storyLineService.getNextUnitByPersonId(message.getPersonId());
+        final Optional<MainUnit<M>> optAnswer = Responder.nextUnit(message, units)
                 .or(storyLineService::getDefaultUnit);
         if (optAnswer.isPresent()) {
-            final MainUnit answer = optAnswer.get();
+            final MainUnit<M> answer = optAnswer.get();
             if (checkPermission(answer.getAccessibility(), message)) {
                 answer(UnitRequest.of(answer, message));
             }
         }
     }
 
-    private boolean checkPermission(Optional<Accessibility> accessibility, T message) {
+    private boolean checkPermission(Optional<Accessibility> accessibility, M message) {
         return accessibility.isEmpty() || accessibility.get().check(message);
     }
 
-    public void answer(UnitRequest<MainUnit, T> unitRequest) {
+    public void answer(UnitRequest<MainUnit<M>, M> unitRequest) {
         try {
             unitRequest = getAction(unitRequest);
             activeUnitAfter(unitRequest);
@@ -140,10 +138,10 @@ public class GeneralAutoResponder<T extends Message> {
         }
     }
 
-    private UnitRequest<MainUnit, T> activeUnitAfter(UnitRequest<MainUnit, T> unitRequest) {
-        final Set<MainUnit> nextUnits = unitRequest.getUnit().getNextUnits();
+    private UnitRequest<MainUnit<M>, M> activeUnitAfter(UnitRequest<MainUnit<M>, M> unitRequest) {
+        final Set<MainUnit<M>> nextUnits = unitRequest.getUnit().getNextUnits();
         if (nextUnits != null) {
-            Optional<MainUnit> first = nextUnits.stream()
+            Optional<MainUnit<M>> first = nextUnits.stream()
                     .filter(unit -> UnitActiveType.AFTER.equals(unit.getActiveType()))
                     .findFirst();
             if (first.isPresent()) {
@@ -154,18 +152,18 @@ public class GeneralAutoResponder<T extends Message> {
         return unitRequest;
     }
 
-    private UnitRequest<MainUnit, T> getAction(UnitRequest<MainUnit, T> unitRequest) {
-        final MainUnit unit = unitRequest.getUnit();
-        final T message = unitRequest.getMessage();
+    private UnitRequest<MainUnit<M>, M> getAction(UnitRequest<MainUnit<M>, M> unitRequest) {
+        final MainUnit<M> unit = unitRequest.getUnit();
+        final M message = unitRequest.getMessage();
         final String typeUnit = unit.getType();
         if (actionUnitMap.containsKey(typeUnit)) {
             ActionUnit actionUnit = actionUnitMap.get(typeUnit);
-            UnitRequest<MainUnit, T> newUnitRequest = actionUnit.action(unitRequest);
-            final Optional<MainUnit> optDefaultUnit = storyLineService.getDefaultUnit();
+            UnitRequest<MainUnit<M>, M> newUnitRequest = actionUnit.action(unitRequest);
+            final Optional<MainUnit<M>> optDefaultUnit = storyLineService.getDefaultUnit();
             if (!unit.isNotSaveHistory() && (optDefaultUnit.isEmpty() || !optDefaultUnit.get().equals(unit))) {
                 storyLineService.save(message.getPersonId(), unit.getName(), message);
             }
-            final MainUnit newUnit = newUnitRequest.getUnit();
+            final MainUnit<M> newUnit = newUnitRequest.getUnit();
             return !unit.equals(newUnit) ? getAction(newUnitRequest) : unitRequest;
         } else {
             throw new NotFoundException("ActionUnit для типа {0} не зарегистрирован", unit.getType());

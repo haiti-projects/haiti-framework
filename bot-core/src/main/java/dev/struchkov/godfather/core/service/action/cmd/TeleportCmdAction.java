@@ -9,22 +9,24 @@ import dev.struchkov.godfather.core.service.action.ActionUnit;
 
 import java.util.Optional;
 
-public class TeleportCmdAction<T extends Message> implements ActionUnit<TeleportCmd, T> {
+public class TeleportCmdAction<M extends Message> implements ActionUnit<TeleportCmd<M>, M> {
 
-    private final StorylineService<T> storyLineService;
+    private final StorylineService<M> storyLineService;
 
-    public TeleportCmdAction(StorylineService<T> storyLineService) {
+    public TeleportCmdAction(StorylineService<M> storyLineService) {
         this.storyLineService = storyLineService;
     }
 
     @Override
-    public UnitRequest<MainUnit, T> action(UnitRequest<TeleportCmd, T> unitRequest) {
-        final TeleportCmd unit = unitRequest.getUnit();
-        final T message = unitRequest.getMessage();
-        final Optional<MainUnit> optNextUnit = storyLineService.getUnitByName(unit.getUnitNameToTeleport());
-        return optNextUnit
-                .map(mainUnit -> UnitRequest.of(mainUnit, message))
-                .orElseGet(() -> UnitRequest.of(unit, message));
+    public UnitRequest<MainUnit, M> action(UnitRequest<TeleportCmd<M>, M> unitRequest) {
+        final TeleportCmd<M> unit = unitRequest.getUnit();
+        final M message = unitRequest.getMessage();
+        final Optional<MainUnit<M>> optNextUnit = storyLineService.getUnitByName(unit.getUnitNameToTeleport());
+        if (optNextUnit.isPresent()) {
+            return UnitRequest.of(optNextUnit.get(), message);
+        } else {
+            return UnitRequest.of(unit, message);
+        }
     }
 
 }

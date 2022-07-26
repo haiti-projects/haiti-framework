@@ -2,11 +2,11 @@ package dev.struchkov.godfather.core.service.action;
 
 import dev.struchkov.godfather.context.domain.UnitRequest;
 import dev.struchkov.godfather.context.domain.content.Message;
+import dev.struchkov.godfather.context.domain.unit.AnswerTimer;
+import dev.struchkov.godfather.context.domain.unit.MainUnit;
 import dev.struchkov.godfather.context.exception.TimerSettingException;
 import dev.struchkov.godfather.core.GeneralAutoResponder;
 import dev.struchkov.godfather.core.domain.Timer;
-import dev.struchkov.godfather.context.domain.unit.AnswerTimer;
-import dev.struchkov.godfather.context.domain.unit.MainUnit;
 import dev.struchkov.godfather.core.service.timer.TimerActionTask;
 import dev.struchkov.godfather.core.service.timer.TimerService;
 
@@ -20,9 +20,9 @@ import java.util.Optional;
  *
  * @author upagge [11/07/2019]
  */
-public class AnswerTimerAction implements ActionUnit<AnswerTimer, Message> {
+public class AnswerTimerAction<M extends Message> implements ActionUnit<AnswerTimer<M>, M> {
 
-    private TimerService timerService;
+    private final TimerService timerService;
     private Long verificationPeriodSec = 15L;
 
     public AnswerTimerAction(TimerService timerService, GeneralAutoResponder generalAutoresponder) {
@@ -41,9 +41,9 @@ public class AnswerTimerAction implements ActionUnit<AnswerTimer, Message> {
     }
 
     @Override
-    public UnitRequest<MainUnit, Message> action(UnitRequest<AnswerTimer, Message> unitRequest) {
-        final AnswerTimer unit = unitRequest.getUnit();
-        final Message message = unitRequest.getMessage();
+    public UnitRequest<MainUnit, M> action(UnitRequest<AnswerTimer<M>, M> unitRequest) {
+        final AnswerTimer<M> unit = unitRequest.getUnit();
+        final M message = unitRequest.getMessage();
 
         final LocalDateTime timeActive = LocalDateTime
                 .now(Clock.tickSeconds(ZoneId.systemDefault()))

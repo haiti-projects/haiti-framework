@@ -10,10 +10,14 @@ import dev.struchkov.godfather.context.service.sender.Sending;
 import dev.struchkov.godfather.context.service.usercode.Insert;
 import dev.struchkov.godfather.context.service.usercode.ProcessingData;
 
-import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -24,12 +28,12 @@ import static dev.struchkov.haiti.utils.Inspector.isNotNull;
  *
  * @author upagge [08/07/2019]
  */
-public class AnswerText<M extends Message> extends MainUnit {
+public class AnswerText<M extends Message> extends MainUnit<M> {
 
     /**
      * Объект, который необходимо отправить пользователю.
      */
-    private final ProcessingData<M> boxAnswer;
+    private final ProcessingData<M> answer;
 
     /**
      * Информация, которую необходимо вставить вместо маркеров в строку ответа.
@@ -39,15 +43,15 @@ public class AnswerText<M extends Message> extends MainUnit {
     /**
      * Объект нестандартной отправки ответа.
      */
-    private final Sending sending;
+    private final Sending sender;
 
     private AnswerText(Builder<M> builder) {
         super(
                 builder.name,
-                builder.keyWords,
-                builder.phrases,
+                builder.triggerWords,
+                builder.triggerPhrases,
                 builder.triggerCheck,
-                builder.pattern,
+                builder.triggerPatterns,
                 builder.matchThreshold,
                 builder.priority,
                 builder.nextUnits,
@@ -56,25 +60,25 @@ public class AnswerText<M extends Message> extends MainUnit {
                 builder.accessibility,
                 TypeUnit.TEXT
         );
-        boxAnswer = builder.boxAnswer;
+        answer = builder.boxAnswer;
         insert = builder.insert;
-        sending = builder.sending;
+        sender = builder.sending;
     }
 
     public static <M extends Message> AnswerText<M> of(String message) {
-        return AnswerText.<M>builder().boxAnswer(BoxAnswer.boxAnswer(message)).build();
+        return AnswerText.<M>builder().answer(BoxAnswer.boxAnswer(message)).build();
     }
 
     public static <M extends Message> AnswerText<M> of(BoxAnswer boxAnswer) {
-        return AnswerText.<M>builder().boxAnswer(boxAnswer).build();
+        return AnswerText.<M>builder().answer(boxAnswer).build();
     }
 
     public static <M extends Message> Builder<M> builder() {
         return new Builder<>();
     }
 
-    public ProcessingData<M> getBoxAnswer() {
-        return boxAnswer;
+    public ProcessingData<M> getAnswer() {
+        return answer;
     }
 
     public Insert getInsert() {
@@ -82,24 +86,28 @@ public class AnswerText<M extends Message> extends MainUnit {
     }
 
     public Sending getSending() {
-        return sending;
+        return sender;
     }
 
     public static final class Builder<M extends Message> {
-        private final Set<KeyWord> keyWords = new HashSet<>();
-        private final Set<String> phrases = new HashSet<>();
-        private Predicate<String> triggerCheck;
         private String name;
-        private ProcessingData<M> boxAnswer;
-        private Insert insert;
-        private Sending sending;
-        private Pattern pattern;
+        private Set<MainUnit<M>> nextUnits;
+
+        private Set<KeyWord> triggerWords;
+        private Set<String> triggerPhrases;
+        private Predicate<M> triggerCheck;
+        private Set<Pattern> triggerPatterns;
+
         private Integer matchThreshold;
         private Integer priority;
-        private Set<MainUnit> nextUnits = new HashSet<>();
+
         private UnitActiveType activeType;
         private Accessibility accessibility;
         private boolean notSaveHistory;
+
+        private ProcessingData<M> boxAnswer;
+        private Insert insert;
+        private Sending sending;
 
         private Builder() {
         }
@@ -109,13 +117,26 @@ public class AnswerText<M extends Message> extends MainUnit {
             return this;
         }
 
-        public Builder<M> message(ProcessingData<M> message) {
-            this.boxAnswer = message;
+        public Builder<M> processing(Consumer<M> answer) {
+            this.boxAnswer = message -> {
+                answer.accept(message);
+                return Optional.empty();
+            };
             return this;
         }
 
-        public Builder<M> boxAnswer(BoxAnswer boxAnswer) {
-            this.boxAnswer = message -> boxAnswer;
+        public Builder<M> answer(Function<M, BoxAnswer> answer) {
+            this.boxAnswer = message -> Optional.of(answer.apply(message));
+            return this;
+        }
+
+        public Builder<M> answer(BoxAnswer answer) {
+            this.boxAnswer = message -> Optional.of(answer);
+            return this;
+        }
+
+        public Builder<M> answer(Supplier<BoxAnswer> answer) {
+            this.boxAnswer = message -> Optional.of(answer.get());
             return this;
         }
 
@@ -129,43 +150,66 @@ public class AnswerText<M extends Message> extends MainUnit {
             return this;
         }
 
-        public Builder<M> keyWords(Set<KeyWord> val) {
-            keyWords.addAll(val);
+        public Builder<M> triggerWords(Set<KeyWord> val) {
+            if (triggerWords == null) {
+                triggerWords = new HashSet<>();
+            }
+            triggerWords.addAll(val);
             return this;
         }
 
-        public Builder<M> keyWord(KeyWord val) {
-            keyWords.add(val);
+        public Builder<M> triggerWord(KeyWord val) {
+            if (triggerWords == null) {
+                triggerWords = new HashSet<>();
+            }
+            triggerWords.add(val);
             return this;
         }
 
-        public Builder<M> stringKeyWords(Set<String> val) {
-            keyWords.addAll(val.stream().map(KeyWord::of).collect(Collectors.toSet()));
+        public Builder<M> triggerStringWords(Set<String> val) {
+            if (triggerWords == null) {
+                triggerWords = new HashSet<>();
+            }
+            triggerWords.addAll(val.stream().map(KeyWord::of).collect(Collectors.toSet()));
             return this;
         }
 
-        public Builder<M> keyWord(String val) {
-            keyWords.add(KeyWord.of(val));
+        public Builder<M> triggerWord(String val) {
+            if (triggerWords == null) {
+                triggerWords = new HashSet<>();
+            }
+            triggerWords.add(KeyWord.of(val));
             return this;
         }
 
-        public Builder<M> phrase(String val) {
-            phrases.add(val);
+        public Builder<M> triggerPhrase(String... val) {
+            if (triggerPhrases == null) {
+                triggerPhrases = new HashSet<>();
+            }
+            if (val.length == 1) {
+                triggerPhrases.add(val[0]);
+            } else {
+                triggerPhrases.addAll(Set.of(val));
+            }
+            triggerPhrases.addAll(List.of(val));
             return this;
         }
 
-        public Builder<M> phrases(String... val) {
-            phrases.addAll(Arrays.asList(val));
+        public Builder<M> triggerPattern(Pattern... val) {
+            if (triggerPatterns == null) {
+                triggerPatterns = new HashSet<>();
+            }
+            if (val.length == 1) {
+                triggerPatterns.add(val[0]);
+            } else {
+                triggerPatterns.addAll(Set.of(val));
+            }
+            triggerPatterns.addAll(Set.of(val));
             return this;
         }
 
-        public Builder<M> triggerCheck(Predicate<String> trigger) {
+        public Builder<M> triggerCheck(Predicate<M> trigger) {
             triggerCheck = trigger;
-            return this;
-        }
-
-        public Builder<M> pattern(Pattern val) {
-            pattern = val;
             return this;
         }
 
@@ -179,12 +223,10 @@ public class AnswerText<M extends Message> extends MainUnit {
             return this;
         }
 
-        public Builder<M> nextUnits(Set<MainUnit> val) {
-            nextUnits = val;
-            return this;
-        }
-
-        public Builder<M> nextUnit(MainUnit val) {
+        public Builder<M> next(MainUnit<M> val) {
+            if (nextUnits == null) {
+                nextUnits = new HashSet<>();
+            }
             nextUnits.add(val);
             return this;
         }

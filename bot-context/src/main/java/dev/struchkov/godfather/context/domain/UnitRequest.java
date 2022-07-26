@@ -19,7 +19,7 @@ public class UnitRequest<U extends MainUnit, M extends Message> {
         this.message = message;
     }
 
-    public static <U extends MainUnit, M extends Message> UnitRequest<U, M> of(U mainUnit, M message) {
+    public static <U extends MainUnit<M>, M extends Message> UnitRequest<U, M> of(U mainUnit, M message) {
         return new UnitRequest<>(mainUnit, message);
     }
 
