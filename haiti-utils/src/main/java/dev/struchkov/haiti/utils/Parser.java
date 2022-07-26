@@ -10,7 +10,7 @@ import static dev.struchkov.haiti.utils.Exceptions.utilityClass;
 
 public final class Parser {
 
-    private static Pattern URL_PARSE;
+    private static Pattern urlParse;
 
     private Parser() {
         utilityClass();
@@ -29,10 +29,10 @@ public final class Parser {
     }
 
     private static Pattern getUrlParse() {
-        if (checkNull(URL_PARSE)) {
-            URL_PARSE = Pattern.compile("(https?://)([^:^/]*)(:\\d*)?(.*)?");
+        if (checkNull(urlParse)) {
+            urlParse = Pattern.compile("(https?://)([^:^/]*)(:\\d*)?(.*)?");
         }
-        return URL_PARSE;
+        return urlParse;
     }
 
 }

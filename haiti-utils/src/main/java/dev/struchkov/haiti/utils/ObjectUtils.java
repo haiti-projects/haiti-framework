@@ -7,10 +7,6 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static dev.struchkov.haiti.utils.Exceptions.utilityClass;
 import static dev.struchkov.haiti.utils.Inspector.isNotNull;
@@ -143,26 +139,6 @@ public class ObjectUtils {
         return (method.getName().startsWith("set"))
                 && (method.getName().length() == (fieldName.length() + 3))
                 && method.getName().toLowerCase().endsWith(fieldName.toLowerCase());
-    }
-
-    public static <T> List<T> toList(T... t) {
-        return Arrays.stream(t).collect(Collectors.toList());
-    }
-
-    public static <T> Collection<T> toCollect(T... t) {
-        return Arrays.stream(t).collect(Collectors.toList());
-    }
-
-    public static <T> Collection<T> toCollect(Collection<T> collection, T... t) {
-        return Stream.concat(
-                collection.stream(), Arrays.stream(t)
-        ).collect(Collectors.toList());
-    }
-
-    public static <T> Collection<T> toCollect(Collection<T> collectionOne, Collection<T> collectionTwo) {
-        return Stream.concat(
-                collectionOne.stream(), collectionTwo.stream()
-        ).collect(Collectors.toList());
     }
 
 }
