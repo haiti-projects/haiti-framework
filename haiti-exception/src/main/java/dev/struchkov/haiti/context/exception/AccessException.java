@@ -12,7 +12,7 @@ public class AccessException extends BasicException {
         super(message);
     }
 
-    public static Supplier<AccessException> supplier(String message, Object... objects) {
+    public static Supplier<AccessException> accessException(String message, Object... objects) {
         return () -> new AccessException(MessageFormat.format(message, objects));
     }
 

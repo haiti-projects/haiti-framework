@@ -12,7 +12,7 @@ public class CreateException extends BasicException {
         super(message);
     }
 
-    public static Supplier<CreateException> supplier(String message, Object... objects) {
+    public static Supplier<CreateException> createException(String message, Object... objects) {
         return () -> new CreateException(MessageFormat.format(message, objects));
     }
 

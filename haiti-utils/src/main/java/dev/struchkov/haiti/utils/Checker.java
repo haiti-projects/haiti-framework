@@ -3,6 +3,7 @@ package dev.struchkov.haiti.utils;
 import java.util.Collection;
 
 import static dev.struchkov.haiti.utils.Exceptions.utilityClass;
+import static dev.struchkov.haiti.utils.Strings.EMPTY;
 
 public final class Checker {
 
@@ -40,6 +41,10 @@ public final class Checker {
         }
     }
 
+    public static boolean checkNotEmpty(String s) {
+        return !EMPTY.equals(s);
+    }
+
     /**
      * Проверка коллекции на пустоту.
      *
@@ -56,6 +61,10 @@ public final class Checker {
      */
     public static boolean checkEmpty(Object... args) {
         return args == null || args.length == 0;
+    }
+
+    public static boolean checkEmpty(String s) {
+        return EMPTY.equals(s);
     }
 
     public static boolean checkLong(String s) {

@@ -16,7 +16,7 @@ public class ConvertException extends BasicException {
         super(message, cause);
     }
 
-    public static Supplier<ConvertException> supplier(String message, Object... objects) {
+    public static Supplier<ConvertException> convertException(String message, Object... objects) {
         return () -> new ConvertException(MessageFormat.format(message, objects));
     }
 
