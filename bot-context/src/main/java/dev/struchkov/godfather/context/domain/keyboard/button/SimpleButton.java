@@ -28,7 +28,7 @@ public class SimpleButton implements KeyBoardButton {
         this.callbackData = callbackData;
     }
 
-    public static SimpleButton simpleButton(@NotNull String label, @NotNull String callbackData) {
+    public static SimpleButton simpleButton(@NotNull String label, String callbackData) {
         return new SimpleButton(label, callbackData);
     }
 

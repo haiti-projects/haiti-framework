@@ -2,9 +2,9 @@ package dev.struchkov.godfather.context.service;
 
 import dev.struchkov.godfather.context.domain.event.Event;
 
-public interface EventProvider<T extends Event> {
+public interface EventHandler<T extends Event> {
 
-    void sendEvent(T event);
+    void handle(T event);
 
     String getEventType();
 

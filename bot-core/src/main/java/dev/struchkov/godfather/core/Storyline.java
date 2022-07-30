@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import static dev.struchkov.haiti.utils.Checker.checkNull;
+
 public class Storyline<M extends Message> {
 
     private final Set<MainUnit<M>> startingUnits = new HashSet<>();
@@ -50,6 +52,9 @@ public class Storyline<M extends Message> {
         final MainUnit<M> firstUnit = units.get(firstName);
         final MainUnit<M> secondUnit = units.get(secondName);
         Inspector.isNotNull(firstUnit, secondUnit);
+        if (checkNull(firstUnit.getNextUnits())) {
+            firstUnit.setNextUnits(new HashSet<>());
+        }
         firstUnit.getNextUnits().add(secondUnit);
     }
 

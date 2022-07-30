@@ -90,7 +90,7 @@ public class Mail extends Message implements Event {
     }
 
     @Override
-    public String getType() {
+    public String getEventType() {
         return TYPE;
     }
 
