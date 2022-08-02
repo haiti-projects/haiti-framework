@@ -15,8 +15,28 @@ public final class Checker {
         return o == null;
     }
 
+    public static boolean checkAllNull(Object... objects) {
+        if (objects.length == 0) return false;
+
+        for (Object object : objects)
+            if (checkNotNull(object))
+                return false;
+
+        return true;
+    }
+
     public static boolean checkNotNull(Object o) {
         return o != null;
+    }
+
+    public static boolean checkAllNotNull(Object... objects) {
+        if (objects.length == 0) return false;
+
+        for (Object object : objects)
+            if (checkNull(object))
+                return false;
+
+        return true;
     }
 
     /**

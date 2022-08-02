@@ -32,15 +32,23 @@ public final class Inspector {
     }
 
     /**
-     * Проверяет множество объектов на null. Если хотябы один объект null, то будет выброшено исключение
+     * Проверяет множество объектов на null. Если хотя бы один объект не null, то будет выброшено исключение
      *
-     * @param e исключение, которое необходимо выбросить
-     * @param objects   проверяемое множество объектов
+     * @param e       исключение, которое необходимо выбросить
+     * @param objects проверяемое множество объектов
      * @throws RuntimeException
      */
     public static void isAnyNotNull(Supplier<? extends RuntimeException> e, Object... objects) {
         for (Object o : objects)
             if (checkNull(o)) throw e.get();
+    }
+
+    /**
+     * Проверяет множество объектов на null. Если хотя бы один объект null, то будет выброшено исключение
+     */
+    public static void isAnyNull(Supplier<? extends RuntimeException> e, Object... objects) {
+        for (Object o : objects)
+            if (checkNotNull(o)) throw e.get();
     }
 
     /**
@@ -52,6 +60,11 @@ public final class Inspector {
     public static void isNotNull(Object... objects) {
         for (Object o : objects)
             if (checkNull(o)) throw new NullPointerException("Object cannot be null");
+    }
+
+    public static void isNotNull(Supplier<? extends RuntimeException> e, Object... objects) {
+        for (Object o : objects)
+            if (checkNull(o)) throw e.get();
     }
 
     /**
