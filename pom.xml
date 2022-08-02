@@ -6,7 +6,7 @@
 
     <groupId>dev.struchkov.godfather</groupId>
     <artifactId>godfather-bot</artifactId>
-    <version>0.0.22</version>
+    <version>0.0.25</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -35,8 +35,8 @@
         <godfather.context.ver>${project.version}</godfather.context.ver>
         <godfather.core.ver>${project.version}</godfather.core.ver>
 
-        <autoresponder.ver>3.4.0</autoresponder.ver>
-        <haiti.utils>1.3.0</haiti.utils>
+        <autoresponder.ver>3.5.0</autoresponder.ver>
+        <haiti.utils>1.4.0</haiti.utils>
 
         <javax.persistence.api.ver>2.2</javax.persistence.api.ver>
         <validation.api.ver>2.0.1.Final</validation.api.ver>

@@ -23,9 +23,9 @@ import java.util.stream.Collectors;
 
 import static dev.struchkov.godfather.context.exception.UnitConfigException.unitConfigException;
 
-public class StorylineMaker<M extends Message> {
+public class StorylineFactory<M extends Message> {
 
-    private static final Logger log = LoggerFactory.getLogger(StorylineMaker.class);
+    private static final Logger log = LoggerFactory.getLogger(StorylineFactory.class);
 
     private final List<Object> configurations = new ArrayList<>();
 
@@ -35,7 +35,7 @@ public class StorylineMaker<M extends Message> {
     private final Set<String> mainUnits = new HashSet<>();
     private final Set<String> globalUnits = new HashSet<>();
 
-    public StorylineMaker(List<Object> unitConfigurations) {
+    public StorylineFactory(List<Object> unitConfigurations) {
         this.configurations.addAll(unitConfigurations);
     }
 

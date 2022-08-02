@@ -9,7 +9,7 @@ import dev.struchkov.godfather.context.repository.StorylineRepository;
 import dev.struchkov.godfather.context.service.StorylineService;
 import dev.struchkov.godfather.context.service.UnitPointerService;
 import dev.struchkov.godfather.core.Storyline;
-import dev.struchkov.godfather.core.StorylineMaker;
+import dev.struchkov.godfather.core.StorylineFactory;
 import dev.struchkov.haiti.utils.Inspector;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,7 +34,7 @@ public class StorylineMailService implements StorylineService<Mail> {
             StorylineRepository storylineRepository,
             List<Object> unitConfigurations
     ) {
-        this.storyLine = new StorylineMaker<Mail>(unitConfigurations).createStoryLine();
+        this.storyLine = new StorylineFactory<Mail>(unitConfigurations).createStoryLine();
         this.unitPointerService = unitPointerService;
         this.storylineRepository = storylineRepository;
     }

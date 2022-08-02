@@ -12,6 +12,7 @@ import dev.struchkov.godfather.context.service.save.Pusher;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -56,6 +57,7 @@ public class AnswerSave<M extends Message, D> extends MainUnit<M> {
     private AnswerSave(Builder<M, D> builder) {
         super(
                 builder.name,
+                builder.description,
                 builder.triggerWords,
                 builder.triggerPhrases,
                 builder.triggerCheck,
@@ -112,7 +114,8 @@ public class AnswerSave<M extends Message, D> extends MainUnit<M> {
     }
 
     public static final class Builder<M extends Message, D> {
-        private String name;
+        private String name = UUID.randomUUID().toString();
+        private String description;
         private Set<MainUnit<M>> nextUnits;
 
         private Set<KeyWord> triggerWords;
@@ -138,6 +141,11 @@ public class AnswerSave<M extends Message, D> extends MainUnit<M> {
 
         public Builder<M, D> name(String name) {
             this.name = name;
+            return this;
+        }
+
+        public Builder<M, D> description(String description) {
+            this.description = description;
             return this;
         }
 

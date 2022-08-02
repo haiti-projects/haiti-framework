@@ -9,6 +9,7 @@ import dev.struchkov.godfather.context.exception.UnitConfigException;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -33,6 +34,7 @@ public class RollBackCmd<M extends Message> extends MainUnit<M> {
     private RollBackCmd(Builder<M> builder) {
         super(
                 builder.name,
+                builder.description,
                 builder.triggerWords,
                 builder.triggerPhrases,
                 builder.triggerCheck,
@@ -82,7 +84,8 @@ public class RollBackCmd<M extends Message> extends MainUnit<M> {
     }
 
     public static final class Builder<M extends Message> {
-        private String name;
+        private String name = UUID.randomUUID().toString();
+        private String description;
 
         private Set<String> triggerPhrases;
         private Predicate<M> triggerCheck;
@@ -101,6 +104,11 @@ public class RollBackCmd<M extends Message> extends MainUnit<M> {
 
         public Builder<M> name(String name) {
             this.name = name;
+            return this;
+        }
+
+        public Builder<M> description(String description) {
+            this.description = description;
             return this;
         }
 

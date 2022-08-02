@@ -8,6 +8,7 @@ import dev.struchkov.godfather.context.service.usercode.CheckData;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -41,6 +42,7 @@ public class AnswerCheck<M extends Message> extends MainUnit<M> {
     private AnswerCheck(Builder<M> builder) {
         super(
                 builder.name,
+                builder.description,
                 builder.triggerWords,
                 builder.triggerPhrases,
                 builder.triggerCheck,
@@ -75,7 +77,8 @@ public class AnswerCheck<M extends Message> extends MainUnit<M> {
     }
 
     public static final class Builder<M extends Message> {
-        private String name;
+        private String name = UUID.randomUUID().toString();
+        private String description;
 
         private Set<KeyWord> triggerWords;
         private Set<String> triggerPhrases;
@@ -98,6 +101,11 @@ public class AnswerCheck<M extends Message> extends MainUnit<M> {
 
         public Builder<M> name(String name) {
             this.name = name;
+            return this;
+        }
+
+        public Builder<M> description(String description) {
+            this.description = description;
             return this;
         }
 

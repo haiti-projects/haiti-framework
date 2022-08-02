@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -48,6 +49,7 @@ public class AnswerText<M extends Message> extends MainUnit<M> {
     private AnswerText(Builder<M> builder) {
         super(
                 builder.name,
+                builder.description,
                 builder.triggerWords,
                 builder.triggerPhrases,
                 builder.triggerCheck,
@@ -90,7 +92,8 @@ public class AnswerText<M extends Message> extends MainUnit<M> {
     }
 
     public static final class Builder<M extends Message> {
-        private String name;
+        private String name = UUID.randomUUID().toString();
+        private String description;
         private Set<MainUnit<M>> nextUnits;
 
         private Set<KeyWord> triggerWords;
@@ -114,6 +117,11 @@ public class AnswerText<M extends Message> extends MainUnit<M> {
 
         public Builder<M> name(String name) {
             this.name = name;
+            return this;
+        }
+
+        public Builder<M> description(String description) {
+            this.description = description;
             return this;
         }
 

@@ -8,7 +8,6 @@ import dev.struchkov.godfather.context.service.Accessibility;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -20,24 +19,24 @@ import java.util.regex.Pattern;
 public abstract class MainUnit<M extends Message> extends Unit<MainUnit<M>, M> {
 
     /**
+     * Уникальное имя юнита
+     */
+    private String name;
+
+    /**
+     * Описание юнита, что он делает. Никак не влияет на работу юнита и не участвует в ней. Возможно отображение этого текста в логах.
+     */
+    private final String description;
+
+    /**
      * Тип Unit-а.
      */
     protected final String type;
 
     /**
-     * Уникальный идентификатор юнита
-     */
-    private final String uuid = UUID.randomUUID().toString();
-
-    /**
      * Режим срабатывания Unit-а.
      */
     protected UnitActiveType activeType;
-
-    /**
-     * Уникальное имя юнита
-     */
-    private String name;
 
     /**
      * Проверка доступа пользователя к юниту.
@@ -48,6 +47,7 @@ public abstract class MainUnit<M extends Message> extends Unit<MainUnit<M>, M> {
 
     protected MainUnit(
             String name,
+            String description,
             Set<KeyWord> keyWords,
             Set<String> phrases,
             Predicate<M> triggerCheck,
@@ -62,6 +62,7 @@ public abstract class MainUnit<M extends Message> extends Unit<MainUnit<M>, M> {
     ) {
         super(keyWords, phrases, triggerCheck, patterns, matchThreshold, priority, nextUnits);
         this.name = name;
+        this.description = description;
         this.activeType = Optional.ofNullable(activeType).orElse(UnitActiveType.DEFAULT);
         this.accessibility = accessibility;
         this.type = type;
@@ -80,10 +81,6 @@ public abstract class MainUnit<M extends Message> extends Unit<MainUnit<M>, M> {
         this.activeType = activeType;
     }
 
-    public String getUuid() {
-        return uuid;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -100,19 +97,21 @@ public abstract class MainUnit<M extends Message> extends Unit<MainUnit<M>, M> {
         return Optional.ofNullable(accessibility);
     }
 
-    //TODO [27.05.2022]: Возможно стоит добавить имя юнита и убрать остальное
+    public String getDescription() {
+        return description;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        MainUnit mainUnit = (MainUnit) o;
-        return Objects.equals(type, mainUnit.type) && activeType == mainUnit.activeType && Objects.equals(uuid, mainUnit.uuid);
+        MainUnit<?> unit = (MainUnit<?>) o;
+        return name.equals(unit.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), type, activeType, uuid);
+        return Objects.hash(name);
     }
 
 }

@@ -25,7 +25,7 @@ public interface StorylineService<M extends Message> {
     Optional<MainUnit<M>> getDefaultUnit();
 
     /**
-     * Ленивая (поздняя) связка юнитов между собой. Осуществляется уже после создания сценария. С помощью данного подхода можно реализовать циклические зависимости юнитов. Либо можно использовать {@link dev.struchkov.godfather.context.domain.unit.cmd.TeleportCmd}
+     * Ленивая (поздняя) связка юнитов между собой. Осуществляется уже после создания сценария. С помощью данного подхода можно реализовать циклические зависимости юнитов.
      */
     void lazyLink(String firstName, String secondName);
 
