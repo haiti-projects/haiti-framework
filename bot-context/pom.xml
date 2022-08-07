@@ -10,6 +10,13 @@
     </parent>
 
     <artifactId>bot-context</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>bot-context-main</module>
+        <module>bot-context-simple</module>
+        <module>bot-context-quarkus</module>
+    </modules>
+
 
     <name>Bot Context</name>
     <description>Доменные сущности, интерфейсы, для библиотеки Godfather</description>

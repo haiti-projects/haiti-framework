@@ -12,6 +12,9 @@
     <modules>
         <module>bot-context</module>
         <module>bot-core</module>
+        <module>bot-data</module>
+        <module>bot-exception</module>
+        <module>bot-domain</module>
     </modules>
 
     <name>GodFather Bot</name>
@@ -54,8 +57,61 @@
         <dependencies>
             <dependency>
                 <groupId>dev.struchkov.godfather</groupId>
-                <artifactId>bot-context</artifactId>
-                <version>${godfather.core.ver}</version>
+                <artifactId>bot-exception</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>dev.struchkov.godfather</groupId>
+                <artifactId>bot-domain-main</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>dev.struchkov.godfather</groupId>
+                <artifactId>bot-context-main</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>dev.struchkov.godfather</groupId>
+                <artifactId>bot-context-quarkus</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>dev.struchkov.godfather</groupId>
+                <artifactId>bot-context-simple</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>dev.struchkov.godfather</groupId>
+                <artifactId>bot-core-main</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>dev.struchkov.godfather</groupId>
+                <artifactId>bot-core-simple</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>dev.struchkov.godfather</groupId>
+                <artifactId>bot-core-quarkus</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>dev.struchkov.godfather</groupId>
+                <artifactId>bot-data-main</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>dev.struchkov.godfather</groupId>
+                <artifactId>bot-data-simple</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>dev.struchkov.godfather</groupId>
+                <artifactId>bot-data-quarkus</artifactId>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
@@ -63,6 +119,7 @@
                 <artifactId>autoresponder</artifactId>
                 <version>${autoresponder.ver}</version>
             </dependency>
+
             <dependency>
                 <groupId>dev.struchkov.haiti</groupId>
                 <artifactId>haiti-utils</artifactId>
@@ -83,6 +140,12 @@
                 <groupId>org.jetbrains</groupId>
                 <artifactId>annotations</artifactId>
                 <version>${jetbrains.annotations.ver}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.smallrye.reactive</groupId>
+                <artifactId>smallrye-mutiny-vertx-core</artifactId>
+                <version>2.24.1</version>
             </dependency>
 
             <dependency>
