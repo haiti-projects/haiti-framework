@@ -19,13 +19,18 @@ public class Sender {
     }
 
     public static Uni<Void> sends(Message message, BoxAnswer boxAnswer, Sending sending) {
-        switch (sending.getType()) {
-            case PUBLIC:
-                break;
-            case PRIVATE:
-                return privateSend(message, boxAnswer, sending);
-        }
-        return Uni.createFrom().voidItem();
+        return Uni.createFrom().item(sending)
+                .onItem().ifNotNull().transformToUni(
+                        sender -> {
+                            switch (sending.getType()) {
+                                case PUBLIC:
+                                    break;
+                                case PRIVATE:
+                                    return privateSend(message, boxAnswer, sending);
+                            }
+                            return Uni.createFrom().nullItem();
+                        }
+                ).replaceWithVoid();
     }
 
     private static Uni<Void> privateSend(Message message, BoxAnswer boxAnswer, Sending sending) {

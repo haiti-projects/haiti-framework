@@ -164,7 +164,7 @@ public class AnswerCheck<M extends Message> extends MainUnit<M> {
             return this;
         }
 
-        private Builder<M> triggerCheck(Predicate<M> trigger) {
+        public Builder<M> triggerCheck(Predicate<M> trigger) {
             triggerCheck = trigger;
             return this;
         }
