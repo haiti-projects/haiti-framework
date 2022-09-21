@@ -28,11 +28,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static dev.struchkov.haiti.utils.Checker.checkEmpty;
+import static dev.struchkov.haiti.utils.Checker.checkNotEmpty;
 import static dev.struchkov.haiti.utils.Checker.checkNotNull;
-import static java.lang.Boolean.TRUE;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.emptySet;
+import static dev.struchkov.haiti.utils.Checker.checkNull;
 
 public class GeneralAutoResponder<M extends Message> {
 
@@ -86,72 +84,87 @@ public class GeneralAutoResponder<M extends Message> {
     }
 
     public Uni<Void> processingNewMessage(M newMessage) {
-        return Uni.createFrom().item(newMessage)
-                .onItem().ifNotNull().transformToUni(
-                        message -> personSettingService.getStateProcessingByPersonId(newMessage.getPersonId())
-                                .replaceIfNullWith(TRUE)
-                                .chain(
-                                        state -> {
-                                            if (TRUE.equals(state)) {
-                                                return processing(newMessage);
-                                            }
-                                            return Uni.createFrom().voidItem();
-                                        }
-                                )
-                ).replaceWithVoid();
-
+        if (newMessage != null) {
+            return personSettingService.getStateProcessingByPersonId(newMessage.getPersonId())
+                    .onItem().transformToUni(
+                            state -> {
+                                if (checkNull(state) || state) {
+                                    return processing(newMessage);
+                                }
+                                return Uni.createFrom().voidItem();
+                            }
+                    );
+        }
+        return Uni.createFrom().voidItem();
     }
 
     public Uni<Void> processingNewMessages(List<M> newMessages) {
-        return Uni.createFrom().item(newMessages)
-                .onItem().ifNotNull().transformToUni(
-                        messages -> {
-                            if (checkEmpty(newMessages)) return Uni.createFrom().voidItem();
-
-                            final Set<Long> personIds = newMessages.stream()
-                                    .map(Message::getPersonId)
-                                    .collect(Collectors.toSet());
-                            return personSettingService.getAllPersonIdDisableMessages(personIds)
-                                    .replaceIfNullWith(emptySet())
-                                    .onItem().transformToMulti(
-                                            disableIds -> {
-                                                final List<M> allowedMessages = newMessages.stream()
-                                                        .filter(message -> !disableIds.contains(message.getPersonId()))
-                                                        .toList();
-                                                return Multi.createFrom().iterable(allowedMessages);
-                                            }
-                                    )
-                                    .onItem().transform(this::processing)
-                                    .toUni().replaceWithVoid();
-                        }
-                );
+        if (newMessages != null && !newMessages.isEmpty()) {
+            final Set<Long> personIds = newMessages.stream()
+                    .map(Message::getPersonId)
+                    .collect(Collectors.toSet());
+            return personSettingService.getAllPersonIdDisableMessages(personIds)
+                    .onItem().transformToMulti(
+                            disableIds -> {
+                                final List<M> allowedMessages = newMessages.stream()
+                                        .filter(message -> !disableIds.contains(message.getPersonId()))
+                                        .toList();
+                                return Multi.createFrom().iterable(allowedMessages);
+                            }
+                    )
+                    .onItem().transform(this::processing)
+                    .toUni().replaceWithVoid();
+        }
+        return Uni.createFrom().voidItem();
     }
 
     private Uni<Void> processing(M message) {
         return Uni.createFrom().item(message)
-                .onItem().ifNotNull().transform(m -> modifiable)
-                .replaceIfNullWith(emptyList())
-                .onItem().transformToMulti(modifiables -> Multi.createFrom().iterable(modifiables))
-                .onItem().transformToUni(mModifiable -> mModifiable.change(message))
-                .concatenate().toUni().replaceWith(
-                        storyLineService.getNextUnitByPersonId(message.getPersonId())
-                                .onItem().ifNotNull().transformToUni(
-                                        nextUnits -> Uni.createFrom().optional(
-                                                Responder.nextUnit(message, nextUnits).or(storyLineService::getDefaultUnit)
-                                        )
-                                ).onItem().ifNotNull().transformToUni(answerUnit -> answer(UnitRequest.of(answerUnit, message)))
+                .onItem().transformToUni(
+                        mail -> {
+                            if (checkNotEmpty(modifiable)) {
+                                return Multi.createFrom().iterable(modifiable)
+                                        .onItem().transformToUni(m -> m.change(mail))
+                                        .concatenate().toUni().replaceWith(mail);
+                            }
+                            return Uni.createFrom().item(mail);
+                        }
+                ).onItem().transformToUni(
+                        mail -> {
+                            final Uni<Set<MainUnit<M>>> uniUnits = storyLineService.getNextUnitByPersonId(mail.getPersonId());
+                            return Uni.combine().all().unis(uniUnits, Uni.createFrom().item(mail)).asTuple();
+                        }
+                ).onItem().transformToUni(
+                        t -> {
+                            final Set<MainUnit<M>> units = t.getItem1();
+                            final M mail = t.getItem2();
+                            final Optional<MainUnit<M>> optAnswer = Responder.nextUnit(mail, units).or(storyLineService::getDefaultUnit);
+                            if (optAnswer.isPresent()) {
+                                final MainUnit<M> answer = optAnswer.get();
+                                //TODO [05.08.2022]: нужно ли проверку встраивать в поток?
+//                                if (checkPermission(answer.getAccessibility(), message)) {
+                                return answer(UnitRequest.of(answer, message));
+//                                }
+                            }
+                            return Uni.createFrom().voidItem();
+                        }
                 );
     }
 
+//    private boolean checkPermission(Optional<Accessibility> accessibility, M message) {
+//        return accessibility.isEmpty() || accessibility.get().check(message);
+//    }
+
     public Uni<Void> answer(UnitRequest<MainUnit, M> unitRequest) {
         return getAction(unitRequest)
-                .chain(request -> activeUnitAfter(unitRequest))
-                .onFailure().call(
+                .onItem().transformToUni(
+                        request -> activeUnitAfter(unitRequest)
+                )
+                .onFailure().invoke(
                         throwable -> {
-                            if (checkNotNull(errorHandler)) {
-                                return errorHandler.handle(unitRequest.getMessage(), throwable);
+                            if (errorHandler != null) {
+                                errorHandler.handle(unitRequest.getMessage(), throwable);
                             }
-                            return Uni.createFrom().voidItem();
                         }
                 )
                 .replaceWithVoid();
@@ -165,7 +178,7 @@ public class GeneralAutoResponder<M extends Message> {
                     .findFirst();
             if (first.isPresent()) {
                 return Uni.createFrom().voidItem().onItem().transformToUni(
-                                v -> getAction(UnitRequest.of(first.get(), unitRequest.getMessage()))
+                                v-> getAction(UnitRequest.of(first.get(), unitRequest.getMessage()))
                         )
                         .onItem().transformToUni(
                                 uR -> activeUnitAfter(UnitRequest.of(first.get(), unitRequest.getMessage()))

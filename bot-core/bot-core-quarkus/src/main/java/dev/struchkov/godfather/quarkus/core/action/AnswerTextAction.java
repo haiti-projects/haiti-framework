@@ -28,32 +28,48 @@ public class AnswerTextAction implements ActionUnit<AnswerText<Message>, Message
 
     @Override
     public Uni<UnitRequest<MainUnit, Message>> action(UnitRequest<AnswerText<Message>, Message> unitRequest) {
-        final Message message = unitRequest.getMessage();
         final AnswerText<Message> unit = unitRequest.getUnit();
-        return Uni.createFrom().voidItem()
-                .chain(request -> unit.getAnswer().processing(message))
-                .onItem().ifNotNull().transformToUni(boxAnswer -> replaceMarkers(unit, message, boxAnswer))
-                .onItem().ifNotNull().transformToUni(boxAnswer -> {
-                    final Sending answerTextSending = unit.getSending();
-                    if (checkNotNull(answerTextSending)) {
-                        return Sender.sends(message, boxAnswer, answerTextSending);
-                    } else {
-                        return Sender.sends(message, boxAnswer, this.sending);
-                    }
-                }).replaceWith(UnitRequest.of(unit, message));
+        final Message message = unitRequest.getMessage();
+
+        return unit.getAnswer().processing(message)
+                .onItem().transformToUni(
+                        boxAnswer -> {
+                            if (checkNotNull(boxAnswer)) {
+                                return replaceMarkers(unit, message, boxAnswer);
+                            }
+                            return Uni.createFrom().nullItem();
+                        }
+                ).onItem().transformToUni(
+                        boxAnswer -> {
+                            if (checkNotNull(boxAnswer)) {
+                                final Sending answerTextSending = unit.getSending();
+                                if (answerTextSending != null) {
+                                    return Sender.sends(message, boxAnswer, answerTextSending);
+                                } else {
+                                    return Sender.sends(message, boxAnswer, this.sending);
+                                }
+                            }
+                            return Uni.createFrom().nullItem();
+                        }
+                ).onItem().transform(
+                        v -> UnitRequest.of(unit, message)
+                );
     }
 
     private Uni<BoxAnswer> replaceMarkers(AnswerText<Message> answerText, Message message, BoxAnswer boxAnswer) {
-        return Uni.createFrom().item(answerText.getInsert())
-                .onItem().ifNotNull().transformToUni(insert -> insert.insert(message.getPersonId()))
-                .onItem().ifNotNull().transform(words -> {
-                    if (checkNotEmpty(words)) {
-                        final String newMessage = InsertWords.insert(boxAnswer.getMessage(), words);
-                        boxAnswer.setMessage(newMessage);
-                    }
-                    return boxAnswer;
-                })
-                .replaceIfNullWith(boxAnswer);
+        if (answerText.getInsert() != null) {
+            return answerText.getInsert().insert(message.getPersonId())
+                    .onItem().transformToUni(
+                            words -> {
+                                if (checkNotEmpty(words)) {
+                                    final String newMessage = InsertWords.insert(boxAnswer.getMessage(), words);
+                                    boxAnswer.setMessage(newMessage);
+                                }
+                                return Uni.createFrom().item(boxAnswer);
+                            }
+                    );
+        }
+        return Uni.createFrom().item(boxAnswer);
     }
 
 }
