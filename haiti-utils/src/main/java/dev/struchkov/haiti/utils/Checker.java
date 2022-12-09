@@ -87,6 +87,14 @@ public final class Checker {
         return EMPTY.equals(s);
     }
 
+    public static boolean checkNotFalse(Boolean b) {
+        return b != null && b;
+    }
+
+    public static boolean checkNotTrue(Boolean b) {
+        return b != null && !b;
+    }
+
     public static boolean checkLong(String s) {
         try {
             Long.parseLong(s);
