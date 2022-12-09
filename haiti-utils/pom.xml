@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>dev.struchkov.haiti</groupId>
-        <artifactId>haiti</artifactId>
-        <version>1.5.0</version>
+        <artifactId>haiti-dependencies</artifactId>
+        <version>2.0.0</version>
     </parent>
 
     <name>Haiti Utils</name>
@@ -15,14 +15,6 @@
 
     <artifactId>haiti-utils</artifactId>
     <version>${haiti.utils.ver}</version>
-
-    <properties>
-        <java.version>11</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    </properties>
 
     <dependencies>
         <dependency>

@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>dev.struchkov.haiti</groupId>
-    <artifactId>haiti</artifactId>
-    <version>1.5.0</version>
+    <artifactId>haiti-dependencies</artifactId>
+    <version>2.0.0</version>
     <packaging>pom</packaging>
 
     <name>Haiti Framework</name>
@@ -24,12 +24,8 @@
     </issueManagement>
 
     <modules>
-        <module>haiti-bom</module>
         <module>haiti-exception</module>
         <module>haiti-utils</module>
-        <module>haiti-context</module>
-        <module>haiti-core</module>
-        <module>haiti-filter</module>
     </modules>
 
     <properties>
@@ -39,15 +35,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <haiti.ver>${project.version}</haiti.ver>
-
-        <haiti.bom.ver>${haiti.ver}</haiti.bom.ver>
+        <haiti.ver>2.0.0</haiti.ver>
         <haiti.exception.ver>${haiti.ver}</haiti.exception.ver>
         <haiti.context.ver>${haiti.ver}</haiti.context.ver>
-        <haiti.core.ver>${haiti.ver}</haiti.core.ver>
         <haiti.filter.api.ver>${haiti.ver}</haiti.filter.api.ver>
-        <haiti.filter.criteria.ver>${haiti.ver}</haiti.filter.criteria.ver>
-        <haiti.database.ver>${haiti.ver}</haiti.database.ver>
         <haiti.utils.ver>${haiti.ver}</haiti.utils.ver>
 
         <plugin.maven.compiler.ver>3.10.1</plugin.maven.compiler.ver>
@@ -61,10 +52,20 @@
         <dependencies>
             <dependency>
                 <groupId>dev.struchkov.haiti</groupId>
-                <artifactId>haiti-bom</artifactId>
-                <version>${haiti.bom.ver}</version>
+                <artifactId>haiti-external-bom</artifactId>
+                <version>${haiti.ver}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>dev.struchkov.haiti</groupId>
+                <artifactId>haiti-exception</artifactId>
+                <version>${haiti.exception.ver}</version>
+            </dependency>
+            <dependency>
+                <groupId>dev.struchkov.haiti</groupId>
+                <artifactId>haiti-utils</artifactId>
+                <version>${haiti.utils.ver}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
