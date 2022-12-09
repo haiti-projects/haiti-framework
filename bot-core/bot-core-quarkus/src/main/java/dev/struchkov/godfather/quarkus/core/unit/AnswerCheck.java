@@ -3,6 +3,7 @@ package dev.struchkov.godfather.quarkus.core.unit;
 import dev.struchkov.autoresponder.entity.KeyWord;
 import dev.struchkov.godfather.main.core.unit.TypeUnit;
 import dev.struchkov.godfather.main.core.unit.UnitActiveType;
+import dev.struchkov.godfather.main.domain.BoxAnswer;
 import dev.struchkov.godfather.main.domain.content.Message;
 import dev.struchkov.godfather.quarkus.context.service.Accessibility;
 import dev.struchkov.godfather.quarkus.core.unit.func.CheckData;
@@ -13,9 +14,6 @@ import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import static dev.struchkov.godfather.exception.UnitConfigException.unitConfigException;
-import static dev.struchkov.haiti.utils.Inspector.isAnyNotNull;
 
 /**
  * Обработчик запроса, который реализует конструкцию IF в сценарии.
@@ -33,6 +31,16 @@ public class AnswerCheck<M extends Message> extends MainUnit<M> {
      * Unit для false.
      */
     private final MainUnit unitFalse;
+
+    /**
+     * Временный ответ. Отправляется сразу после проверки условия, если оно true. Предполагается, что после условия следующий Unit может долго обрабатывать какой-то результат. Поэтому можно передать пользователю какое-то сообщение, наподобие: "Подождите идет обработка".
+     */
+    private final BoxAnswer intermediateAnswerIfTrue;
+
+    /**
+     * Промежуточный ответ. Отправляется сразу после проверки условия, если оно false. Предполагается, что после условия следующий Unit может долго обрабатывать какой-то результат. Поэтому можно передать пользователю какое-то сообщение, наподобие: "Подождите идет обработка".
+     */
+    private final BoxAnswer intermediateAnswerIfFalse;
 
     /**
      * Условие проверки.
@@ -58,6 +66,8 @@ public class AnswerCheck<M extends Message> extends MainUnit<M> {
         unitTrue = builder.unitTrue;
         unitFalse = builder.unitFalse;
         check = builder.check;
+        intermediateAnswerIfTrue = builder.intermediateAnswerIfTrue;
+        intermediateAnswerIfFalse = builder.intermediateAnswerIfFalse;
     }
 
     public static <M extends Message> Builder<M> builder() {
@@ -74,6 +84,14 @@ public class AnswerCheck<M extends Message> extends MainUnit<M> {
 
     public CheckData<M> getCheck() {
         return check;
+    }
+
+    public BoxAnswer getIntermediateAnswerIfTrue() {
+        return intermediateAnswerIfTrue;
+    }
+
+    public BoxAnswer getIntermediateAnswerIfFalse() {
+        return intermediateAnswerIfFalse;
     }
 
     public static final class Builder<M extends Message> {
@@ -95,6 +113,8 @@ public class AnswerCheck<M extends Message> extends MainUnit<M> {
         private MainUnit unitTrue;
         private MainUnit unitFalse;
         private CheckData<M> check;
+        private BoxAnswer intermediateAnswerIfFalse;
+        private BoxAnswer intermediateAnswerIfTrue;
 
         private Builder() {
         }
@@ -212,9 +232,25 @@ public class AnswerCheck<M extends Message> extends MainUnit<M> {
             return this;
         }
 
+        public Builder<M> intermediateAnswer(BoxAnswer val) {
+            intermediateAnswerIfTrue = val;
+            intermediateAnswerIfFalse = val;
+            return this;
+        }
+
+        public Builder<M> intermediateAnswerIfTrue(BoxAnswer val) {
+            intermediateAnswerIfTrue = val;
+            return this;
+        }
+
+        public Builder<M> intermediateAnswerIfFalse(BoxAnswer val) {
+            intermediateAnswerIfFalse = val;
+            return this;
+        }
+
         public AnswerCheck<M> build() {
 //            isNotNull(check, unitConfigException("Необходимо установить параметр проверки."));
-            isAnyNotNull(unitConfigException("Необходимо задать хотя бы один unit результата проверки."));
+//            isAnyNotNull(unitConfigException("Необходимо задать хотя бы один unit результата проверки."));
             return new AnswerCheck<>(this);
         }
 

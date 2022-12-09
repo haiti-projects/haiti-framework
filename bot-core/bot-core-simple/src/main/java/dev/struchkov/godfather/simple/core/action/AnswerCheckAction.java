@@ -1,6 +1,8 @@
 package dev.struchkov.godfather.simple.core.action;
 
+import dev.struchkov.godfather.main.domain.BoxAnswer;
 import dev.struchkov.godfather.main.domain.content.Message;
+import dev.struchkov.godfather.simple.context.service.Sending;
 import dev.struchkov.godfather.simple.core.unit.AnswerCheck;
 import dev.struchkov.godfather.simple.core.unit.MainUnit;
 import dev.struchkov.godfather.simple.core.unit.UnitRequest;
@@ -8,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
+
+import static dev.struchkov.haiti.utils.Checker.checkNull;
 
 /**
  * Обработчик Unit-а {@link AnswerCheck}.
@@ -18,19 +22,32 @@ public class AnswerCheckAction<M extends Message> implements ActionUnit<AnswerCh
 
     private static final Logger log = LoggerFactory.getLogger(AnswerCheckAction.class);
 
+    private final Sending sending;
+
+    public AnswerCheckAction(Sending sending) {
+        this.sending = sending;
+    }
+
     @Override
     public UnitRequest<MainUnit, M> action(UnitRequest<AnswerCheck<M>, M> unitRequest) {
         final AnswerCheck<M> unit = unitRequest.getUnit();
+        log.debug("Началась обработка unit: {}.", unit.getName());
+
         final M message = unitRequest.getMessage();
 
         MainUnit<M> unitAnswer;
         if (unit.getCheck().checked(message)) {
-            log.info("Проверка пройдена");
+            log.debug("Unit: {}. Проверка пройдена", unit.getName());
+            final BoxAnswer answerIfTrue = unit.getIntermediateAnswerIfTrue();
+            if (checkNull(answerIfTrue)) sending.send(message.getPersonId(), answerIfTrue);
             unitAnswer = unit.getUnitTrue();
         } else {
-            log.info("Проверка не пройдена");
+            log.debug("Unit: {}. Проверка НЕ пройдена", unit.getName());
+            final BoxAnswer answerIfFalse = unit.getIntermediateAnswerIfFalse();
+            if (checkNull(answerIfFalse)) sending.send(message.getPersonId(), answerIfFalse);
             unitAnswer = unit.getUnitFalse();
         }
+        log.debug("Завершилась обработка unit: {}.", unit.getName());
         return UnitRequest.of(Objects.requireNonNullElse(unitAnswer, unit), message);
     }
 }

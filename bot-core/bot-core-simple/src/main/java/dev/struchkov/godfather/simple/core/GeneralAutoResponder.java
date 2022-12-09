@@ -46,7 +46,7 @@ public class GeneralAutoResponder<M extends Message> {
     }
 
     private void init(Sending sending) {
-        actionUnitMap.put(TypeUnit.CHECK, new AnswerCheckAction<>());
+        actionUnitMap.put(TypeUnit.CHECK, new AnswerCheckAction<>(sending));
         actionUnitMap.put(TypeUnit.TEXT, new AnswerTextAction(sending));
         actionUnitMap.put(TypeUnit.REPLACE_CMD, new ReplaceCmdAction());
     }

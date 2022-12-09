@@ -3,6 +3,7 @@ package dev.struchkov.godfather.simple.core.unit;
 import dev.struchkov.autoresponder.entity.KeyWord;
 import dev.struchkov.godfather.main.core.unit.TypeUnit;
 import dev.struchkov.godfather.main.core.unit.UnitActiveType;
+import dev.struchkov.godfather.main.domain.BoxAnswer;
 import dev.struchkov.godfather.main.domain.content.Message;
 import dev.struchkov.godfather.simple.context.service.Accessibility;
 import dev.struchkov.godfather.simple.core.unit.func.CheckData;
@@ -36,6 +37,16 @@ public class AnswerCheck<M extends Message> extends MainUnit<M> {
      */
     private final CheckData<M> check;
 
+    /**
+     * Временный ответ. Отправляется сразу после проверки условия, если оно true. Предполагается, что после условия следующий Unit может долго обрабатывать какой-то результат. Поэтому можно передать пользователю какое-то сообщение, наподобие: "Подождите идет обработка".
+     */
+    private final BoxAnswer intermediateAnswerIfTrue;
+
+    /**
+     * Промежуточный ответ. Отправляется сразу после проверки условия, если оно false. Предполагается, что после условия следующий Unit может долго обрабатывать какой-то результат. Поэтому можно передать пользователю какое-то сообщение, наподобие: "Подождите идет обработка".
+     */
+    private final BoxAnswer intermediateAnswerIfFalse;
+
     private AnswerCheck(Builder<M> builder) {
         super(
                 builder.name,
@@ -55,6 +66,8 @@ public class AnswerCheck<M extends Message> extends MainUnit<M> {
         unitTrue = builder.unitTrue;
         unitFalse = builder.unitFalse;
         check = builder.check;
+        intermediateAnswerIfTrue = builder.intermediateAnswerIfTrue;
+        intermediateAnswerIfFalse = builder.intermediateAnswerIfFalse;
     }
 
     public static <M extends Message> Builder<M> builder() {
@@ -71,6 +84,14 @@ public class AnswerCheck<M extends Message> extends MainUnit<M> {
 
     public CheckData<M> getCheck() {
         return check;
+    }
+
+    public BoxAnswer getIntermediateAnswerIfTrue() {
+        return intermediateAnswerIfTrue;
+    }
+
+    public BoxAnswer getIntermediateAnswerIfFalse() {
+        return intermediateAnswerIfFalse;
     }
 
     public static final class Builder<M extends Message> {
@@ -92,6 +113,8 @@ public class AnswerCheck<M extends Message> extends MainUnit<M> {
         private MainUnit unitTrue;
         private MainUnit unitFalse;
         private CheckData<M> check;
+        private BoxAnswer intermediateAnswerIfFalse;
+        private BoxAnswer intermediateAnswerIfTrue;
 
         private Builder() {
         }
@@ -206,6 +229,22 @@ public class AnswerCheck<M extends Message> extends MainUnit<M> {
 
         public Builder<M> notSaveHistory() {
             notSaveHistory = true;
+            return this;
+        }
+
+        public Builder<M> intermediateAnswer(BoxAnswer val) {
+            intermediateAnswerIfTrue = val;
+            intermediateAnswerIfFalse = val;
+            return this;
+        }
+
+        public Builder<M> intermediateAnswerIfTrue(BoxAnswer val) {
+            intermediateAnswerIfTrue = val;
+            return this;
+        }
+
+        public Builder<M> intermediateAnswerIfFalse(BoxAnswer val) {
+            intermediateAnswerIfFalse = val;
             return this;
         }
 

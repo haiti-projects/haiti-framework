@@ -39,7 +39,7 @@
         <godfather.core.ver>${project.version}</godfather.core.ver>
 
         <autoresponder.ver>3.5.0</autoresponder.ver>
-        <haiti.utils>1.4.0</haiti.utils>
+        <haiti.utils>2.2.0</haiti.utils>
 
         <javax.persistence.api.ver>2.2</javax.persistence.api.ver>
         <validation.api.ver>2.0.1.Final</validation.api.ver>
