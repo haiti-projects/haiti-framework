@@ -7,12 +7,12 @@ import java.util.Set;
 
 public interface PersonSettingService {
 
-    Set<Long> getAllPersonIdDisableMessages(@NotNull Set<Long> personIds);
+    Set<String> getAllPersonIdDisableMessages(@NotNull Set<String> personIds);
 
-    Optional<Boolean> getStateProcessingByPersonId(@NotNull Long personId);
+    Optional<Boolean> getStateProcessingByPersonId(@NotNull String personId);
 
-    void disableMessageProcessing(@NotNull Long personId);
+    void disableMessageProcessing(@NotNull String personId);
 
-    void enableMessageProcessing(@NotNull Long personId);
+    void enableMessageProcessing(@NotNull String personId);
 
 }

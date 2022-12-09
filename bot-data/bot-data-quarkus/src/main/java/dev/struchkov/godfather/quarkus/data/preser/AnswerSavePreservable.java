@@ -10,6 +10,6 @@ public interface AnswerSavePreservable<T> extends Preservable<T> {
      *
      * @param personId Идентификатор пользователя
      */
-    Uni<Void> push(Long personId, Pusher<T> pusher);
+    Uni<Void> push(String personId, Pusher<T> pusher);
 
 }

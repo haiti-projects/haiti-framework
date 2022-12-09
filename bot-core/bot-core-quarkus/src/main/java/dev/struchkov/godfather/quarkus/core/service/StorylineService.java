@@ -13,15 +13,15 @@ public interface StorylineService<M extends Message> {
 
     Uni<Void> save(@NotNull StorylineHistory storylineHistory);
 
-    Uni<MainUnit<M>> getUnitNameByPersonId(@NotNull Long personId);
+    Uni<MainUnit<M>> getUnitNameByPersonId(@NotNull String personId);
 
-    Uni<Set<MainUnit<M>>> getNextUnitByPersonId(@NotNull Long personId);
+    Uni<Set<MainUnit<M>>> getNextUnitByPersonId(@NotNull String personId);
 
-    Uni<Void> save(Long personId, String name, M message);
+    Uni<Void> save(String personId, String name, M message);
 
-    Uni<StorylineHistory> replaceUserToBack(long personId, int countUnitsToBack);
+    Uni<StorylineHistory> replaceUserToBack(String personId, int countUnitsToBack);
 
-    Uni<StorylineHistory> replaceUserToBack(long personId, String unitName);
+    Uni<StorylineHistory> replaceUserToBack(String personId, String unitName);
 
     Optional<MainUnit<M>> getDefaultUnit();
 

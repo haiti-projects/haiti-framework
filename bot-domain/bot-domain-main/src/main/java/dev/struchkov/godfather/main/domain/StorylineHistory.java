@@ -5,15 +5,15 @@ import dev.struchkov.godfather.main.domain.content.Message;
 
 public class StorylineHistory {
 
-    private Long personId;
+    private String personId;
     private String unitName;
     private Message message;
 
-    public Long getPersonId() {
+    public String getPersonId() {
         return personId;
     }
 
-    public void setPersonId(Long personId) {
+    public void setPersonId(String personId) {
         this.personId = personId;
     }
 

@@ -5,12 +5,12 @@ import java.util.Set;
 
 public interface PersonSettingRepository {
 
-    Set<Long> findAllByAllowedProcessing(Set<Long> personIds);
+    Set<String> findAllByAllowedProcessing(Set<String> personIds);
 
-    void disableMessageProcessing(Long personId);
+    void disableMessageProcessing(String personId);
 
-    void enableMessageProcessing(Long personId);
+    void enableMessageProcessing(String personId);
 
-    Optional<Boolean> findStateByPersonId(Long personId);
+    Optional<Boolean> findStateByPersonId(String personId);
 
 }

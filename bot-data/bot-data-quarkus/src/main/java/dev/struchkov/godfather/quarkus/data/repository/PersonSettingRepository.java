@@ -6,12 +6,12 @@ import java.util.Set;
 
 public interface PersonSettingRepository {
 
-    Uni<Set<Long>> findAllByAllowedProcessing(Set<Long> personIds);
+    Uni<Set<String>> findAllByAllowedProcessing(Set<String> personIds);
 
-    Uni<Void> disableMessageProcessing(Long personId);
+    Uni<Void> disableMessageProcessing(String personId);
 
-    Uni<Void> enableMessageProcessing(Long personId);
+    Uni<Void> enableMessageProcessing(String personId);
 
-    Uni<Boolean> findStateByPersonId(Long personId);
+    Uni<Boolean> findStateByPersonId(String personId);
 
 }

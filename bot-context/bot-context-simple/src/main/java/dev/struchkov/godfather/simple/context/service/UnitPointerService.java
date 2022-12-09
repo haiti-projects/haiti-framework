@@ -14,8 +14,8 @@ public interface UnitPointerService {
 
     UnitPointer save(@NotNull UnitPointer unitPointer);
 
-    Optional<String> getUnitNameByPersonId(@NotNull Long personId);
+    Optional<String> getUnitNameByPersonId(@NotNull String personId);
 
-    void removeByPersonId(@NotNull Long personId);
+    void removeByPersonId(@NotNull String personId);
 
 }

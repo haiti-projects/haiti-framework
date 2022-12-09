@@ -18,7 +18,7 @@ public interface Sending {
      * @param personId  Идентификатор пользователя
      * @param boxAnswer Объект с данными, которые необходимо отправить
      */
-    Uni<Void> send(@NotNull Long personId, @NotNull BoxAnswer boxAnswer);
+    Uni<Void> send(@NotNull String personId, @NotNull BoxAnswer boxAnswer);
 
     /**
      * Возвращает тип объекта отправляющего ответ пользователя. В зависимости от типа ответ будет отправлен с помощью

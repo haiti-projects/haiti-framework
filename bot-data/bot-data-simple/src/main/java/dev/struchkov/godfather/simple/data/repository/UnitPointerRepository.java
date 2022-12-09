@@ -12,8 +12,8 @@ public interface UnitPointerRepository {
 
     UnitPointer save(@NotNull UnitPointer unitPointer);
 
-    Optional<String> findUnitNameByPersonId(@NotNull Long personId);
+    Optional<String> findUnitNameByPersonId(@NotNull String personId);
 
-    void removeByPersonId(@NotNull Long personId);
+    void removeByPersonId(@NotNull String personId);
 
 }

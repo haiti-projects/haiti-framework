@@ -108,7 +108,7 @@ public class GeneralAutoResponder<M extends Message> {
                         messages -> {
                             if (checkEmpty(newMessages)) return Uni.createFrom().voidItem();
 
-                            final Set<Long> personIds = newMessages.stream()
+                            final Set<String> personIds = newMessages.stream()
                                     .map(Message::getPersonId)
                                     .collect(Collectors.toSet());
                             return personSettingService.getAllPersonIdDisableMessages(personIds)

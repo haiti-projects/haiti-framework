@@ -8,10 +8,10 @@ public interface StorylineRepository {
 
     Uni<Void> save(@NotNull StorylineHistory storylineHistory);
 
-    Uni<StorylineHistory> findByCountLast(long personId, int countUnitsToBack);
+    Uni<StorylineHistory> findByCountLast(String personId, int countUnitsToBack);
 
-    Uni<StorylineHistory> findByCountLast(long personId, String unitName);
+    Uni<StorylineHistory> findByCountLast(String personId, String unitName);
 
-    Uni<Void> cleanHistoryByPersonId(@NotNull Long personId);
+    Uni<Void> cleanHistoryByPersonId(@NotNull String personId);
 
 }

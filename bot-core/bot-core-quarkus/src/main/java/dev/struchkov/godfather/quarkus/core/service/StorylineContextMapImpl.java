@@ -13,15 +13,15 @@ import static dev.struchkov.haiti.utils.Inspector.isNotNull;
 
 public class StorylineContextMapImpl implements StorylineContext {
 
-    private final Map<Long, Map<String, Object>> map = new HashMap<>();
+    private final Map<String, Map<String, Object>> map = new HashMap<>();
 
-    public Uni<Void> save(@NotNull Long personId, @NotNull ContextKey<?> key, Object objectForSave) {
+    public Uni<Void> save(@NotNull String personId, @NotNull ContextKey<?> key, Object objectForSave) {
         isNotNull(personId, key);
         map.computeIfAbsent(personId, k -> new HashMap<>()).put(key.getValue(), objectForSave);
         return Uni.createFrom().voidItem();
     }
 
-    public <T> Uni<T> getByKey(@NotNull Long personId, @NotNull ContextKey<T> key) {
+    public <T> Uni<T> getByKey(@NotNull String personId, @NotNull ContextKey<T> key) {
         isNotNull(personId, key);
         if (map.containsKey(personId)) {
             final Map<String, Object> storage = map.get(personId);
@@ -34,23 +34,23 @@ public class StorylineContextMapImpl implements StorylineContext {
     }
 
     @Override
-    public <T> Uni<T> getByKeyOrThrow(@NotNull Long personId, @NotNull ContextKey<T> key) {
+    public <T> Uni<T> getByKeyOrThrow(@NotNull String personId, @NotNull ContextKey<T> key) {
         return getByKey(personId, key)
                 .onItem().ifNull().failWith(notFoundException("Не найдено значение ключа {0}, для пользователя {1}", key.getValue(), personId));
     }
 
-    public Uni<Map<String, Object>> getAllSaveElement(@NotNull Long personId) {
+    public Uni<Map<String, Object>> getAllSaveElement(@NotNull String personId) {
         isNotNull(personId);
         return Uni.createFrom().item(map.get(personId));
     }
 
-    public Uni<Void> removeAll(@NotNull Long personId) {
+    public Uni<Void> removeAll(@NotNull String personId) {
         isNotNull(personId);
         map.remove(personId);
         return Uni.createFrom().voidItem();
     }
 
-    public Uni<Void> removeByKey(@NotNull Long personId, @NotNull ContextKey<?> key) {
+    public Uni<Void> removeByKey(@NotNull String personId, @NotNull ContextKey<?> key) {
         isNotNull(personId, key);
         map.computeIfAbsent(personId, k -> new HashMap<>()).remove(key.getValue());
         return Uni.createFrom().voidItem();

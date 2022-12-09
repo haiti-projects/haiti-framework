@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class UnitPointLocalRepository implements UnitPointerRepository {
 
-    public final Map<Long, String> map = new HashMap<>();
+    public final Map<String, String> map = new HashMap<>();
 
     @Override
     public Uni<UnitPointer> save(@NotNull UnitPointer unitPointer) {
@@ -19,12 +19,12 @@ public class UnitPointLocalRepository implements UnitPointerRepository {
     }
 
     @Override
-    public Uni<String> findUnitNameByPersonId(@NotNull Long personId) {
+    public Uni<String> findUnitNameByPersonId(@NotNull String personId) {
         return Uni.createFrom().item(map.get(personId));
     }
 
     @Override
-    public Uni<Void> removeByPersonId(@NotNull Long personId) {
+    public Uni<Void> removeByPersonId(@NotNull String personId) {
         map.remove(personId);
         return Uni.createFrom().voidItem();
     }

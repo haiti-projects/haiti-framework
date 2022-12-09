@@ -25,7 +25,7 @@ public abstract class Message implements DeliverableText {
     /**
      * Идентификатор пользователя, отправившего сообщение.
      */
-    private Long personId;
+    private String personId;
 
     /**
      * Текстовое сообщение.
@@ -58,11 +58,11 @@ public abstract class Message implements DeliverableText {
         this.createDate = createDate;
     }
 
-    public Long getPersonId() {
+    public String getPersonId() {
         return personId;
     }
 
-    public void setPersonId(Long personId) {
+    public void setPersonId(String personId) {
         this.personId = personId;
     }
 

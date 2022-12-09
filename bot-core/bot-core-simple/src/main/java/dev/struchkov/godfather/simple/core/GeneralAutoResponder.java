@@ -89,10 +89,10 @@ public class GeneralAutoResponder<M extends Message> {
 
     public void processingNewMessages(List<M> newMessages) {
         if (newMessages != null && !newMessages.isEmpty()) {
-            final Set<Long> personIds = newMessages.stream()
+            final Set<String> personIds = newMessages.stream()
                     .map(Message::getPersonId)
                     .collect(Collectors.toSet());
-            final Set<Long> disableIds = personSettingService.getAllPersonIdDisableMessages(personIds);
+            final Set<String> disableIds = personSettingService.getAllPersonIdDisableMessages(personIds);
             final List<M> allowedMessages = newMessages.stream()
                     .filter(message -> !disableIds.contains(message.getPersonId()))
                     .toList();

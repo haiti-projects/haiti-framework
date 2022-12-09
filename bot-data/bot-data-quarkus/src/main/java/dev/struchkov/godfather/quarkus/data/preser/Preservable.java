@@ -17,10 +17,10 @@ public interface Preservable<S> {
      * @param personId Идентификатор пользователя
      * @param save     Объект данных
      */
-    Uni<Void> save(Long personId, String key, S save);
+    Uni<Void> save(String personId, String key, S save);
 
-    Uni<S> getByKey(Long personId, String key);
+    Uni<S> getByKey(String personId, String key);
 
-    Uni<Map<String, S>> getAllSaveElement(Long personId);
+    Uni<Map<String, S>> getAllSaveElement(String personId);
 
 }

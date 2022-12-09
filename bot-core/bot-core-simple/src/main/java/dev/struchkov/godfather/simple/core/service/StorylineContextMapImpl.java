@@ -13,14 +13,14 @@ import static dev.struchkov.haiti.utils.Inspector.isNotNull;
 
 public class StorylineContextMapImpl implements StorylineContext {
 
-    private final Map<Long, Map<String, Object>> map = new HashMap<>();
+    private final Map<String, Map<String, Object>> map = new HashMap<>();
 
-    public void save(@NotNull Long personId, @NotNull ContextKey<?> key, Object objectForSave) {
+    public void save(@NotNull String personId, @NotNull ContextKey<?> key, Object objectForSave) {
         isNotNull(personId, key);
         map.computeIfAbsent(personId, k -> new HashMap<>()).put(key.getValue(), objectForSave);
     }
 
-    public <T> Optional<T> getByKey(@NotNull Long personId, @NotNull ContextKey<T> key) {
+    public <T> Optional<T> getByKey(@NotNull String personId, @NotNull ContextKey<T> key) {
         isNotNull(personId, key);
         if (map.containsKey(personId)) {
             final Map<String, Object> storage = map.get(personId);
@@ -33,21 +33,21 @@ public class StorylineContextMapImpl implements StorylineContext {
     }
 
     @Override
-    public <T> T getByKeyOrThrow(@NotNull Long personId, @NotNull ContextKey<T> key) {
+    public <T> T getByKeyOrThrow(@NotNull String personId, @NotNull ContextKey<T> key) {
         return getByKey(personId, key).orElseThrow(notFoundException("Не найдено значение ключа {0}, для пользователя {1}", key.getValue(), personId));
     }
 
-    public Map<String, Object> getAllSaveElement(@NotNull Long personId) {
+    public Map<String, Object> getAllSaveElement(@NotNull String personId) {
         isNotNull(personId);
         return map.get(personId);
     }
 
-    public void removeAll(@NotNull Long personId) {
+    public void removeAll(@NotNull String personId) {
         isNotNull(personId);
         map.remove(personId);
     }
 
-    public void removeByKey(@NotNull Long personId, @NotNull ContextKey<?> key) {
+    public void removeByKey(@NotNull String personId, @NotNull ContextKey<?> key) {
         isNotNull(personId, key);
         map.computeIfAbsent(personId, k -> new HashMap<>()).remove(key.getValue());
     }

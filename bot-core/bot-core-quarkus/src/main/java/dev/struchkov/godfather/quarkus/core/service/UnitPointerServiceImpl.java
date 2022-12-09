@@ -20,12 +20,12 @@ public class UnitPointerServiceImpl implements UnitPointerService {
     }
 
     @Override
-    public Uni<String> getUnitNameByPersonId(@NotNull Long personId) {
+    public Uni<String> getUnitNameByPersonId(@NotNull String personId) {
         return unitPointerRepository.findUnitNameByPersonId(personId);
     }
 
     @Override
-    public Uni<Void> removeByPersonId(@NotNull Long personId) {
+    public Uni<Void> removeByPersonId(@NotNull String personId) {
         return unitPointerRepository.removeByPersonId(personId);
     }
 

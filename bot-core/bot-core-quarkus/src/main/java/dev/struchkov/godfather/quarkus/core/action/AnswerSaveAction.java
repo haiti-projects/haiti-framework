@@ -25,7 +25,7 @@ public class AnswerSaveAction<M extends Message, D> implements ActionUnit<Answer
         final M message = unitRequest.getMessage();
 
         final AnswerSavePreservable<D> preservable = answerSave.getPreservable();
-        final Long personId = message.getPersonId();
+        final String personId = message.getPersonId();
 
         final CheckSave<M> checkSave = answerSave.getCheckSave();
         if (checkNotNull(checkSave)) {

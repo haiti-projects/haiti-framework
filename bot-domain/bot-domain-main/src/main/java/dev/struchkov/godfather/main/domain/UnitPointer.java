@@ -4,15 +4,15 @@ import java.util.Objects;
 
 public class UnitPointer {
 
-    private Long personId;
+    private String personId;
     private String unitName;
 
-    public UnitPointer(Long personId, String unitName) {
+    public UnitPointer(String personId, String unitName) {
         this.personId = personId;
         this.unitName = unitName;
     }
 
-    public Long getPersonId() {
+    public String getPersonId() {
         return personId;
     }
 

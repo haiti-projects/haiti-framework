@@ -44,14 +44,14 @@ public class StorylineMailService implements StorylineService<Mail> {
     }
 
     @Override
-    public Optional<MainUnit<Mail>> getUnitNameByPersonId(@NotNull Long personId) {
+    public Optional<MainUnit<Mail>> getUnitNameByPersonId(@NotNull String personId) {
         isNotNull(personId);
         return unitPointerService.getUnitNameByPersonId(personId)
                 .flatMap(storyLine::getUnit);
     }
 
     @Override
-    public Set<MainUnit<Mail>> getNextUnitByPersonId(@NotNull Long personId) {
+    public Set<MainUnit<Mail>> getNextUnitByPersonId(@NotNull String personId) {
         final Optional<Set<MainUnit<Mail>>> optMainUnits = getUnitNameByPersonId(personId)
                 .map(Unit::getNextUnits)
                 .filter(mainUnits -> !mainUnits.isEmpty());
@@ -64,7 +64,7 @@ public class StorylineMailService implements StorylineService<Mail> {
     }
 
     @Override
-    public void save(Long personId, String unitName, Mail mail) {
+    public void save(String personId, String unitName, Mail mail) {
         isNotNull(personId, unitName, mail);
         unitPointerService.save(new UnitPointer(personId, unitName));
 
@@ -76,12 +76,12 @@ public class StorylineMailService implements StorylineService<Mail> {
     }
 
     @Override
-    public Optional<StorylineHistory> replaceUserToBack(long personId, int countUnitsToBack) {
+    public Optional<StorylineHistory> replaceUserToBack(String personId, int countUnitsToBack) {
         return storylineRepository.findByCountLast(personId, countUnitsToBack);
     }
 
     @Override
-    public Optional<StorylineHistory> replaceUserToBack(long personId, String unitName) {
+    public Optional<StorylineHistory> replaceUserToBack(String personId, String unitName) {
         return storylineRepository.findByCountLast(personId, unitName);
     }
 

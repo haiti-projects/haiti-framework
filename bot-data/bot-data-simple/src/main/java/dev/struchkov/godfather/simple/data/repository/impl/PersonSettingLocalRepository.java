@@ -10,27 +10,27 @@ import java.util.stream.Collectors;
 
 public class PersonSettingLocalRepository implements PersonSettingRepository {
 
-    private final Map<Long, Boolean> map = new HashMap<>();
+    private final Map<String, Boolean> map = new HashMap<>();
 
     @Override
-    public Set<Long> findAllByAllowedProcessing(Set<Long> personIds) {
+    public Set<String> findAllByAllowedProcessing(Set<String> personIds) {
         return personIds.stream()
                 .filter(map::get)
                 .collect(Collectors.toSet());
     }
 
     @Override
-    public void disableMessageProcessing(Long personId) {
+    public void disableMessageProcessing(String personId) {
         map.put(personId, false);
     }
 
     @Override
-    public void enableMessageProcessing(Long personId) {
+    public void enableMessageProcessing(String personId) {
         map.put(personId, true);
     }
 
     @Override
-    public Optional<Boolean> findStateByPersonId(Long personId) {
+    public Optional<Boolean> findStateByPersonId(String personId) {
         return Optional.ofNullable(map.get(personId));
     }
 

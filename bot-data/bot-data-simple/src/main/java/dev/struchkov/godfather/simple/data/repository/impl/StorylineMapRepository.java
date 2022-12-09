@@ -13,18 +13,18 @@ import java.util.Stack;
 
 public class StorylineMapRepository implements StorylineRepository {
 
-    private final Map<Long, Stack<StorylineHistory>> map = new HashMap<>();
-    private final Map<Long, Set<String>> historyUnitName = new HashMap<>();
+    private final Map<String, Stack<StorylineHistory>> map = new HashMap<>();
+    private final Map<String, Set<String>> historyUnitName = new HashMap<>();
 
     @Override
     public void save(@NotNull StorylineHistory history) {
-        final Long personId = history.getPersonId();
+        final String personId = history.getPersonId();
         map.computeIfAbsent(personId, k -> new Stack<>()).push(history);
         historyUnitName.computeIfAbsent(personId, k -> new HashSet<>()).add(history.getUnitName());
     }
 
     @Override
-    public Optional<StorylineHistory> findByCountLast(long personId, int countUnitsToBack) {
+    public Optional<StorylineHistory> findByCountLast(String personId, int countUnitsToBack) {
         if (map.containsKey(personId)) {
             final Stack<StorylineHistory> stack = map.get(personId);
             if (stack.size() < countUnitsToBack) {
@@ -41,7 +41,7 @@ public class StorylineMapRepository implements StorylineRepository {
     }
 
     @Override
-    public Optional<StorylineHistory> findByCountLast(long personId, String unitName) {
+    public Optional<StorylineHistory> findByCountLast(String personId, String unitName) {
         if (map.containsKey(personId)) {
             final Stack<StorylineHistory> stack = map.get(personId);
             StorylineHistory storylineHistory;
@@ -57,7 +57,7 @@ public class StorylineMapRepository implements StorylineRepository {
     }
 
     @Override
-    public void cleanHistoryByPersonId(@NotNull Long personId) {
+    public void cleanHistoryByPersonId(@NotNull String personId) {
         if (map.containsKey(personId)) {
             map.get(personId).clear();
         } else {

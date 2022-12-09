@@ -17,24 +17,24 @@ public class PersonSettingServiceImpl implements PersonSettingService {
     }
 
     @Override
-    public Set<Long> getAllPersonIdDisableMessages(@NotNull Set<Long> personIds) {
+    public Set<String> getAllPersonIdDisableMessages(@NotNull Set<String> personIds) {
         Inspector.isNotNull(personIds);
         return personSettingRepository.findAllByAllowedProcessing(personIds);
     }
 
     @Override
-    public Optional<Boolean> getStateProcessingByPersonId(@NotNull Long personId) {
+    public Optional<Boolean> getStateProcessingByPersonId(@NotNull String personId) {
         return personSettingRepository.findStateByPersonId(personId);
     }
 
     @Override
-    public void disableMessageProcessing(@NotNull Long personId) {
+    public void disableMessageProcessing(@NotNull String personId) {
         Inspector.isNotNull(personId);
         personSettingRepository.disableMessageProcessing(personId);
     }
 
     @Override
-    public void enableMessageProcessing(@NotNull Long personId) {
+    public void enableMessageProcessing(@NotNull String personId) {
         Inspector.isNotNull(personId);
         personSettingRepository.enableMessageProcessing(personId);
     }

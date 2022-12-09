@@ -7,6 +7,6 @@ import java.util.List;
 @FunctionalInterface
 public interface Insert {
 
-    Uni<List<String>> insert(Long personId);
+    Uni<List<String>> insert(String personId);
 
 }

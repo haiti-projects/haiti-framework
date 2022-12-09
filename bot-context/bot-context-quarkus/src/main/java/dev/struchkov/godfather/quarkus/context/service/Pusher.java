@@ -12,6 +12,6 @@ import java.util.Map;
 @FunctionalInterface
 public interface Pusher<D> {
 
-    Uni<Void> push(Long personId, Map<String, D> saveElement);
+    Uni<Void> push(String personId, Map<String, D> saveElement);
 
 }

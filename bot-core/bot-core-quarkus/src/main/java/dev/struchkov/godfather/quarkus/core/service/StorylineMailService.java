@@ -47,7 +47,7 @@ public class StorylineMailService implements StorylineService<Mail> {
     }
 
     @Override
-    public Uni<MainUnit<Mail>> getUnitNameByPersonId(@NotNull Long personId) {
+    public Uni<MainUnit<Mail>> getUnitNameByPersonId(@NotNull String personId) {
         isNotNull(personId);
         return unitPointerService.getUnitNameByPersonId(personId)
                 .onItem().transform(
@@ -62,7 +62,7 @@ public class StorylineMailService implements StorylineService<Mail> {
     }
 
     @Override
-    public Uni<Set<MainUnit<Mail>>> getNextUnitByPersonId(@NotNull Long personId) {
+    public Uni<Set<MainUnit<Mail>>> getNextUnitByPersonId(@NotNull String personId) {
         return getUnitNameByPersonId(personId)
                 .flatMap(
                         unit -> {
@@ -86,10 +86,10 @@ public class StorylineMailService implements StorylineService<Mail> {
     }
 
     @Override
-    public Uni<Void> save(Long personId, String unitName, Mail mail) {
+    public Uni<Void> save(String personId, String unitName, Mail mail) {
         isNotNull(personId, unitName, mail);
         return unitPointerService.save(new UnitPointer(personId, unitName))
-                .map(u -> {
+                .onItem().transformToUni(u -> {
                     final StorylineHistory storylineHistory = new StorylineHistory();
                     storylineHistory.setPersonId(personId);
                     storylineHistory.setUnitName(unitName);
@@ -99,12 +99,12 @@ public class StorylineMailService implements StorylineService<Mail> {
     }
 
     @Override
-    public Uni<StorylineHistory> replaceUserToBack(long personId, int countUnitsToBack) {
+    public Uni<StorylineHistory> replaceUserToBack(String personId, int countUnitsToBack) {
         return storylineRepository.findByCountLast(personId, countUnitsToBack);
     }
 
     @Override
-    public Uni<StorylineHistory> replaceUserToBack(long personId, String unitName) {
+    public Uni<StorylineHistory> replaceUserToBack(String personId, String unitName) {
         return storylineRepository.findByCountLast(personId, unitName);
     }
 

@@ -8,16 +8,16 @@ import java.util.Optional;
 
 public interface StorylineContext {
 
-    void save(@NotNull Long telegramId, @NotNull ContextKey<?> key, Object objectForSave);
+    void save(@NotNull String personId, @NotNull ContextKey<?> key, Object objectForSave);
 
-    <T> Optional<T> getByKey(@NotNull Long telegramId, @NotNull ContextKey<T> key);
+    <T> Optional<T> getByKey(@NotNull String personId, @NotNull ContextKey<T> key);
 
-    <T> T getByKeyOrThrow(@NotNull Long telegramId, @NotNull ContextKey<T> key);
+    <T> T getByKeyOrThrow(@NotNull String personId, @NotNull ContextKey<T> key);
 
-    Map<String, Object> getAllSaveElement(@NotNull Long telegramId);
+    Map<String, Object> getAllSaveElement(@NotNull String personId);
 
-    void removeAll(@NotNull Long telegramId);
+    void removeAll(@NotNull String personId);
 
-    void removeByKey(@NotNull Long telegramId, @NotNull ContextKey<?> key);
+    void removeByKey(@NotNull String personId, @NotNull ContextKey<?> key);
 
 }

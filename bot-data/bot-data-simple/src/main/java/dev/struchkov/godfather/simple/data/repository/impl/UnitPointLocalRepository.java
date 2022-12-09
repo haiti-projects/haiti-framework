@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public class UnitPointLocalRepository implements UnitPointerRepository {
 
-    public final Map<Long, String> map = new HashMap<>();
+    public final Map<String, String> map = new HashMap<>();
 
     @Override
     public UnitPointer save(@NotNull UnitPointer unitPointer) {
@@ -19,12 +19,12 @@ public class UnitPointLocalRepository implements UnitPointerRepository {
     }
 
     @Override
-    public Optional<String> findUnitNameByPersonId(@NotNull Long personId) {
+    public Optional<String> findUnitNameByPersonId(@NotNull String personId) {
         return Optional.ofNullable(map.get(personId));
     }
 
     @Override
-    public void removeByPersonId(@NotNull Long personId) {
+    public void removeByPersonId(@NotNull String personId) {
         map.remove(personId);
     }
 

@@ -10,10 +10,10 @@ import java.util.stream.Collectors;
 
 public class PersonSettingLocalRepository implements PersonSettingRepository {
 
-    private final Map<Long, Boolean> map = new HashMap<>();
+    private final Map<String, Boolean> map = new HashMap<>();
 
     @Override
-    public Uni<Set<Long>> findAllByAllowedProcessing(Set<Long> personIds) {
+    public Uni<Set<String>> findAllByAllowedProcessing(Set<String> personIds) {
         return Uni.createFrom().item(
                 personIds.stream()
                         .filter(map::get)
@@ -22,19 +22,19 @@ public class PersonSettingLocalRepository implements PersonSettingRepository {
     }
 
     @Override
-    public Uni<Void> disableMessageProcessing(Long personId) {
+    public Uni<Void> disableMessageProcessing(String personId) {
         map.put(personId, false);
         return Uni.createFrom().voidItem();
     }
 
     @Override
-    public Uni<Void> enableMessageProcessing(Long personId) {
+    public Uni<Void> enableMessageProcessing(String personId) {
         map.put(personId, true);
         return Uni.createFrom().voidItem();
     }
 
     @Override
-    public Uni<Boolean> findStateByPersonId(Long personId) {
+    public Uni<Boolean> findStateByPersonId(String personId) {
         return Uni.createFrom().item(map.get(personId));
     }
 

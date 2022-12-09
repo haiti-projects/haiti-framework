@@ -10,6 +10,6 @@ import java.util.Map;
 @FunctionalInterface
 public interface Pusher<D> {
 
-    void push(Long personId, Map<String, D> saveElement);
+    void push(String personId, Map<String, D> saveElement);
 
 }

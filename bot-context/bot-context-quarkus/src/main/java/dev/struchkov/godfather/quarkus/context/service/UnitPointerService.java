@@ -13,8 +13,8 @@ public interface UnitPointerService {
 
     Uni<UnitPointer> save(@NotNull UnitPointer unitPointer);
 
-    Uni<String> getUnitNameByPersonId(@NotNull Long personId);
+    Uni<String> getUnitNameByPersonId(@NotNull String personId);
 
-    Uni<Void> removeByPersonId(@NotNull Long personId);
+    Uni<Void> removeByPersonId(@NotNull String personId);
 
 }

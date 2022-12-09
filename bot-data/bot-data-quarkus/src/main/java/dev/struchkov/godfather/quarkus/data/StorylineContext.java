@@ -8,16 +8,16 @@ import java.util.Map;
 
 public interface StorylineContext {
 
-    Uni<Void> save(@NotNull Long telegramId, @NotNull ContextKey<?> key, Object objectForSave);
+    Uni<Void> save(@NotNull String personId, @NotNull ContextKey<?> key, Object objectForSave);
 
-    <T> Uni<T> getByKey(@NotNull Long telegramId, @NotNull ContextKey<T> key);
+    <T> Uni<T> getByKey(@NotNull String personId, @NotNull ContextKey<T> key);
 
-    <T> Uni<T> getByKeyOrThrow(@NotNull Long telegramId, @NotNull ContextKey<T> key);
+    <T> Uni<T> getByKeyOrThrow(@NotNull String personId, @NotNull ContextKey<T> key);
 
-    Uni<Map<String, Object>> getAllSaveElement(@NotNull Long telegramId);
+    Uni<Map<String, Object>> getAllSaveElement(@NotNull String personId);
 
-    Uni<Void> removeAll(@NotNull Long telegramId);
+    Uni<Void> removeAll(@NotNull String personId);
 
-    Uni<Void> removeByKey(@NotNull Long telegramId, @NotNull ContextKey<?> key);
+    Uni<Void> removeByKey(@NotNull String personId, @NotNull ContextKey<?> key);
 
 }
