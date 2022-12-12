@@ -19,6 +19,8 @@ public interface Sending {
      */
     void send(@NotNull String personId, @NotNull BoxAnswer boxAnswer);
 
+    void addPreSendProcess(@NotNull PreSendProcessing processing);
+
     /**
      * Возвращает тип объекта отправляющего ответ пользователя. В зависимости от типа ответ будет отправлен с помощью
      * разных методов.
