@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
-import static dev.struchkov.haiti.utils.Checker.checkNull;
+import static dev.struchkov.haiti.utils.Checker.checkNotNull;
 
 /**
  * Обработчик Unit-а {@link AnswerCheck}.
@@ -39,12 +39,12 @@ public class AnswerCheckAction<M extends Message> implements ActionUnit<AnswerCh
         if (unit.getCheck().checked(message)) {
             log.debug("Unit: {}. Проверка пройдена", unit.getName());
             final BoxAnswer answerIfTrue = unit.getIntermediateAnswerIfTrue();
-            if (checkNull(answerIfTrue)) sending.send(message.getPersonId(), answerIfTrue);
+            if (checkNotNull(answerIfTrue)) sending.send(message.getPersonId(), answerIfTrue);
             unitAnswer = unit.getUnitTrue();
         } else {
             log.debug("Unit: {}. Проверка НЕ пройдена", unit.getName());
             final BoxAnswer answerIfFalse = unit.getIntermediateAnswerIfFalse();
-            if (checkNull(answerIfFalse)) sending.send(message.getPersonId(), answerIfFalse);
+            if (checkNotNull(answerIfFalse)) sending.send(message.getPersonId(), answerIfFalse);
             unitAnswer = unit.getUnitFalse();
         }
         log.debug("Завершилась обработка unit: {}.", unit.getName());
