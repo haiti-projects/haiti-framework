@@ -12,12 +12,11 @@ import org.jetbrains.annotations.NotNull;
 public interface Sending {
 
     /**
-     * Отрпавляет ответ пользователю
+     * Отравляет сообщение пользователю.
      *
-     * @param personId  Идентификатор пользователя
      * @param boxAnswer Объект с данными, которые необходимо отправить
      */
-    void send(@NotNull String personId, @NotNull BoxAnswer boxAnswer);
+    void send(@NotNull BoxAnswer boxAnswer);
 
     void addPreSendProcess(@NotNull PreSendProcessing processing);
 

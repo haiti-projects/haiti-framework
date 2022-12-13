@@ -39,12 +39,18 @@ public class AnswerCheckAction<M extends Message> implements ActionUnit<AnswerCh
         if (unit.getCheck().checked(message)) {
             log.debug("Unit: {}. Проверка пройдена", unit.getName());
             final BoxAnswer answerIfTrue = unit.getIntermediateAnswerIfTrue();
-            if (checkNotNull(answerIfTrue)) sending.send(message.getPersonId(), answerIfTrue);
+            if (checkNotNull(answerIfTrue)) {
+                answerIfTrue.setRecipientIfNull(message.getPersonId());
+                sending.send(answerIfTrue);
+            }
             unitAnswer = unit.getUnitTrue();
         } else {
             log.debug("Unit: {}. Проверка НЕ пройдена", unit.getName());
             final BoxAnswer answerIfFalse = unit.getIntermediateAnswerIfFalse();
-            if (checkNotNull(answerIfFalse)) sending.send(message.getPersonId(), answerIfFalse);
+            if (checkNotNull(answerIfFalse)) {
+                answerIfFalse.setRecipientIfNull(message.getPersonId());
+                sending.send(answerIfFalse);
+            }
             unitAnswer = unit.getUnitFalse();
         }
         log.debug("Завершилась обработка unit: {}.", unit.getName());

@@ -7,7 +7,6 @@ import dev.struchkov.godfather.simple.context.service.Sending;
 import dev.struchkov.godfather.simple.core.unit.AnswerText;
 import dev.struchkov.godfather.simple.core.unit.MainUnit;
 import dev.struchkov.godfather.simple.core.unit.UnitRequest;
-import dev.struchkov.godfather.simple.core.utils.Sender;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,10 +35,11 @@ public class AnswerTextAction implements ActionUnit<AnswerText<Message>, Message
             replaceMarkers(unit, message, answer);
 
             final Sending answerTextSending = unit.getSending();
+            answer.setRecipientIfNull(message.getPersonId());
             if (answerTextSending != null) {
-                Sender.sends(message, answer, answerTextSending);
+                answerTextSending.send(answer);
             } else {
-                Sender.sends(message, answer, this.sending);
+                sending.send(answer);
             }
         }
 

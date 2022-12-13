@@ -2,6 +2,8 @@ package dev.struchkov.godfather.main.domain;
 
 import dev.struchkov.godfather.main.domain.keyboard.KeyBoard;
 
+import static dev.struchkov.haiti.utils.Checker.checkNull;
+
 /**
  * Контейнер, которые содержит данные, которые будут отправлены пользователю как ответ на его запрос.
  *
@@ -24,10 +26,16 @@ public class BoxAnswer {
      */
     private String message;
 
+    /**
+     * <p>Получатель сообщения</p>
+     */
+    private String recipientPersonId;
+
     private BoxAnswer(Builder builder) {
         message = builder.message;
         keyBoard = builder.keyBoard;
         replace = builder.replace;
+        recipientPersonId = builder.recipientPersonId;
     }
 
     public static BoxAnswer boxAnswer(boolean replace, String message) {
@@ -78,6 +86,20 @@ public class BoxAnswer {
         return replace;
     }
 
+    public String getRecipientPersonId() {
+        return recipientPersonId;
+    }
+
+    public void setRecipientPersonId(String recipientPersonId) {
+        this.recipientPersonId = recipientPersonId;
+    }
+
+    public void setRecipientIfNull(String recipientPersonId) {
+        if (checkNull(this.recipientPersonId)) {
+            this.recipientPersonId = recipientPersonId;
+        }
+    }
+
     @Override
     public String toString() {
         return "BoxAnswer{" +
@@ -91,6 +113,7 @@ public class BoxAnswer {
         private String message;
         private KeyBoard keyBoard;
         private boolean replace;
+        private String recipientPersonId;
 
         private Builder() {
         }
@@ -107,6 +130,11 @@ public class BoxAnswer {
 
         public Builder replace(boolean val) {
             replace = val;
+            return this;
+        }
+
+        public Builder recipientPersonId(String val) {
+            recipientPersonId = val;
             return this;
         }
 

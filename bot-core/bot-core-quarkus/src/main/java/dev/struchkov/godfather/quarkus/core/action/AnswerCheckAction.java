@@ -1,5 +1,6 @@
 package dev.struchkov.godfather.quarkus.core.action;
 
+import dev.struchkov.godfather.main.domain.BoxAnswer;
 import dev.struchkov.godfather.main.domain.content.Message;
 import dev.struchkov.godfather.quarkus.context.service.Sending;
 import dev.struchkov.godfather.quarkus.core.unit.AnswerCheck;
@@ -9,6 +10,7 @@ import io.smallrye.mutiny.Uni;
 
 import java.util.Objects;
 
+import static dev.struchkov.haiti.utils.Checker.checkNotNull;
 import static dev.struchkov.haiti.utils.Checker.checkTrue;
 
 /**
@@ -32,10 +34,19 @@ public class AnswerCheckAction<M extends Message> implements ActionUnit<AnswerCh
         return unit.getCheck().checked(message)
                 .onItem().call(checkValue -> {
                     if (checkTrue(checkValue)) {
-                        return sending.send(message.getPersonId(), unit.getIntermediateAnswerIfTrue());
+                        final BoxAnswer answerIfTrue = unit.getIntermediateAnswerIfTrue();
+                        if (checkNotNull(answerIfTrue)) {
+                            answerIfTrue.setRecipientIfNull(message.getPersonId());
+                            return sending.send(answerIfTrue);
+                        }
                     } else {
-                        return sending.send(message.getPersonId(), unit.getIntermediateAnswerIfFalse());
+                        final BoxAnswer answerIfFalse = unit.getIntermediateAnswerIfFalse();
+                        if (checkNotNull(answerIfFalse)) {
+                            answerIfFalse.setRecipientIfNull(message.getPersonId());
+                            return sending.send(answerIfFalse);
+                        }
                     }
+                    return Uni.createFrom().voidItem();
                 })
                 .onItem().transform(
                         checkValue -> {

@@ -7,7 +7,6 @@ import dev.struchkov.godfather.quarkus.context.service.Sending;
 import dev.struchkov.godfather.quarkus.core.unit.AnswerText;
 import dev.struchkov.godfather.quarkus.core.unit.MainUnit;
 import dev.struchkov.godfather.quarkus.core.unit.UnitRequest;
-import dev.struchkov.godfather.quarkus.core.utils.Sender;
 import io.smallrye.mutiny.Uni;
 
 import static dev.struchkov.haiti.utils.Checker.checkNotEmpty;
@@ -35,10 +34,11 @@ public class AnswerTextAction implements ActionUnit<AnswerText<Message>, Message
                 .onItem().ifNotNull().transformToUni(boxAnswer -> replaceMarkers(unit, message, boxAnswer))
                 .onItem().ifNotNull().transformToUni(boxAnswer -> {
                     final Sending answerTextSending = unit.getSending();
+                    boxAnswer.setRecipientIfNull(message.getPersonId());
                     if (checkNotNull(answerTextSending)) {
-                        return Sender.sends(message, boxAnswer, answerTextSending);
+                        return answerTextSending.send(boxAnswer);
                     } else {
-                        return Sender.sends(message, boxAnswer, this.sending);
+                        return sending.send(boxAnswer);
                     }
                 }).replaceWith(UnitRequest.of(unit, message));
     }

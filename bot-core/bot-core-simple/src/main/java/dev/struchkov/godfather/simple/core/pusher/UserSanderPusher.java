@@ -1,5 +1,6 @@
 package dev.struchkov.godfather.simple.core.pusher;
 
+import dev.struchkov.godfather.main.domain.BoxAnswer;
 import dev.struchkov.godfather.simple.context.service.Pusher;
 import dev.struchkov.godfather.simple.context.service.Sending;
 
@@ -25,7 +26,9 @@ public class UserSanderPusher implements Pusher<String> {
         stringBuilder.append("========= ").append(nameForm).append(" =========\n");
         saveElement.forEach((key, value) -> stringBuilder.append(key).append(": ").append(value).append("\n"));
         stringBuilder.append("====================");
-        sending.send(this.personId, boxAnswer(stringBuilder.toString()));
+        final BoxAnswer boxAnswer = boxAnswer(stringBuilder.toString());
+        boxAnswer.setRecipientIfNull(this.personId);
+        sending.send(boxAnswer);
     }
 
 }
