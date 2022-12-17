@@ -1,6 +1,7 @@
 package dev.struchkov.haiti.utils;
 
 import java.util.Collection;
+import java.util.Map;
 
 import static dev.struchkov.haiti.utils.Exceptions.utilityClass;
 import static dev.struchkov.haiti.utils.Strings.EMPTY;
@@ -46,6 +47,10 @@ public final class Checker {
      */
     public static boolean checkNotEmpty(Collection<?> collection) {
         return collection != null && !collection.isEmpty();
+    }
+
+    public static boolean checkNotEmpty(Map<?, ?> map) {
+        return map != null && !map.isEmpty();
     }
 
     /**

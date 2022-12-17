@@ -3,4 +3,6 @@ module haiti.utils {
     exports dev.struchkov.haiti.utils.domain;
 
     requires haiti.exception;
+
+    requires org.slf4j;
 }

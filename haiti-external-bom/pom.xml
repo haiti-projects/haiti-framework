@@ -6,7 +6,7 @@
 
     <groupId>dev.struchkov.haiti</groupId>
     <artifactId>haiti-external-bom</artifactId>
-    <version>2.1.0</version>
+    <version>2.2.0</version>
     <packaging>pom</packaging>
 
     <name>Haiti External Dependencies</name>
@@ -30,6 +30,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <javax.persistence.api.version>2.2</javax.persistence.api.version>
+        <google.auto.service.version>1.0.1</google.auto.service.version>
+        <slf4j.api.version>2.0.6</slf4j.api.version>
+
         <plugin.maven.compiler.ver>3.10.1</plugin.maven.compiler.ver>
         <plugin.nexus.staging.ver>1.6.13</plugin.nexus.staging.ver>
         <plugin.maven.source.ver>3.2.1</plugin.maven.source.ver>
@@ -41,12 +45,17 @@
             <dependency>
                 <groupId>javax.persistence</groupId>
                 <artifactId>javax.persistence-api</artifactId>
-                <version>2.2</version>
+                <version>${javax.persistence.api.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.auto.service</groupId>
                 <artifactId>auto-service</artifactId>
-                <version>1.0.1</version>
+                <version>${google.auto.service.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.api.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
