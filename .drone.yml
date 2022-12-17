@@ -8,9 +8,9 @@ steps:
     image: maven:3.8.6-openjdk-11
     volumes:
       - name: m2
-        path: /var/.m2/repository
+        path: ~/.m2/repository
     environment:
-      MAVEN_OPTS: "-Dmaven.repo.local=/var/.m2/repository"
+      MAVEN_OPTS: "-Dmaven.repo.local=~/.m2/repository"
       GPG_PRIVATE_KEY:
         from_secret: GPG_PRIVATE_KEY
       MAVEN_SETTINGS:
