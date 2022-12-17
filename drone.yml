@@ -1,0 +1,23 @@
+kind: pipeline
+type: docker
+name: haiti-framework
+
+steps:
+  - name: package
+    image: maven:3.8.6-eclipse-temurin-17
+    commands:
+      - mvn -U clean package
+    volumes:
+      - name: m2
+        path: /root/.m2
+
+trigger:
+  branch:
+    - master
+#  ref:
+#    - refs/tags/v.*.*.*
+
+volumes:
+  - name: m2
+    host:
+      path: $PATH_MAVEN_M2

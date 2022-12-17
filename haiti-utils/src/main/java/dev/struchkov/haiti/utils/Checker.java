@@ -87,12 +87,12 @@ public final class Checker {
         return EMPTY.equals(s);
     }
 
-    public static boolean checkNotFalse(Boolean b) {
-        return b != null && b;
+    public static boolean checkFalse(Boolean b) {
+        return b != null && !b;
     }
 
-    public static boolean checkNotTrue(Boolean b) {
-        return b != null && !b;
+    public static boolean checkTrue(Boolean b) {
+        return b != null && b;
     }
 
     public static boolean checkLong(String s) {
