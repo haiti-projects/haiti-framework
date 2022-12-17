@@ -19,7 +19,7 @@ steps:
       - echo $${TEST}
       - echo $${GPG_PRIVATE_KEY} >> gpg.key
       - echo $${MAVEN_SETTINGS} >> maven-settings.xml
-      - gpg --pinentry-mode loopback --passphrase $GPG_PASSPHRASE --import gpg.key
+      - gpg --pinentry-mode loopback --passphrase $${GPG_PASSPHRASE} --import gpg.key
       - mvn --settings maven-settings.xml -U -P ossrh,release clean deploy
 
 trigger:
