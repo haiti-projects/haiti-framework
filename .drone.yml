@@ -4,38 +4,14 @@ name: haiti-framework
 
 steps:
 
-  - name: restore-cache
-    image: drillster/drone-volume-cache
-    volumes:
-      - name: m2
-        path: /cache
-    settings:
-      restore: true
-      mount:
-        - /root/.m2
-
   - name: publish
     image: maven:3.8.6-eclipse-temurin-17
     commands:
-      - mvn -U clean package
-
-  - name: rebuild-cache
-    image: drillster/drone-volume-cache
-    volumes:
-      - name: m2
-        path: /cache
-    settings:
-      rebuild: true
-      mount:
-        - /root/.m2
-
-volumes:
-  - name: m2
-    host:
-      path: ${PATH_MAVEN_M2}
+      - echo "$GPG_PRIVATE_KEY" >> "gpg.txt"
+      - echo "$MAVEN_SETTINGS" >> "maven-settings.xml"
+      - gpg --pinentry-mode loopback --passphrase $GPG_PASSPHRASE --import gpg.txt
+      - mvn --settings maven-settings.xml -U -P ossrh,release clean deploy
 
 trigger:
-  branch:
-    - master
 #  ref:
 #    - refs/tags/v.*.*.*
