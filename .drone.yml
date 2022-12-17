@@ -23,8 +23,8 @@ steps:
       - mvn --settings maven-settings.xml -U -P ossrh,release clean deploy
 
 trigger:
-#  ref:
-#    - refs/tags/v.*.*.*
+  ref:
+    - refs/tags/v.*.*.*
 
 volumes:
   - name: m2
