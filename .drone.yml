@@ -5,7 +5,7 @@ name: haiti-framework
 steps:
 
   - name: publish
-    image: maven:3.8.6-eclipse-temurin-17
+    image: maven:3.8.4-openjdk-11
     commands:
       - echo "$GPG_PRIVATE_KEY" >> "gpg.txt"
       - echo "$MAVEN_SETTINGS" >> "maven-settings.xml"
