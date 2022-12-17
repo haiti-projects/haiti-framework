@@ -28,8 +28,5 @@ trigger:
 
 volumes:
   - name: m2
-    environment:
-      PATH_MAVEN_M2:
-        from_secret: PATH_MAVEN_M2
     host:
-      path: $PATH_MAVEN_M2
+      path: /drone/volume/m2
