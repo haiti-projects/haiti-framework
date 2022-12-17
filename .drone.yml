@@ -20,4 +20,4 @@ trigger:
 volumes:
   - name: m2
     host:
-      path: $PATH_MAVEN_M2
+      path: ${PATH_MAVEN_M2}
