@@ -28,5 +28,8 @@ trigger:
 
 volumes:
   - name: m2
+    environment:
+      PATH_MAVEN_M2:
+        from_secret: PATH_MAVEN_M2
     host:
-      path: /tmp/test
+      path: $PATH_MAVEN_M2
