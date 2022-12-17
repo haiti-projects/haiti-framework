@@ -9,6 +9,7 @@ steps:
     commands:
       - echo "$GPG_PRIVATE_KEY" >> "gpg.txt"
       - echo "$MAVEN_SETTINGS" >> "maven-settings.xml"
+      - ls
       - gpg --pinentry-mode loopback --passphrase $GPG_PASSPHRASE --import gpg.txt
       - mvn --settings maven-settings.xml -U -P ossrh,release clean deploy
 
