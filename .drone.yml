@@ -14,7 +14,8 @@ steps:
       GPG_PASSPHRASE:
         from_secret: GPG_PASSPHRASE
     commands:
-      - gpg --pinentry-mode loopback --passphrase $GPG_PASSPHRASE --import $GPG_PRIVATE_KEY
+      - echo $GPG_PRIVATE_KEY >> gpg.key
+      - gpg --pinentry-mode loopback --passphrase $GPG_PASSPHRASE --import gpg.key
       - mvn --settings $MAVEN_SETTINGS -U -P ossrh,release clean deploy
 
 trigger:
