@@ -6,6 +6,9 @@ steps:
 
   - name: publish
     image: maven:3.8.4-openjdk-11
+    environment:
+      TEST:
+        from_secret: TEST
     commands:
       - echo ${GPG_PRIVATE_KEY} >> gpg.key
       - echo $TEST >> test.key
