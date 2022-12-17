@@ -3,16 +3,30 @@ type: docker
 name: haiti-framework
 
 steps:
-  - name: build
-    image: node
+
+  - name: publish
+    image: maven:3.8.6-openjdk-11
     volumes:
-      - name: cache
-        path: /tmp/cache
+      - name: m2
+        path: /root/.m2/repository
+    environment:
+      GPG_PRIVATE_KEY:
+        from_secret: GPG_PRIVATE_KEY
+      MAVEN_SETTINGS:
+        from_secret: MAVEN_SETTINGS
+      GPG_PASSPHRASE:
+        from_secret: GPG_PASSPHRASE
     commands:
-      - npm install
-      - npm test
+      - echo "$GPG_PRIVATE_KEY" >> gpg.key
+      - echo "$MAVEN_SETTINGS" >> maven-settings.xml
+      - gpg --pinentry-mode loopback --passphrase $GPG_PASSPHRASE --import gpg.key
+      - mvn --settings maven-settings.xml -U -P ossrh,release clean deploy
+
+trigger:
+#  ref:
+#    - refs/tags/v.*.*.*
 
 volumes:
-  - name: cache
+  - name: m2
     host:
-      path: /var/lib/cache
+      path: $${PATH_MAVEN_M2}
