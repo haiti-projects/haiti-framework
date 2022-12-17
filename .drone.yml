@@ -16,7 +16,7 @@ steps:
       TEST:
         from_secret: TEST
     commands:
-      - echo $$TEST
+      - echo $${TEST}
       - echo $GPG_PRIVATE_KEY >> gpg.key
       - echo $MAVEN_SETTINGS >> maven-settings.xml
       - gpg --pinentry-mode loopback --passphrase $GPG_PASSPHRASE --import gpg.key
