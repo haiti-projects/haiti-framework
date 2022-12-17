@@ -7,9 +7,9 @@ steps:
     image: maven:3.8.6-eclipse-temurin-17
     volumes:
       - name: m2
-        path: /root/.m2
+        path: /drone/.m2
     commands:
-      - mvn -U clean package
+      - mvn -Dmaven.repo.local=/drone/.m2/repository -U clean package
 
 trigger:
   branch:
