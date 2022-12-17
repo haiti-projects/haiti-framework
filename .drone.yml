@@ -3,21 +3,39 @@ type: docker
 name: haiti-framework
 
 steps:
-  - name: package
-    image: maven:3.8.6-eclipse-temurin-17
+
+  - name: restore-cache
+    image: drillster/drone-volume-cache
     volumes:
       - name: m2
-        path: /root/.m2
+        path: /m2
+    settings:
+      restore: true
+      mount:
+        - /root/.m2
+
+  - name: publish
+    image: maven:3.8.6-eclipse-temurin-17
     commands:
-      - mvn -Dmaven.repo.local=/drone/.m2/repository -U clean package
+      - mvn -U clean package
+
+  - name: rebuild-cache
+    image: drillster/drone-volume-cache
+    volumes:
+      - name: m2
+        path: /m2
+    settings:
+      rebuild: true
+      mount:
+        - /root/.m2
+
+volumes:
+  - name: m2
+    host:
+      path: ${PATH_MAVEN_M2}
 
 trigger:
   branch:
     - master
 #  ref:
 #    - refs/tags/v.*.*.*
-
-volumes:
-  - name: m2
-    host:
-      path: ${PATH_MAVEN_M2}
