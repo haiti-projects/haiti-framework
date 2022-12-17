@@ -13,6 +13,8 @@ steps:
         from_secret: MAVEN_SETTINGS
       GPG_PASSPHRASE:
         from_secret: GPG_PASSPHRASE
+      TEST:
+        from_secret: TEST
     commands:
       - echo ${TEST} >> test.txt && cat test.txt
       - echo $GPG_PRIVATE_KEY >> gpg.key
