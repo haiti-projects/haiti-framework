@@ -6,7 +6,7 @@ steps:
   - name: package
     image: maven:3.8.6-eclipse-temurin-17
     volumes:
-      - name: cache
+      - name: m2
         path: /root/.m2
     commands:
       - mvn -Dmaven.repo.local=/drone/.m2/repository -U clean package
