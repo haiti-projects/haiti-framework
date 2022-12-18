@@ -224,7 +224,7 @@
                     <configuration>
                         <preparationGoals>clean install</preparationGoals>
                         <tagNameFormat>v.@{project.version}</tagNameFormat>
-                        <releaseProfiles>releases</releaseProfiles>
+                        <releaseProfiles>release,ossrh</releaseProfiles>
                         <pushChanges>false</pushChanges>
                         <localCheckout>true</localCheckout>
                     </configuration>

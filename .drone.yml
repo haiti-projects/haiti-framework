@@ -24,7 +24,7 @@ steps:
 
 trigger:
   ref:
-    - refs/tags/v.*.*.*
+    - master
 
 volumes:
   - name: m2
