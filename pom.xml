@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -228,6 +227,7 @@
                         <tagNameFormat>v.@{project.version}</tagNameFormat>
                         <autoversionsubmodules>true</autoversionsubmodules>
                         <releaseProfiles>releases</releaseProfiles>
+                        <pushChanges>false</pushChanges>
                     </configuration>
                 </plugin>
             </plugins>
@@ -283,6 +283,7 @@
         <connection>scm:git:https://github.com/Godfather-Bots/godfather.git</connection>
         <url>https://github.com/Godfather-Bots/godfathere</url>
         <developerConnection>scm:git:https://github.com/Godfather-Bots/godfather.git</developerConnection>
+        <tag>v.0.0.33</tag>
     </scm>
 
     <distributionManagement>
