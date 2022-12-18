@@ -4,7 +4,7 @@
     <parent>
         <artifactId>bot-core</artifactId>
         <groupId>dev.struchkov.godfather</groupId>
-        <version>0.0.38</version>
+        <version>0.0.39-SNAPSHOT</version>
     </parent>
 
     <artifactId>bot-core-simple</artifactId>
