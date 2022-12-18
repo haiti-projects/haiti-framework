@@ -6,7 +6,7 @@
 
     <groupId>dev.struchkov.godfather</groupId>
     <artifactId>godfather-bot</artifactId>
-    <version>0.0.32</version>
+    <version>0.0.33-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -219,6 +219,16 @@
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>3.0.0-M7</version>
+                    <configuration>
+                        <goals>deploy</goals>
+                        <autoversionsubmodules>true</autoversionsubmodules>
+                        <releaseProfiles>releases</releaseProfiles>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -243,6 +253,10 @@
             <id>release</id>
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-release-plugin</artifactId>
+                    </plugin>
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>

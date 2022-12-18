@@ -6,7 +6,7 @@
     <parent>
         <groupId>dev.struchkov.godfather</groupId>
         <artifactId>godfather-bot</artifactId>
-        <version>0.0.32</version>
+        <version>0.0.33-SNAPSHOT</version>
     </parent>
 
     <artifactId>bot-data</artifactId>
