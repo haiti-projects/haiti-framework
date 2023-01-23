@@ -35,10 +35,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <haiti.ver>${project.version}</haiti.ver>
-        <haiti.exception.ver>${haiti.ver}</haiti.exception.ver>
-        <haiti.context.ver>${haiti.ver}</haiti.context.ver>
-
         <javax.persistence.api.version>2.2</javax.persistence.api.version>
         <google.auto.service.version>1.0.1</google.auto.service.version>
         <slf4j.api.version>2.0.6</slf4j.api.version>
@@ -56,12 +52,12 @@
             <dependency>
                 <groupId>dev.struchkov.haiti</groupId>
                 <artifactId>haiti-exception</artifactId>
-                <version>${haiti.exception.ver}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>dev.struchkov.haiti</groupId>
                 <artifactId>haiti-utils</artifactId>
-                <version>${haiti.utils.ver}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
