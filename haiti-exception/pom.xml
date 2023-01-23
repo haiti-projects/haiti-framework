@@ -6,11 +6,10 @@
     <parent>
         <groupId>dev.struchkov.haiti</groupId>
         <artifactId>haiti-dependencies</artifactId>
-        <version>2.3.4</version>
+        <version>2.4.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>haiti-exception</artifactId>
-    <version>${haiti.exception.ver}</version>
 
     <name>Haiti Exception</name>
     <description>General exceptions for the haiti project</description>
