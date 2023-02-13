@@ -3,7 +3,9 @@ package dev.struchkov.haiti.utils;
 import java.util.Collection;
 import java.util.function.Supplier;
 
+import static dev.struchkov.haiti.utils.Checker.checkBlank;
 import static dev.struchkov.haiti.utils.Checker.checkEmpty;
+import static dev.struchkov.haiti.utils.Checker.checkNotBlank;
 import static dev.struchkov.haiti.utils.Checker.checkNotEmpty;
 import static dev.struchkov.haiti.utils.Checker.checkNotNull;
 import static dev.struchkov.haiti.utils.Checker.checkNull;
@@ -106,9 +108,11 @@ public final class Inspector {
      * @throws RuntimeException
      */
     public static void isNotEmpty(Supplier<? extends RuntimeException> exception, Object... args) {
-        if (checkEmpty(args)) {
-            throw exception.get();
-        }
+        if (checkEmpty(args)) throw exception.get();
+    }
+
+    public static void isNotEmpty(String s, Supplier<? extends RuntimeException> exception) {
+        if (checkEmpty(s)) throw exception.get();
     }
 
     /**
@@ -121,6 +125,10 @@ public final class Inspector {
         if (checkNotEmpty(collection)) throw exception.get();
     }
 
+    public static void isEmpty(String s, Supplier<? extends RuntimeException> exception) {
+        if (checkNotEmpty(s)) throw exception.get();
+    }
+
     /**
      * Проверка массива на пустоту. Если массив не пустой и не null, то будет выбрашено исключение.
      *
@@ -131,10 +139,19 @@ public final class Inspector {
         if (checkNotEmpty(args)) throw exception.get();
     }
 
+    public static void isNotBlank(String s, Supplier<? extends RuntimeException> exception) {
+        if (checkBlank(s)) throw exception.get();
+    }
+
+    public static void isBlank(String s, Supplier<? extends RuntimeException> exception) {
+        if (checkNotBlank(s)) throw exception.get();
+    }
+
     /**
      * Утилитарный класс.
      */
     public static final class Utils {
+
         private Utils() {
             utilityClass();
         }

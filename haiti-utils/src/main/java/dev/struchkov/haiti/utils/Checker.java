@@ -92,6 +92,14 @@ public final class Checker {
         return EMPTY.equals(s);
     }
 
+    public static boolean checkNotBlank(String s) {
+        return checkNotNull(s) && !s.isBlank();
+    }
+
+    public static boolean checkBlank(String s) {
+        return checkNull(s) || s.isBlank();
+    }
+
     public static boolean checkFalse(Boolean b) {
         return b != null && !b;
     }
