@@ -1,4 +1,6 @@
-package dev.struchkov.haiti.utils;
+package dev.struchkov.haiti.utils.container;
+
+import java.util.Objects;
 
 /**
  * Адаптированная реализация Pair из пакета javafx.util. Реализация необходима, так как в некоторых сборках JDK этот
@@ -30,6 +32,19 @@ public class Pair<K, V> {
 
     public void setValue(V value) {
         this.value = value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pair<?, ?> pair = (Pair<?, ?>) o;
+        return Objects.equals(key, pair.key);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(key);
     }
 
 }

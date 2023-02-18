@@ -1,4 +1,4 @@
-package dev.struchkov.haiti.utils.domain;
+package dev.struchkov.haiti.utils.container;
 
 import java.util.Optional;
 

@@ -1,6 +1,6 @@
 package dev.struchkov.haiti.utils;
 
-import dev.struchkov.haiti.utils.domain.CompositeUrl;
+import dev.struchkov.haiti.utils.container.CompositeUrl;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
