@@ -7,7 +7,9 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.Optional;
 
+import static dev.struchkov.haiti.utils.Checker.checkNotNull;
 import static dev.struchkov.haiti.utils.Exceptions.utilityClass;
 import static dev.struchkov.haiti.utils.Inspector.isNotNull;
 
@@ -123,8 +125,8 @@ public class ObjectUtils {
     public static boolean isGetMethod(String fieldName, Method method) {
         isNotNull(fieldName);
         return (method.getName().startsWith("get"))
-                && (method.getName().length() == (fieldName.length() + 3))
-                && method.getName().toLowerCase().endsWith(fieldName.toLowerCase());
+               && (method.getName().length() == (fieldName.length() + 3))
+               && method.getName().toLowerCase().endsWith(fieldName.toLowerCase());
     }
 
     /**
@@ -137,8 +139,23 @@ public class ObjectUtils {
     public static boolean isSetMethod(String fieldName, Method method) {
         isNotNull(fieldName);
         return (method.getName().startsWith("set"))
-                && (method.getName().length() == (fieldName.length() + 3))
-                && method.getName().toLowerCase().endsWith(fieldName.toLowerCase());
+               && (method.getName().length() == (fieldName.length() + 3))
+               && method.getName().toLowerCase().endsWith(fieldName.toLowerCase());
+    }
+
+    /**
+     * Позволяет создать произвольный enum из его значения.
+     *
+     * @param name      значение из enum
+     * @param enumClass класс enum
+     * @param <T>       возвращаемый тип енума
+     * @return преобразованный енум или пустой Optional
+     */
+    public static <T extends Enum<T>> Optional<T> createEnum(String name, Class<T> enumClass) {
+        if (checkNotNull(name)) {
+            return Optional.of(Enum.valueOf(enumClass, name));
+        }
+        return Optional.empty();
     }
 
 }
