@@ -44,7 +44,7 @@ volumes:
 steps:
 
   - name: publish maven central
-    image: maven:3.9-eclipse-temurin-17
+    image: maven:3.9-eclipse-temurin-17-alpine
     privileged: true
     volumes:
       - name: m2
@@ -57,6 +57,7 @@ steps:
       GPG_PASSPHRASE:
         from_secret: GPG_PASSPHRASE
     commands:
+      - apk add gnupg
       - echo "$GPG_PRIVATE_KEY" >> gpg.key
       - echo "$MAVEN_SETTINGS" >> maven-settings.xml
       - gpg --pinentry-mode loopback --passphrase $GPG_PASSPHRASE --import gpg.key
@@ -79,7 +80,7 @@ volumes:
 steps:
 
   - name: publish struchkov nexus
-    image: maven:3.9-eclipse-temurin-17
+    image: maven:3.9-eclipse-temurin-17-alpine
     privileged: true
     volumes:
       - name: m2
@@ -92,12 +93,13 @@ steps:
       GPG_PASSPHRASE:
         from_secret: GPG_PASSPHRASE
     commands:
+      - apk add gnupg
       - echo "$GPG_PRIVATE_KEY" >> gpg.key
       - echo "$MAVEN_SETTINGS" >> maven-settings.xml
       - gpg --pinentry-mode loopback --passphrase $GPG_PASSPHRASE --import gpg.key
       - mvn --settings maven-settings.xml -U -P ossrh,release-struchkov-nexus clean deploy
 ---
 kind: signature
-hmac: 9238ae36e836c6c8af41ef5bafc021af86214ba15103bfd0273c52b92c34aa78
+hmac: 34f1fada73f15de54c9080f58b6f24186aeb1b89461f4b8480904f7eb860d94e
 
 ...
