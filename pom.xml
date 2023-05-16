@@ -4,7 +4,7 @@
 
     <groupId>dev.struchkov.haiti</groupId>
     <artifactId>haiti-dependencies</artifactId>
-    <version>2.7.3-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Haiti Framework</name>
@@ -27,22 +27,31 @@
     </modules>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <javax.persistence.api.version>2.2</javax.persistence.api.version>
+        <!-- https://mvnrepository.com/artifact/jakarta.persistence/jakarta.persistence-api -->
+        <jakarta.persistence.version>3.1.0</jakarta.persistence.version>
+        <!-- https://mvnrepository.com/artifact/com.google.auto.service/auto-service -->
         <google.auto.service.version>1.0.1</google.auto.service.version>
-        <slf4j.api.version>2.0.6</slf4j.api.version>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <slf4j.api.version>2.0.7</slf4j.api.version>
 
-        <plugin.maven.compiler.ver>3.10.1</plugin.maven.compiler.ver>
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
+        <plugin.maven.compiler.ver>3.11.0</plugin.maven.compiler.ver>
+        <!-- https://mvnrepository.com/artifact/org.sonatype.plugins/nexus-staging-maven-plugin -->
         <plugin.nexus.staging.ver>1.6.13</plugin.nexus.staging.ver>
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-source-plugin -->
         <plugin.maven.source.ver>3.2.1</plugin.maven.source.ver>
-        <plugin.maven.javadoc.ver>3.4.0</plugin.maven.javadoc.ver>
-        <plugin.maven.gpg.ver>3.0.1</plugin.maven.gpg.ver>
-        <plugin.maven.release.ver>3.0.0-M7</plugin.maven.release.ver>
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-javadoc-plugin -->
+        <plugin.maven.javadoc.ver>3.5.0</plugin.maven.javadoc.ver>
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-gpg-plugin -->
+        <plugin.maven.gpg.ver>3.1.0</plugin.maven.gpg.ver>
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-release-plugin -->
+        <plugin.maven.release.ver>3.0.0</plugin.maven.release.ver>
     </properties>
 
     <dependencyManagement>
@@ -50,19 +59,20 @@
             <dependency>
                 <groupId>dev.struchkov.haiti</groupId>
                 <artifactId>haiti-exception</artifactId>
-                <version>2.7.3-SNAPSHOT</version>
+                <version>3.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>dev.struchkov.haiti</groupId>
                 <artifactId>haiti-utils</artifactId>
-                <version>2.7.3-SNAPSHOT</version>
+                <version>3.0.0-SNAPSHOT</version>
             </dependency>
 
             <dependency>
-                <groupId>javax.persistence</groupId>
-                <artifactId>javax.persistence-api</artifactId>
-                <version>${javax.persistence.api.version}</version>
+                <groupId>jakarta.persistence</groupId>
+                <artifactId>jakarta.persistence-api</artifactId>
+                <version>${jakarta.persistence.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>com.google.auto.service</groupId>
                 <artifactId>auto-service</artifactId>
