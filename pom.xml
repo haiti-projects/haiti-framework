@@ -4,7 +4,7 @@
 
     <groupId>dev.struchkov.haiti</groupId>
     <artifactId>haiti-dependencies</artifactId>
-    <version>3.0.2</version>
+    <version>3.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Haiti Framework</name>
@@ -59,12 +59,12 @@
             <dependency>
                 <groupId>dev.struchkov.haiti</groupId>
                 <artifactId>haiti-exception</artifactId>
-                <version>3.0.2</version>
+                <version>3.1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>dev.struchkov.haiti</groupId>
                 <artifactId>haiti-utils</artifactId>
-                <version>3.0.2</version>
+                <version>3.1.0-SNAPSHOT</version>
             </dependency>
 
             <dependency>
@@ -306,7 +306,7 @@
         <connection>scm:git:https://git.struchkov.dev/Haiti/haiti-framework.git</connection>
         <url>https://git.struchkov.dev/Haiti/haiti-framework</url>
         <developerConnection>scm:git:https://git.struchkov.dev/Haiti/haiti-framework.git</developerConnection>
-      <tag>v.3.0.2</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <developers>
